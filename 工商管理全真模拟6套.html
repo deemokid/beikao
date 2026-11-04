@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>初级经济师 · 工商管理专业知识和实务 机考模拟</title>
+<style>
+:root{
+  --bg:#f4f6fa; --card:#fff; --ink:#1b2430; --sub:#6b7686;
+  --line:#e2e7ef; --accent:#2563eb; --accent-soft:#e8efff;
+  --ok:#0f9d58; --warn:#e8a300; --bad:#d93025;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);overflow-x:hidden;
+  font:15px/1.6 -apple-system,"Segoe UI","Microsoft YaHei",sans-serif}
+button{font:inherit;cursor:pointer}
+.wrap{max-width:1180px;margin:0 auto;padding:16px}
+
+/* ---------- 首页 ---------- */
+.hero{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;border-radius:16px;
+  padding:28px 26px;box-shadow:0 10px 30px rgba(37,99,235,.25)}
+.hero h1{margin:0 0 6px;font-size:22px}
+.hero p{margin:0;opacity:.9;font-size:13.5px}
+.sets{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin-top:18px}
+.tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:14px}
+.tools .hint{font-size:12.5px;color:var(--sub)}
+.setcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;
+  text-align:left;transition:.15s;box-shadow:0 2px 8px rgba(20,30,50,.05)}
+.setcard:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 20px rgba(37,99,235,.15)}
+.setcard b{display:block;font-size:16px;margin-bottom:4px}
+.setcard span{color:var(--sub);font-size:13px}
+.tag{display:inline-block;font-size:12px;padding:1px 8px;border-radius:20px;
+  background:var(--accent-soft);color:var(--accent);margin-left:6px}
+.rules{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:16px 20px;font-size:13.5px;color:var(--sub)}
+.rules b{color:var(--ink)}
+.rules ul{margin:8px 0 0;padding-left:18px}
+.rules li{margin:4px 0}
+
+/* ---------- 考试页 ---------- */
+.bar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.bar .in{max-width:1180px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:14px}
+.bar .name{font-weight:600}
+.timer{font-variant-numeric:tabular-nums;font-weight:700;font-size:17px;
+  padding:4px 12px;border-radius:8px;background:var(--accent-soft);color:var(--accent)}
+.timer.low{background:#fdecea;color:var(--bad)}
+.spacer{flex:1}
+.btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:9px;
+  padding:7px 14px;transition:.15s}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary:hover{filter:brightness(1.08);color:#fff}
+.btn.ghost{background:transparent}
+
+.grid{display:grid;grid-template-columns:1fr 250px;gap:16px;align-items:start}
+.grid>*{min-width:0}
+.card{min-width:0}
+@media(max-width:600px){
+  .bar .name{display:none}
+  #btnSheet,#btnSubmit{padding:6px 11px;font-size:13px}
+  .timer{font-size:14px}
+}
+@media(max-width:860px){
+  .grid{grid-template-columns:1fr}
+  .wrap{padding:10px}
+  .bar .in{padding:8px 10px;gap:8px}
+  .bar .name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:38%}
+  .timer{font-size:15px;padding:3px 9px}
+  #prog{display:none}
+  .card{padding:12px 12px}
+  .qhead{gap:6px}
+  #btnFlag{font-size:12px;padding:5px 8px}
+  .opts{gap:7px}
+  .opt{width:44px;height:44px}
+  .cells{gap:4px}
+  .cell{font-size:11px}
+  .qimgwrap{overflow-x:auto;max-width:100%}
+  .qimgwrap img{min-width:720px}
+  .sheet{position:static;display:none}
+  .sheet.show{display:block}
+  #btnSheet{display:inline-block}
+}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:18px 20px;box-shadow:0 2px 10px rgba(20,30,50,.04)}
+.qhead{display:flex;align-items:center;gap:10px;margin-bottom:12px;color:var(--sub);font-size:13px}
+.qhead b{color:var(--ink);font-size:15px}
+.pill{font-size:12px;padding:1px 8px;border-radius:20px;background:#eef2f8;color:var(--sub)}
+.pill.multi{background:#fff4e0;color:#a86500}
+.qimg{display:block;width:100%;border-radius:8px;margin:6px 0 2px}
+.opts{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.opt{width:46px;height:46px;border-radius:10px;border:1.5px solid var(--line);background:#fff;
+  font-weight:700;font-size:16px;color:var(--ink);transition:.12s}
+.opt:hover{border-color:var(--accent);color:var(--accent)}
+.opt.on{background:var(--accent);border-color:var(--accent);color:#fff;
+  box-shadow:0 4px 12px rgba(37,99,235,.3)}
+.nav{display:flex;gap:10px;margin-top:18px;align-items:center}
+.hint{color:var(--sub);font-size:12.5px}
+
+/* 答题卡 */
+.sheet{position:sticky;top:64px}
+.sheet h3{margin:0 0 4px;font-size:14px}
+.sheet .sec{margin:10px 0 4px;font-size:12px;color:var(--sub)}
+.cells{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.cell{aspect-ratio:1;border:1px solid var(--line);border-radius:6px;background:#fff;
+  font-size:12px;color:var(--sub);display:flex;align-items:center;justify-content:center;
+  position:relative;padding:0}
+.cell.done{background:var(--accent-soft);border-color:#b9cdfb;color:var(--accent);font-weight:600}
+.cell.now{outline:2px solid var(--accent);outline-offset:1px}
+.cell.flag::after{content:"";position:absolute;top:2px;right:2px;width:5px;height:5px;
+  border-radius:50%;background:var(--warn)}
+.legend{display:flex;gap:12px;font-size:12px;color:var(--sub);margin-top:10px;flex-wrap:wrap}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;
+  vertical-align:-1px;border:1px solid var(--line)}
+
+/* ---------- 结果页 ---------- */
+.score{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+.big{font-size:44px;font-weight:800;line-height:1;min-width:170px}
+.big small{font-size:15px;font-weight:500;color:var(--sub)}
+.score .kv{flex:1;min-width:280px}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-top:6px}
+@media(max-width:620px){.kv{grid-template-columns:repeat(2,1fr)}}
+.kv div{background:#f7f9fc;border-radius:10px;padding:8px 12px}
+.kv b{display:block;font-size:17px}
+.kv span{font-size:12px;color:var(--sub)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 12px}
+.tab{border:1px solid var(--line);background:#fff;border-radius:20px;padding:5px 14px;font-size:13px;color:var(--sub)}
+.tab.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.rev{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:12px;background:#fff}
+.rev .top{display:flex;gap:10px;align-items:center;font-size:13px;color:var(--sub);margin-bottom:8px;flex-wrap:wrap}
+.rev .mine,.rev .right{font-weight:700}
+.rev .mine.bad{color:var(--bad)}
+.rev .right{color:var(--ok)}
+.rev img{width:100%;border-radius:8px;display:block}
+.rev details{margin-top:8px}
+.rev summary{cursor:pointer;color:var(--accent);font-size:13px}
+.empty{color:var(--sub);text-align:center;padding:30px}
+.case-material{border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:14px}
+.case-material summary{color:var(--accent);cursor:pointer;font-size:13px}
+#qimgs img{height:auto}
+.mobile-image-hint{display:none}
+@media(max-width:860px){.mobile-image-hint{display:block;margin-bottom:8px}}
+</style>
+</head>
+<body>
+
+<!-- ============ 首页 ============ -->
+<section id="home" class="wrap">
+  <div class="hero">
+    <h1>工商管理专业知识和实务（初级）· 机考模拟</h1>
+    <p>6 套全真模拟 · 90 分钟 · 100 题 · 满分 140 分 · 及格 84 分</p>
+  </div>
+  <div class="sets" id="setList"></div>
+  <div class="tools">
+    <button class="btn" id="btnExport">⬇ 导出记录（JSON）</button>
+    <button class="btn" id="btnImport">⬆ 导入记录</button>
+    <input type="file" id="fileImport" accept=".json,application/json" hidden>
+    <span class="hint" id="toolHint">交卷后自动保存到“备考 / 作答记录”，用于后续复盘</span>
+  </div>
+  <div class="rules">
+    <b>机考规则</b>
+    <ul>
+      <li>60 道单选（1–60，每题 1 分）+ 20 道多选（61–80，每题 2 分）+ 20 道案例分析（81–100，每题 2 分），共 140 分，<b>84 分及格</b>，90 分钟。</li>
+      <li>多选和案例：全部选对得 2 分；少选且无错项，每个所选正确项得 0.5 分；含错项本题 0 分。案例题由单选和多选组成，作答时按不定项处理。</li>
+      <li>键盘：A–E 选，← → 切题，空格标记存疑。</li>
+      <li>案例材料、表格随题显示；交卷后可查看原卷解析。答案按所提供 PDF 的参考答案设置。每次交卷自动保留历史并保存到“备考 / 作答记录”，用于后续复盘。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 考试页 ============ -->
+<section id="exam" hidden>
+  <div class="bar"><div class="in">
+    <span class="name" id="examName">模拟卷</span>
+    <span class="timer" id="timer">90:00</span>
+    <span class="spacer"></span>
+    <span class="hint" id="prog">0 / 100</span>
+    <button class="btn" id="btnSheet">答题卡</button>
+    <button class="btn primary" id="btnSubmit">交卷</button>
+  </div></div>
+
+  <div class="wrap grid">
+    <div>
+      <div class="card">
+        <div class="qhead">
+          <b id="qno">第 1 题</b>
+          <span class="pill" id="qtype">单选题</span>
+          <span class="spacer"></span>
+          <button class="btn ghost" id="btnFlag">标记存疑 (空格)</button>
+        </div>
+        <div class="mobile-image-hint hint">题图可左右滑动；点击图片可查看原图。</div><div id="qimgs"></div>
+        <div class="opts" id="opts"></div>
+        <div class="nav">
+          <button class="btn" id="btnPrev">← 上一题</button>
+          <button class="btn" id="btnNext">下一题 →</button>
+          <span class="hint" id="answerHint"></span>
+        </div>
+      </div>
+    </div>
+
+    <aside class="card sheet" id="sheetBox">
+      <h3>答题卡</h3>
+      <div class="legend">
+        <span><i style="background:var(--accent-soft);border-color:#b9cdfb"></i>已答</span>
+        <span><i style="background:#fff"></i>未答</span>
+        <span><i style="background:var(--warn);border-radius:50%"></i>存疑</span>
+      </div>
+      <div class="sec">一、单项选择题（1–60）</div>
+      <div class="cells" id="cells1"></div>
+      <div class="sec">二、多项选择题（61–80）</div>
+      <div class="cells" id="cells2"></div>
+      <div class="sec">三、案例分析题（81–100）</div>
+      <div class="cells" id="cells3"></div>
+    </aside>
+  </div>
+</section>
+
+<!-- ============ 结果页 ============ -->
+<section id="result" hidden>
+  <div class="bar"><div class="in">
+    <span class="name" id="resName">成绩</span>
+    <span class="spacer"></span>
+    <button class="btn" id="btnHome">返回首页</button>
+    <button class="btn" id="btnExport2">导出记录</button>
+    <button class="btn primary" id="btnAgain">再考一次</button>
+  </div></div>
+  <div class="wrap">
+    <div class="card">
+      <div class="score">
+        <div class="big" id="resScore">0<small> / 140 分</small></div>
+        <div class="kv">
+          <div><b id="resSingle">0</b><span>单选 / 60</span></div>
+          <div><b id="resMulti">0</b><span>多选 / 40</span></div>
+          <div><b id="resCase">0</b><span>案例 / 40</span></div>
+          <div><b id="resTime">—</b><span>用时</span></div>
+          <div><b id="resWrong">0</b><span>错题数</span></div>
+        </div>
+      </div>
+      <div id="resVerdict" class="hint" style="margin-top:12px"></div>
+      <div id="exportStatus" class="hint" role="status" aria-live="polite" style="margin-top:8px"></div>
+    </div>
+    <div class="tabs" id="tabs"></div>
+    <div id="revList"></div>
+  </div>
+</section>
+
+<script>
+const CN6 = "\u4e00\u4e8c\u4e09\u56db\u4e94\u516d";
+
+const QIMG = {"1": {"1": ["工商题库/questions/1_001_1.jpg"], "2": ["工商题库/questions/1_002_1.jpg"], "3": ["工商题库/questions/1_003_1.jpg"], "4": ["工商题库/questions/1_004_1.jpg"], "5": ["工商题库/questions/1_005_1.jpg"], "6": ["工商题库/questions/1_006_1.jpg"], "7": ["工商题库/questions/1_007_1.jpg"], "8": ["工商题库/questions/1_008_1.jpg"], "9": ["工商题库/questions/1_009_1.jpg"], "10": ["工商题库/questions/1_010_1.jpg", "工商题库/questions/1_010_2.jpg"], "11": ["工商题库/questions/1_011_1.jpg"], "12": ["工商题库/questions/1_012_1.jpg"], "13": ["工商题库/questions/1_013_1.jpg"], "14": ["工商题库/questions/1_014_1.jpg"], "15": ["工商题库/questions/1_015_1.jpg"], "16": ["工商题库/questions/1_016_1.jpg"], "17": ["工商题库/questions/1_017_1.jpg"], "18": ["工商题库/questions/1_018_1.jpg"], "19": ["工商题库/questions/1_019_1.jpg"], "20": ["工商题库/questions/1_020_1.jpg"], "21": ["工商题库/questions/1_021_1.jpg", "工商题库/questions/1_021_2.jpg"], "22": ["工商题库/questions/1_022_1.jpg"], "23": ["工商题库/questions/1_023_1.jpg"], "24": ["工商题库/questions/1_024_1.jpg"], "25": ["工商题库/questions/1_025_1.jpg"], "26": ["工商题库/questions/1_026_1.jpg"], "27": ["工商题库/questions/1_027_1.jpg"], "28": ["工商题库/questions/1_028_1.jpg"], "29": ["工商题库/questions/1_029_1.jpg"], "30": ["工商题库/questions/1_030_1.jpg"], "31": ["工商题库/questions/1_031_1.jpg"], "32": ["工商题库/questions/1_032_1.jpg", "工商题库/questions/1_032_2.jpg"], "33": ["工商题库/questions/1_033_1.jpg"], "34": ["工商题库/questions/1_034_1.jpg"], "35": ["工商题库/questions/1_035_1.jpg"], "36": ["工商题库/questions/1_036_1.jpg"], "37": ["工商题库/questions/1_037_1.jpg"], "38": ["工商题库/questions/1_038_1.jpg"], "39": ["工商题库/questions/1_039_1.jpg"], "40": ["工商题库/questions/1_040_1.jpg"], "41": ["工商题库/questions/1_041_1.jpg"], "42": ["工商题库/questions/1_042_1.jpg"], "43": ["工商题库/questions/1_043_1.jpg", "工商题库/questions/1_043_2.jpg"], "44": ["工商题库/questions/1_044_1.jpg"], "45": ["工商题库/questions/1_045_1.jpg"], "46": ["工商题库/questions/1_046_1.jpg"], "47": ["工商题库/questions/1_047_1.jpg"], "48": ["工商题库/questions/1_048_1.jpg"], "49": ["工商题库/questions/1_049_1.jpg"], "50": ["工商题库/questions/1_050_1.jpg"], "51": ["工商题库/questions/1_051_1.jpg"], "52": ["工商题库/questions/1_052_1.jpg"], "53": ["工商题库/questions/1_053_1.jpg"], "54": ["工商题库/questions/1_054_1.jpg"], "55": ["工商题库/questions/1_055_1.jpg", "工商题库/questions/1_055_2.jpg"], "56": ["工商题库/questions/1_056_1.jpg"], "57": ["工商题库/questions/1_057_1.jpg"], "58": ["工商题库/questions/1_058_1.jpg"], "59": ["工商题库/questions/1_059_1.jpg"], "60": ["工商题库/questions/1_060_1.jpg"], "61": ["工商题库/questions/1_061_1.jpg"], "62": ["工商题库/questions/1_062_1.jpg"], "63": ["工商题库/questions/1_063_1.jpg"], "64": ["工商题库/questions/1_064_1.jpg", "工商题库/questions/1_064_2.jpg"], "65": ["工商题库/questions/1_065_1.jpg"], "66": ["工商题库/questions/1_066_1.jpg"], "67": ["工商题库/questions/1_067_1.jpg"], "68": ["工商题库/questions/1_068_1.jpg"], "69": ["工商题库/questions/1_069_1.jpg"], "70": ["工商题库/questions/1_070_1.jpg"], "71": ["工商题库/questions/1_071_1.jpg"], "72": ["工商题库/questions/1_072_1.jpg"], "73": ["工商题库/questions/1_073_1.jpg"], "74": ["工商题库/questions/1_074_1.jpg"], "75": ["工商题库/questions/1_075_1.jpg"], "76": ["工商题库/questions/1_076_1.jpg"], "77": ["工商题库/questions/1_077_1.jpg"], "78": ["工商题库/questions/1_078_1.jpg"], "79": ["工商题库/questions/1_079_1.jpg"], "80": ["工商题库/questions/1_080_1.jpg", "工商题库/questions/1_080_2.jpg"], "81": ["工商题库/questions/1_081_1.jpg"], "82": ["工商题库/questions/1_082_1.jpg"], "83": ["工商题库/questions/1_083_1.jpg"], "84": ["工商题库/questions/1_084_1.jpg"], "85": ["工商题库/questions/1_085_1.jpg"], "86": ["工商题库/questions/1_086_1.jpg", "工商题库/questions/1_086_2.jpg"], "87": ["工商题库/questions/1_087_1.jpg"], "88": ["工商题库/questions/1_088_1.jpg"], "89": ["工商题库/questions/1_089_1.jpg"], "90": ["工商题库/questions/1_090_1.jpg"], "91": ["工商题库/questions/1_091_1.jpg"], "92": ["工商题库/questions/1_092_1.jpg"], "93": ["工商题库/questions/1_093_1.jpg"], "94": ["工商题库/questions/1_094_1.jpg"], "95": ["工商题库/questions/1_095_1.jpg"], "96": ["工商题库/questions/1_096_1.jpg"], "97": ["工商题库/questions/1_097_1.jpg"], "98": ["工商题库/questions/1_098_1.jpg"], "99": ["工商题库/questions/1_099_1.jpg"], "100": ["工商题库/questions/1_100_1.jpg"]}, "2": {"1": ["工商题库/questions/2_001_1.jpg"], "2": ["工商题库/questions/2_002_1.jpg"], "3": ["工商题库/questions/2_003_1.jpg"], "4": ["工商题库/questions/2_004_1.jpg"], "5": ["工商题库/questions/2_005_1.jpg"], "6": ["工商题库/questions/2_006_1.jpg"], "7": ["工商题库/questions/2_007_1.jpg"], "8": ["工商题库/questions/2_008_1.jpg"], "9": ["工商题库/questions/2_009_1.jpg"], "10": ["工商题库/questions/2_010_1.jpg", "工商题库/questions/2_010_2.jpg"], "11": ["工商题库/questions/2_011_1.jpg"], "12": ["工商题库/questions/2_012_1.jpg"], "13": ["工商题库/questions/2_013_1.jpg"], "14": ["工商题库/questions/2_014_1.jpg"], "15": ["工商题库/questions/2_015_1.jpg"], "16": ["工商题库/questions/2_016_1.jpg"], "17": ["工商题库/questions/2_017_1.jpg"], "18": ["工商题库/questions/2_018_1.jpg"], "19": ["工商题库/questions/2_019_1.jpg"], "20": ["工商题库/questions/2_020_1.jpg", "工商题库/questions/2_020_2.jpg"], "21": ["工商题库/questions/2_021_1.jpg"], "22": ["工商题库/questions/2_022_1.jpg"], "23": ["工商题库/questions/2_023_1.jpg"], "24": ["工商题库/questions/2_024_1.jpg"], "25": ["工商题库/questions/2_025_1.jpg"], "26": ["工商题库/questions/2_026_1.jpg"], "27": ["工商题库/questions/2_027_1.jpg"], "28": ["工商题库/questions/2_028_1.jpg"], "29": ["工商题库/questions/2_029_1.jpg"], "30": ["工商题库/questions/2_030_1.jpg"], "31": ["工商题库/questions/2_031_1.jpg"], "32": ["工商题库/questions/2_032_1.jpg", "工商题库/questions/2_032_2.jpg"], "33": ["工商题库/questions/2_033_1.jpg"], "34": ["工商题库/questions/2_034_1.jpg"], "35": ["工商题库/questions/2_035_1.jpg"], "36": ["工商题库/questions/2_036_1.jpg"], "37": ["工商题库/questions/2_037_1.jpg"], "38": ["工商题库/questions/2_038_1.jpg"], "39": ["工商题库/questions/2_039_1.jpg"], "40": ["工商题库/questions/2_040_1.jpg"], "41": ["工商题库/questions/2_041_1.jpg"], "42": ["工商题库/questions/2_042_1.jpg"], "43": ["工商题库/questions/2_043_1.jpg"], "44": ["工商题库/questions/2_044_1.jpg"], "45": ["工商题库/questions/2_045_1.jpg"], "46": ["工商题库/questions/2_046_1.jpg"], "47": ["工商题库/questions/2_047_1.jpg"], "48": ["工商题库/questions/2_048_1.jpg"], "49": ["工商题库/questions/2_049_1.jpg"], "50": ["工商题库/questions/2_050_1.jpg"], "51": ["工商题库/questions/2_051_1.jpg"], "52": ["工商题库/questions/2_052_1.jpg"], "53": ["工商题库/questions/2_053_1.jpg"], "54": ["工商题库/questions/2_054_1.jpg"], "55": ["工商题库/questions/2_055_1.jpg"], "56": ["工商题库/questions/2_056_1.jpg"], "57": ["工商题库/questions/2_057_1.jpg"], "58": ["工商题库/questions/2_058_1.jpg"], "59": ["工商题库/questions/2_059_1.jpg"], "60": ["工商题库/questions/2_060_1.jpg"], "61": ["工商题库/questions/2_061_1.jpg"], "62": ["工商题库/questions/2_062_1.jpg"], "63": ["工商题库/questions/2_063_1.jpg"], "64": ["工商题库/questions/2_064_1.jpg"], "65": ["工商题库/questions/2_065_1.jpg"], "66": ["工商题库/questions/2_066_1.jpg"], "67": ["工商题库/questions/2_067_1.jpg"], "68": ["工商题库/questions/2_068_1.jpg"], "69": ["工商题库/questions/2_069_1.jpg"], "70": ["工商题库/questions/2_070_1.jpg"], "71": ["工商题库/questions/2_071_1.jpg"], "72": ["工商题库/questions/2_072_1.jpg"], "73": ["工商题库/questions/2_073_1.jpg"], "74": ["工商题库/questions/2_074_1.jpg"], "75": ["工商题库/questions/2_075_1.jpg"], "76": ["工商题库/questions/2_076_1.jpg"], "77": ["工商题库/questions/2_077_1.jpg"], "78": ["工商题库/questions/2_078_1.jpg"], "79": ["工商题库/questions/2_079_1.jpg"], "80": ["工商题库/questions/2_080_1.jpg"], "81": ["工商题库/questions/2_081_1.jpg"], "82": ["工商题库/questions/2_082_1.jpg"], "83": ["工商题库/questions/2_083_1.jpg"], "84": ["工商题库/questions/2_084_1.jpg"], "85": ["工商题库/questions/2_085_1.jpg"], "86": ["工商题库/questions/2_086_1.jpg"], "87": ["工商题库/questions/2_087_1.jpg", "工商题库/questions/2_087_2.jpg"], "88": ["工商题库/questions/2_088_1.jpg"], "89": ["工商题库/questions/2_089_1.jpg"], "90": ["工商题库/questions/2_090_1.jpg"], "91": ["工商题库/questions/2_091_1.jpg"], "92": ["工商题库/questions/2_092_1.jpg"], "93": ["工商题库/questions/2_093_1.jpg"], "94": ["工商题库/questions/2_094_1.jpg"], "95": ["工商题库/questions/2_095_1.jpg"], "96": ["工商题库/questions/2_096_1.jpg"], "97": ["工商题库/questions/2_097_1.jpg"], "98": ["工商题库/questions/2_098_1.jpg"], "99": ["工商题库/questions/2_099_1.jpg"], "100": ["工商题库/questions/2_100_1.jpg"]}, "3": {"1": ["工商题库/questions/3_001_1.jpg"], "2": ["工商题库/questions/3_002_1.jpg"], "3": ["工商题库/questions/3_003_1.jpg"], "4": ["工商题库/questions/3_004_1.jpg"], "5": ["工商题库/questions/3_005_1.jpg"], "6": ["工商题库/questions/3_006_1.jpg"], "7": ["工商题库/questions/3_007_1.jpg"], "8": ["工商题库/questions/3_008_1.jpg"], "9": ["工商题库/questions/3_009_1.jpg"], "10": ["工商题库/questions/3_010_1.jpg", "工商题库/questions/3_010_2.jpg"], "11": ["工商题库/questions/3_011_1.jpg"], "12": ["工商题库/questions/3_012_1.jpg"], "13": ["工商题库/questions/3_013_1.jpg"], "14": ["工商题库/questions/3_014_1.jpg"], "15": ["工商题库/questions/3_015_1.jpg"], "16": ["工商题库/questions/3_016_1.jpg"], "17": ["工商题库/questions/3_017_1.jpg"], "18": ["工商题库/questions/3_018_1.jpg"], "19": ["工商题库/questions/3_019_1.jpg"], "20": ["工商题库/questions/3_020_1.jpg"], "21": ["工商题库/questions/3_021_1.jpg", "工商题库/questions/3_021_2.jpg"], "22": ["工商题库/questions/3_022_1.jpg"], "23": ["工商题库/questions/3_023_1.jpg"], "24": ["工商题库/questions/3_024_1.jpg"], "25": ["工商题库/questions/3_025_1.jpg"], "26": ["工商题库/questions/3_026_1.jpg"], "27": ["工商题库/questions/3_027_1.jpg"], "28": ["工商题库/questions/3_028_1.jpg"], "29": ["工商题库/questions/3_029_1.jpg"], "30": ["工商题库/questions/3_030_1.jpg"], "31": ["工商题库/questions/3_031_1.jpg"], "32": ["工商题库/questions/3_032_1.jpg"], "33": ["工商题库/questions/3_033_1.jpg", "工商题库/questions/3_033_2.jpg"], "34": ["工商题库/questions/3_034_1.jpg"], "35": ["工商题库/questions/3_035_1.jpg"], "36": ["工商题库/questions/3_036_1.jpg"], "37": ["工商题库/questions/3_037_1.jpg"], "38": ["工商题库/questions/3_038_1.jpg"], "39": ["工商题库/questions/3_039_1.jpg"], "40": ["工商题库/questions/3_040_1.jpg"], "41": ["工商题库/questions/3_041_1.jpg"], "42": ["工商题库/questions/3_042_1.jpg"], "43": ["工商题库/questions/3_043_1.jpg"], "44": ["工商题库/questions/3_044_1.jpg", "工商题库/questions/3_044_2.jpg"], "45": ["工商题库/questions/3_045_1.jpg"], "46": ["工商题库/questions/3_046_1.jpg"], "47": ["工商题库/questions/3_047_1.jpg"], "48": ["工商题库/questions/3_048_1.jpg"], "49": ["工商题库/questions/3_049_1.jpg"], "50": ["工商题库/questions/3_050_1.jpg"], "51": ["工商题库/questions/3_051_1.jpg"], "52": ["工商题库/questions/3_052_1.jpg"], "53": ["工商题库/questions/3_053_1.jpg"], "54": ["工商题库/questions/3_054_1.jpg"], "55": ["工商题库/questions/3_055_1.jpg", "工商题库/questions/3_055_2.jpg"], "56": ["工商题库/questions/3_056_1.jpg"], "57": ["工商题库/questions/3_057_1.jpg"], "58": ["工商题库/questions/3_058_1.jpg"], "59": ["工商题库/questions/3_059_1.jpg"], "60": ["工商题库/questions/3_060_1.jpg"], "61": ["工商题库/questions/3_061_1.jpg"], "62": ["工商题库/questions/3_062_1.jpg"], "63": ["工商题库/questions/3_063_1.jpg"], "64": ["工商题库/questions/3_064_1.jpg"], "65": ["工商题库/questions/3_065_1.jpg"], "66": ["工商题库/questions/3_066_1.jpg"], "67": ["工商题库/questions/3_067_1.jpg"], "68": ["工商题库/questions/3_068_1.jpg"], "69": ["工商题库/questions/3_069_1.jpg"], "70": ["工商题库/questions/3_070_1.jpg"], "71": ["工商题库/questions/3_071_1.jpg"], "72": ["工商题库/questions/3_072_1.jpg"], "73": ["工商题库/questions/3_073_1.jpg", "工商题库/questions/3_073_2.jpg"], "74": ["工商题库/questions/3_074_1.jpg"], "75": ["工商题库/questions/3_075_1.jpg"], "76": ["工商题库/questions/3_076_1.jpg"], "77": ["工商题库/questions/3_077_1.jpg"], "78": ["工商题库/questions/3_078_1.jpg"], "79": ["工商题库/questions/3_079_1.jpg"], "80": ["工商题库/questions/3_080_1.jpg"], "81": ["工商题库/questions/3_081_1.jpg"], "82": ["工商题库/questions/3_082_1.jpg"], "83": ["工商题库/questions/3_083_1.jpg"], "84": ["工商题库/questions/3_084_1.jpg"], "85": ["工商题库/questions/3_085_1.jpg"], "86": ["工商题库/questions/3_086_1.jpg"], "87": ["工商题库/questions/3_087_1.jpg"], "88": ["工商题库/questions/3_088_1.jpg"], "89": ["工商题库/questions/3_089_1.jpg"], "90": ["工商题库/questions/3_090_1.jpg"], "91": ["工商题库/questions/3_091_1.jpg"], "92": ["工商题库/questions/3_092_1.jpg"], "93": ["工商题库/questions/3_093_1.jpg"], "94": ["工商题库/questions/3_094_1.jpg"], "95": ["工商题库/questions/3_095_1.jpg"], "96": ["工商题库/questions/3_096_1.jpg"], "97": ["工商题库/questions/3_097_1.jpg"], "98": ["工商题库/questions/3_098_1.jpg"], "99": ["工商题库/questions/3_099_1.jpg"], "100": ["工商题库/questions/3_100_1.jpg"]}, "4": {"1": ["工商题库/questions/4_001_1.jpg"], "2": ["工商题库/questions/4_002_1.jpg"], "3": ["工商题库/questions/4_003_1.jpg"], "4": ["工商题库/questions/4_004_1.jpg"], "5": ["工商题库/questions/4_005_1.jpg"], "6": ["工商题库/questions/4_006_1.jpg"], "7": ["工商题库/questions/4_007_1.jpg"], "8": ["工商题库/questions/4_008_1.jpg"], "9": ["工商题库/questions/4_009_1.jpg"], "10": ["工商题库/questions/4_010_1.jpg"], "11": ["工商题库/questions/4_011_1.jpg"], "12": ["工商题库/questions/4_012_1.jpg"], "13": ["工商题库/questions/4_013_1.jpg"], "14": ["工商题库/questions/4_014_1.jpg"], "15": ["工商题库/questions/4_015_1.jpg"], "16": ["工商题库/questions/4_016_1.jpg"], "17": ["工商题库/questions/4_017_1.jpg"], "18": ["工商题库/questions/4_018_1.jpg"], "19": ["工商题库/questions/4_019_1.jpg"], "20": ["工商题库/questions/4_020_1.jpg", "工商题库/questions/4_020_2.jpg"], "21": ["工商题库/questions/4_021_1.jpg"], "22": ["工商题库/questions/4_022_1.jpg"], "23": ["工商题库/questions/4_023_1.jpg"], "24": ["工商题库/questions/4_024_1.jpg"], "25": ["工商题库/questions/4_025_1.jpg"], "26": ["工商题库/questions/4_026_1.jpg"], "27": ["工商题库/questions/4_027_1.jpg"], "28": ["工商题库/questions/4_028_1.jpg"], "29": ["工商题库/questions/4_029_1.jpg"], "30": ["工商题库/questions/4_030_1.jpg"], "31": ["工商题库/questions/4_031_1.jpg"], "32": ["工商题库/questions/4_032_1.jpg"], "33": ["工商题库/questions/4_033_1.jpg"], "34": ["工商题库/questions/4_034_1.jpg"], "35": ["工商题库/questions/4_035_1.jpg"], "36": ["工商题库/questions/4_036_1.jpg"], "37": ["工商题库/questions/4_037_1.jpg"], "38": ["工商题库/questions/4_038_1.jpg"], "39": ["工商题库/questions/4_039_1.jpg"], "40": ["工商题库/questions/4_040_1.jpg"], "41": ["工商题库/questions/4_041_1.jpg", "工商题库/questions/4_041_2.jpg"], "42": ["工商题库/questions/4_042_1.jpg"], "43": ["工商题库/questions/4_043_1.jpg"], "44": ["工商题库/questions/4_044_1.jpg"], "45": ["工商题库/questions/4_045_1.jpg"], "46": ["工商题库/questions/4_046_1.jpg"], "47": ["工商题库/questions/4_047_1.jpg"], "48": ["工商题库/questions/4_048_1.jpg"], "49": ["工商题库/questions/4_049_1.jpg"], "50": ["工商题库/questions/4_050_1.jpg"], "51": ["工商题库/questions/4_051_1.jpg"], "52": ["工商题库/questions/4_052_1.jpg", "工商题库/questions/4_052_2.jpg"], "53": ["工商题库/questions/4_053_1.jpg"], "54": ["工商题库/questions/4_054_1.jpg"], "55": ["工商题库/questions/4_055_1.jpg"], "56": ["工商题库/questions/4_056_1.jpg"], "57": ["工商题库/questions/4_057_1.jpg"], "58": ["工商题库/questions/4_058_1.jpg"], "59": ["工商题库/questions/4_059_1.jpg"], "60": ["工商题库/questions/4_060_1.jpg"], "61": ["工商题库/questions/4_061_1.jpg"], "62": ["工商题库/questions/4_062_1.jpg"], "63": ["工商题库/questions/4_063_1.jpg", "工商题库/questions/4_063_2.jpg"], "64": ["工商题库/questions/4_064_1.jpg"], "65": ["工商题库/questions/4_065_1.jpg"], "66": ["工商题库/questions/4_066_1.jpg"], "67": ["工商题库/questions/4_067_1.jpg"], "68": ["工商题库/questions/4_068_1.jpg"], "69": ["工商题库/questions/4_069_1.jpg"], "70": ["工商题库/questions/4_070_1.jpg"], "71": ["工商题库/questions/4_071_1.jpg"], "72": ["工商题库/questions/4_072_1.jpg", "工商题库/questions/4_072_2.jpg"], "73": ["工商题库/questions/4_073_1.jpg"], "74": ["工商题库/questions/4_074_1.jpg"], "75": ["工商题库/questions/4_075_1.jpg"], "76": ["工商题库/questions/4_076_1.jpg"], "77": ["工商题库/questions/4_077_1.jpg"], "78": ["工商题库/questions/4_078_1.jpg"], "79": ["工商题库/questions/4_079_1.jpg"], "80": ["工商题库/questions/4_080_1.jpg"], "81": ["工商题库/questions/4_081_1.jpg"], "82": ["工商题库/questions/4_082_1.jpg"], "83": ["工商题库/questions/4_083_1.jpg"], "84": ["工商题库/questions/4_084_1.jpg"], "85": ["工商题库/questions/4_085_1.jpg"], "86": ["工商题库/questions/4_086_1.jpg"], "87": ["工商题库/questions/4_087_1.jpg"], "88": ["工商题库/questions/4_088_1.jpg"], "89": ["工商题库/questions/4_089_1.jpg"], "90": ["工商题库/questions/4_090_1.jpg"], "91": ["工商题库/questions/4_091_1.jpg"], "92": ["工商题库/questions/4_092_1.jpg"], "93": ["工商题库/questions/4_093_1.jpg"], "94": ["工商题库/questions/4_094_1.jpg"], "95": ["工商题库/questions/4_095_1.jpg"], "96": ["工商题库/questions/4_096_1.jpg"], "97": ["工商题库/questions/4_097_1.jpg", "工商题库/questions/4_097_2.jpg"], "98": ["工商题库/questions/4_098_1.jpg"], "99": ["工商题库/questions/4_099_1.jpg"], "100": ["工商题库/questions/4_100_1.jpg"]}, "5": {"1": ["工商题库/questions/5_001_1.jpg"], "2": ["工商题库/questions/5_002_1.jpg"], "3": ["工商题库/questions/5_003_1.jpg"], "4": ["工商题库/questions/5_004_1.jpg"], "5": ["工商题库/questions/5_005_1.jpg"], "6": ["工商题库/questions/5_006_1.jpg"], "7": ["工商题库/questions/5_007_1.jpg"], "8": ["工商题库/questions/5_008_1.jpg"], "9": ["工商题库/questions/5_009_1.jpg"], "10": ["工商题库/questions/5_010_1.jpg", "工商题库/questions/5_010_2.jpg"], "11": ["工商题库/questions/5_011_1.jpg"], "12": ["工商题库/questions/5_012_1.jpg"], "13": ["工商题库/questions/5_013_1.jpg"], "14": ["工商题库/questions/5_014_1.jpg"], "15": ["工商题库/questions/5_015_1.jpg"], "16": ["工商题库/questions/5_016_1.jpg"], "17": ["工商题库/questions/5_017_1.jpg"], "18": ["工商题库/questions/5_018_1.jpg"], "19": ["工商题库/questions/5_019_1.jpg"], "20": ["工商题库/questions/5_020_1.jpg"], "21": ["工商题库/questions/5_021_1.jpg"], "22": ["工商题库/questions/5_022_1.jpg"], "23": ["工商题库/questions/5_023_1.jpg"], "24": ["工商题库/questions/5_024_1.jpg"], "25": ["工商题库/questions/5_025_1.jpg"], "26": ["工商题库/questions/5_026_1.jpg"], "27": ["工商题库/questions/5_027_1.jpg"], "28": ["工商题库/questions/5_028_1.jpg"], "29": ["工商题库/questions/5_029_1.jpg"], "30": ["工商题库/questions/5_030_1.jpg", "工商题库/questions/5_030_2.jpg"], "31": ["工商题库/questions/5_031_1.jpg"], "32": ["工商题库/questions/5_032_1.jpg"], "33": ["工商题库/questions/5_033_1.jpg"], "34": ["工商题库/questions/5_034_1.jpg"], "35": ["工商题库/questions/5_035_1.jpg"], "36": ["工商题库/questions/5_036_1.jpg"], "37": ["工商题库/questions/5_037_1.jpg"], "38": ["工商题库/questions/5_038_1.jpg"], "39": ["工商题库/questions/5_039_1.jpg"], "40": ["工商题库/questions/5_040_1.jpg"], "41": ["工商题库/questions/5_041_1.jpg"], "42": ["工商题库/questions/5_042_1.jpg"], "43": ["工商题库/questions/5_043_1.jpg"], "44": ["工商题库/questions/5_044_1.jpg"], "45": ["工商题库/questions/5_045_1.jpg"], "46": ["工商题库/questions/5_046_1.jpg"], "47": ["工商题库/questions/5_047_1.jpg"], "48": ["工商题库/questions/5_048_1.jpg"], "49": ["工商题库/questions/5_049_1.jpg"], "50": ["工商题库/questions/5_050_1.jpg"], "51": ["工商题库/questions/5_051_1.jpg"], "52": ["工商题库/questions/5_052_1.jpg"], "53": ["工商题库/questions/5_053_1.jpg"], "54": ["工商题库/questions/5_054_1.jpg"], "55": ["工商题库/questions/5_055_1.jpg"], "56": ["工商题库/questions/5_056_1.jpg"], "57": ["工商题库/questions/5_057_1.jpg"], "58": ["工商题库/questions/5_058_1.jpg"], "59": ["工商题库/questions/5_059_1.jpg"], "60": ["工商题库/questions/5_060_1.jpg", "工商题库/questions/5_060_2.jpg"], "61": ["工商题库/questions/5_061_1.jpg"], "62": ["工商题库/questions/5_062_1.jpg"], "63": ["工商题库/questions/5_063_1.jpg"], "64": ["工商题库/questions/5_064_1.jpg"], "65": ["工商题库/questions/5_065_1.jpg"], "66": ["工商题库/questions/5_066_1.jpg"], "67": ["工商题库/questions/5_067_1.jpg"], "68": ["工商题库/questions/5_068_1.jpg"], "69": ["工商题库/questions/5_069_1.jpg", "工商题库/questions/5_069_2.jpg"], "70": ["工商题库/questions/5_070_1.jpg"], "71": ["工商题库/questions/5_071_1.jpg"], "72": ["工商题库/questions/5_072_1.jpg"], "73": ["工商题库/questions/5_073_1.jpg"], "74": ["工商题库/questions/5_074_1.jpg"], "75": ["工商题库/questions/5_075_1.jpg"], "76": ["工商题库/questions/5_076_1.jpg"], "77": ["工商题库/questions/5_077_1.jpg"], "78": ["工商题库/questions/5_078_1.jpg", "工商题库/questions/5_078_2.jpg"], "79": ["工商题库/questions/5_079_1.jpg"], "80": ["工商题库/questions/5_080_1.jpg"], "81": ["工商题库/questions/5_081_1.jpg"], "82": ["工商题库/questions/5_082_1.jpg"], "83": ["工商题库/questions/5_083_1.jpg"], "84": ["工商题库/questions/5_084_1.jpg"], "85": ["工商题库/questions/5_085_1.jpg"], "86": ["工商题库/questions/5_086_1.jpg"], "87": ["工商题库/questions/5_087_1.jpg"], "88": ["工商题库/questions/5_088_1.jpg"], "89": ["工商题库/questions/5_089_1.jpg"], "90": ["工商题库/questions/5_090_1.jpg"], "91": ["工商题库/questions/5_091_1.jpg"], "92": ["工商题库/questions/5_092_1.jpg"], "93": ["工商题库/questions/5_093_1.jpg"], "94": ["工商题库/questions/5_094_1.jpg"], "95": ["工商题库/questions/5_095_1.jpg"], "96": ["工商题库/questions/5_096_1.jpg"], "97": ["工商题库/questions/5_097_1.jpg"], "98": ["工商题库/questions/5_098_1.jpg"], "99": ["工商题库/questions/5_099_1.jpg"], "100": ["工商题库/questions/5_100_1.jpg"]}, "6": {"1": ["工商题库/questions/6_001_1.jpg"], "2": ["工商题库/questions/6_002_1.jpg"], "3": ["工商题库/questions/6_003_1.jpg"], "4": ["工商题库/questions/6_004_1.jpg"], "5": ["工商题库/questions/6_005_1.jpg"], "6": ["工商题库/questions/6_006_1.jpg"], "7": ["工商题库/questions/6_007_1.jpg"], "8": ["工商题库/questions/6_008_1.jpg"], "9": ["工商题库/questions/6_009_1.jpg"], "10": ["工商题库/questions/6_010_1.jpg"], "11": ["工商题库/questions/6_011_1.jpg", "工商题库/questions/6_011_2.jpg"], "12": ["工商题库/questions/6_012_1.jpg"], "13": ["工商题库/questions/6_013_1.jpg"], "14": ["工商题库/questions/6_014_1.jpg"], "15": ["工商题库/questions/6_015_1.jpg"], "16": ["工商题库/questions/6_016_1.jpg"], "17": ["工商题库/questions/6_017_1.jpg"], "18": ["工商题库/questions/6_018_1.jpg"], "19": ["工商题库/questions/6_019_1.jpg"], "20": ["工商题库/questions/6_020_1.jpg"], "21": ["工商题库/questions/6_021_1.jpg"], "22": ["工商题库/questions/6_022_1.jpg"], "23": ["工商题库/questions/6_023_1.jpg"], "24": ["工商题库/questions/6_024_1.jpg", "工商题库/questions/6_024_2.jpg"], "25": ["工商题库/questions/6_025_1.jpg"], "26": ["工商题库/questions/6_026_1.jpg"], "27": ["工商题库/questions/6_027_1.jpg"], "28": ["工商题库/questions/6_028_1.jpg"], "29": ["工商题库/questions/6_029_1.jpg"], "30": ["工商题库/questions/6_030_1.jpg"], "31": ["工商题库/questions/6_031_1.jpg"], "32": ["工商题库/questions/6_032_1.jpg"], "33": ["工商题库/questions/6_033_1.jpg"], "34": ["工商题库/questions/6_034_1.jpg"], "35": ["工商题库/questions/6_035_1.jpg", "工商题库/questions/6_035_2.jpg"], "36": ["工商题库/questions/6_036_1.jpg"], "37": ["工商题库/questions/6_037_1.jpg"], "38": ["工商题库/questions/6_038_1.jpg"], "39": ["工商题库/questions/6_039_1.jpg"], "40": ["工商题库/questions/6_040_1.jpg"], "41": ["工商题库/questions/6_041_1.jpg"], "42": ["工商题库/questions/6_042_1.jpg"], "43": ["工商题库/questions/6_043_1.jpg", "工商题库/questions/6_043_2.jpg"], "44": ["工商题库/questions/6_044_1.jpg"], "45": ["工商题库/questions/6_045_1.jpg"], "46": ["工商题库/questions/6_046_1.jpg"], "47": ["工商题库/questions/6_047_1.jpg"], "48": ["工商题库/questions/6_048_1.jpg"], "49": ["工商题库/questions/6_049_1.jpg"], "50": ["工商题库/questions/6_050_1.jpg"], "51": ["工商题库/questions/6_051_1.jpg"], "52": ["工商题库/questions/6_052_1.jpg"], "53": ["工商题库/questions/6_053_1.jpg"], "54": ["工商题库/questions/6_054_1.jpg", "工商题库/questions/6_054_2.jpg"], "55": ["工商题库/questions/6_055_1.jpg"], "56": ["工商题库/questions/6_056_1.jpg"], "57": ["工商题库/questions/6_057_1.jpg"], "58": ["工商题库/questions/6_058_1.jpg"], "59": ["工商题库/questions/6_059_1.jpg"], "60": ["工商题库/questions/6_060_1.jpg"], "61": ["工商题库/questions/6_061_1.jpg"], "62": ["工商题库/questions/6_062_1.jpg"], "63": ["工商题库/questions/6_063_1.jpg"], "64": ["工商题库/questions/6_064_1.jpg", "工商题库/questions/6_064_2.jpg"], "65": ["工商题库/questions/6_065_1.jpg"], "66": ["工商题库/questions/6_066_1.jpg"], "67": ["工商题库/questions/6_067_1.jpg"], "68": ["工商题库/questions/6_068_1.jpg"], "69": ["工商题库/questions/6_069_1.jpg"], "70": ["工商题库/questions/6_070_1.jpg"], "71": ["工商题库/questions/6_071_1.jpg"], "72": ["工商题库/questions/6_072_1.jpg"], "73": ["工商题库/questions/6_073_1.jpg", "工商题库/questions/6_073_2.jpg"], "74": ["工商题库/questions/6_074_1.jpg"], "75": ["工商题库/questions/6_075_1.jpg"], "76": ["工商题库/questions/6_076_1.jpg"], "77": ["工商题库/questions/6_077_1.jpg"], "78": ["工商题库/questions/6_078_1.jpg"], "79": ["工商题库/questions/6_079_1.jpg"], "80": ["工商题库/questions/6_080_1.jpg"], "81": ["工商题库/questions/6_081_1.jpg"], "82": ["工商题库/questions/6_082_1.jpg"], "83": ["工商题库/questions/6_083_1.jpg"], "84": ["工商题库/questions/6_084_1.jpg"], "85": ["工商题库/questions/6_085_1.jpg"], "86": ["工商题库/questions/6_086_1.jpg"], "87": ["工商题库/questions/6_087_1.jpg"], "88": ["工商题库/questions/6_088_1.jpg", "工商题库/questions/6_088_2.jpg"], "89": ["工商题库/questions/6_089_1.jpg"], "90": ["工商题库/questions/6_090_1.jpg"], "91": ["工商题库/questions/6_091_1.jpg"], "92": ["工商题库/questions/6_092_1.jpg"], "93": ["工商题库/questions/6_093_1.jpg"], "94": ["工商题库/questions/6_094_1.jpg"], "95": ["工商题库/questions/6_095_1.jpg"], "96": ["工商题库/questions/6_096_1.jpg"], "97": ["工商题库/questions/6_097_1.jpg"], "98": ["工商题库/questions/6_098_1.jpg"], "99": ["工商题库/questions/6_099_1.jpg"], "100": ["工商题库/questions/6_100_1.jpg"]}};
+const AIMG = {"1": {"1": ["工商题库/explanations/1_001_1.jpg"], "2": ["工商题库/explanations/1_002_1.jpg"], "3": ["工商题库/explanations/1_003_1.jpg"], "4": ["工商题库/explanations/1_004_1.jpg"], "5": ["工商题库/explanations/1_005_1.jpg"], "6": ["工商题库/explanations/1_006_1.jpg"], "7": ["工商题库/explanations/1_007_1.jpg"], "8": ["工商题库/explanations/1_008_1.jpg"], "9": ["工商题库/explanations/1_009_1.jpg"], "10": ["工商题库/explanations/1_010_1.jpg"], "11": ["工商题库/explanations/1_011_1.jpg"], "12": ["工商题库/explanations/1_012_1.jpg"], "13": ["工商题库/explanations/1_013_1.jpg"], "14": ["工商题库/explanations/1_014_1.jpg"], "15": ["工商题库/explanations/1_015_1.jpg"], "16": ["工商题库/explanations/1_016_1.jpg"], "17": ["工商题库/explanations/1_017_1.jpg"], "18": ["工商题库/explanations/1_018_1.jpg"], "19": ["工商题库/explanations/1_019_1.jpg"], "20": ["工商题库/explanations/1_020_1.jpg"], "21": ["工商题库/explanations/1_021_1.jpg"], "22": ["工商题库/explanations/1_022_1.jpg"], "23": ["工商题库/explanations/1_023_1.jpg"], "24": ["工商题库/explanations/1_024_1.jpg"], "25": ["工商题库/explanations/1_025_1.jpg"], "26": ["工商题库/explanations/1_026_1.jpg", "工商题库/explanations/1_026_2.jpg"], "27": ["工商题库/explanations/1_027_1.jpg"], "28": ["工商题库/explanations/1_028_1.jpg"], "29": ["工商题库/explanations/1_029_1.jpg"], "30": ["工商题库/explanations/1_030_1.jpg"], "31": ["工商题库/explanations/1_031_1.jpg"], "32": ["工商题库/explanations/1_032_1.jpg"], "33": ["工商题库/explanations/1_033_1.jpg"], "34": ["工商题库/explanations/1_034_1.jpg"], "35": ["工商题库/explanations/1_035_1.jpg"], "36": ["工商题库/explanations/1_036_1.jpg"], "37": ["工商题库/explanations/1_037_1.jpg"], "38": ["工商题库/explanations/1_038_1.jpg"], "39": ["工商题库/explanations/1_039_1.jpg"], "40": ["工商题库/explanations/1_040_1.jpg"], "41": ["工商题库/explanations/1_041_1.jpg", "工商题库/explanations/1_041_2.jpg"], "42": ["工商题库/explanations/1_042_1.jpg"], "43": ["工商题库/explanations/1_043_1.jpg"], "44": ["工商题库/explanations/1_044_1.jpg"], "45": ["工商题库/explanations/1_045_1.jpg"], "46": ["工商题库/explanations/1_046_1.jpg"], "47": ["工商题库/explanations/1_047_1.jpg"], "48": ["工商题库/explanations/1_048_1.jpg"], "49": ["工商题库/explanations/1_049_1.jpg"], "50": ["工商题库/explanations/1_050_1.jpg"], "51": ["工商题库/explanations/1_051_1.jpg"], "52": ["工商题库/explanations/1_052_1.jpg"], "53": ["工商题库/explanations/1_053_1.jpg"], "54": ["工商题库/explanations/1_054_1.jpg"], "55": ["工商题库/explanations/1_055_1.jpg"], "56": ["工商题库/explanations/1_056_1.jpg", "工商题库/explanations/1_056_2.jpg"], "57": ["工商题库/explanations/1_057_1.jpg"], "58": ["工商题库/explanations/1_058_1.jpg"], "59": ["工商题库/explanations/1_059_1.jpg"], "60": ["工商题库/explanations/1_060_1.jpg"], "61": ["工商题库/explanations/1_061_1.jpg"], "62": ["工商题库/explanations/1_062_1.jpg"], "63": ["工商题库/explanations/1_063_1.jpg"], "64": ["工商题库/explanations/1_064_1.jpg"], "65": ["工商题库/explanations/1_065_1.jpg"], "66": ["工商题库/explanations/1_066_1.jpg"], "67": ["工商题库/explanations/1_067_1.jpg"], "68": ["工商题库/explanations/1_068_1.jpg", "工商题库/explanations/1_068_2.jpg"], "69": ["工商题库/explanations/1_069_1.jpg"], "70": ["工商题库/explanations/1_070_1.jpg"], "71": ["工商题库/explanations/1_071_1.jpg"], "72": ["工商题库/explanations/1_072_1.jpg"], "73": ["工商题库/explanations/1_073_1.jpg"], "74": ["工商题库/explanations/1_074_1.jpg"], "75": ["工商题库/explanations/1_075_1.jpg"], "76": ["工商题库/explanations/1_076_1.jpg"], "77": ["工商题库/explanations/1_077_1.jpg"], "78": ["工商题库/explanations/1_078_1.jpg"], "79": ["工商题库/explanations/1_079_1.jpg"], "80": ["工商题库/explanations/1_080_1.jpg", "工商题库/explanations/1_080_2.jpg"], "81": ["工商题库/explanations/1_081_1.jpg"], "82": ["工商题库/explanations/1_082_1.jpg"], "83": ["工商题库/explanations/1_083_1.jpg"], "84": ["工商题库/explanations/1_084_1.jpg"], "85": ["工商题库/explanations/1_085_1.jpg"], "86": ["工商题库/explanations/1_086_1.jpg"], "87": ["工商题库/explanations/1_087_1.jpg"], "88": ["工商题库/explanations/1_088_1.jpg"], "89": ["工商题库/explanations/1_089_1.jpg"], "90": ["工商题库/explanations/1_090_1.jpg"], "91": ["工商题库/explanations/1_091_1.jpg"], "92": ["工商题库/explanations/1_092_1.jpg"], "93": ["工商题库/explanations/1_093_1.jpg"], "94": ["工商题库/explanations/1_094_1.jpg"], "95": ["工商题库/explanations/1_095_1.jpg"], "96": ["工商题库/explanations/1_096_1.jpg"], "97": ["工商题库/explanations/1_097_1.jpg"], "98": ["工商题库/explanations/1_098_1.jpg"], "99": ["工商题库/explanations/1_099_1.jpg"], "100": ["工商题库/explanations/1_100_1.jpg"]}, "2": {"1": ["工商题库/explanations/2_001_1.jpg"], "2": ["工商题库/explanations/2_002_1.jpg"], "3": ["工商题库/explanations/2_003_1.jpg"], "4": ["工商题库/explanations/2_004_1.jpg"], "5": ["工商题库/explanations/2_005_1.jpg"], "6": ["工商题库/explanations/2_006_1.jpg"], "7": ["工商题库/explanations/2_007_1.jpg"], "8": ["工商题库/explanations/2_008_1.jpg"], "9": ["工商题库/explanations/2_009_1.jpg"], "10": ["工商题库/explanations/2_010_1.jpg"], "11": ["工商题库/explanations/2_011_1.jpg"], "12": ["工商题库/explanations/2_012_1.jpg"], "13": ["工商题库/explanations/2_013_1.jpg"], "14": ["工商题库/explanations/2_014_1.jpg"], "15": ["工商题库/explanations/2_015_1.jpg"], "16": ["工商题库/explanations/2_016_1.jpg"], "17": ["工商题库/explanations/2_017_1.jpg"], "18": ["工商题库/explanations/2_018_1.jpg"], "19": ["工商题库/explanations/2_019_1.jpg"], "20": ["工商题库/explanations/2_020_1.jpg"], "21": ["工商题库/explanations/2_021_1.jpg"], "22": ["工商题库/explanations/2_022_1.jpg"], "23": ["工商题库/explanations/2_023_1.jpg"], "24": ["工商题库/explanations/2_024_1.jpg"], "25": ["工商题库/explanations/2_025_1.jpg"], "26": ["工商题库/explanations/2_026_1.jpg"], "27": ["工商题库/explanations/2_027_1.jpg"], "28": ["工商题库/explanations/2_028_1.jpg"], "29": ["工商题库/explanations/2_029_1.jpg"], "30": ["工商题库/explanations/2_030_1.jpg"], "31": ["工商题库/explanations/2_031_1.jpg"], "32": ["工商题库/explanations/2_032_1.jpg"], "33": ["工商题库/explanations/2_033_1.jpg"], "34": ["工商题库/explanations/2_034_1.jpg"], "35": ["工商题库/explanations/2_035_1.jpg"], "36": ["工商题库/explanations/2_036_1.jpg"], "37": ["工商题库/explanations/2_037_1.jpg", "工商题库/explanations/2_037_2.jpg"], "38": ["工商题库/explanations/2_038_1.jpg"], "39": ["工商题库/explanations/2_039_1.jpg"], "40": ["工商题库/explanations/2_040_1.jpg"], "41": ["工商题库/explanations/2_041_1.jpg"], "42": ["工商题库/explanations/2_042_1.jpg"], "43": ["工商题库/explanations/2_043_1.jpg"], "44": ["工商题库/explanations/2_044_1.jpg"], "45": ["工商题库/explanations/2_045_1.jpg"], "46": ["工商题库/explanations/2_046_1.jpg"], "47": ["工商题库/explanations/2_047_1.jpg"], "48": ["工商题库/explanations/2_048_1.jpg"], "49": ["工商题库/explanations/2_049_1.jpg"], "50": ["工商题库/explanations/2_050_1.jpg"], "51": ["工商题库/explanations/2_051_1.jpg"], "52": ["工商题库/explanations/2_052_1.jpg"], "53": ["工商题库/explanations/2_053_1.jpg"], "54": ["工商题库/explanations/2_054_1.jpg"], "55": ["工商题库/explanations/2_055_1.jpg"], "56": ["工商题库/explanations/2_056_1.jpg"], "57": ["工商题库/explanations/2_057_1.jpg"], "58": ["工商题库/explanations/2_058_1.jpg"], "59": ["工商题库/explanations/2_059_1.jpg"], "60": ["工商题库/explanations/2_060_1.jpg"], "61": ["工商题库/explanations/2_061_1.jpg"], "62": ["工商题库/explanations/2_062_1.jpg"], "63": ["工商题库/explanations/2_063_1.jpg"], "64": ["工商题库/explanations/2_064_1.jpg", "工商题库/explanations/2_064_2.jpg"], "65": ["工商题库/explanations/2_065_1.jpg"], "66": ["工商题库/explanations/2_066_1.jpg"], "67": ["工商题库/explanations/2_067_1.jpg"], "68": ["工商题库/explanations/2_068_1.jpg"], "69": ["工商题库/explanations/2_069_1.jpg"], "70": ["工商题库/explanations/2_070_1.jpg"], "71": ["工商题库/explanations/2_071_1.jpg"], "72": ["工商题库/explanations/2_072_1.jpg"], "73": ["工商题库/explanations/2_073_1.jpg"], "74": ["工商题库/explanations/2_074_1.jpg"], "75": ["工商题库/explanations/2_075_1.jpg"], "76": ["工商题库/explanations/2_076_1.jpg", "工商题库/explanations/2_076_2.jpg"], "77": ["工商题库/explanations/2_077_1.jpg"], "78": ["工商题库/explanations/2_078_1.jpg"], "79": ["工商题库/explanations/2_079_1.jpg"], "80": ["工商题库/explanations/2_080_1.jpg"], "81": ["工商题库/explanations/2_081_1.jpg"], "82": ["工商题库/explanations/2_082_1.jpg"], "83": ["工商题库/explanations/2_083_1.jpg"], "84": ["工商题库/explanations/2_084_1.jpg"], "85": ["工商题库/explanations/2_085_1.jpg"], "86": ["工商题库/explanations/2_086_1.jpg"], "87": ["工商题库/explanations/2_087_1.jpg"], "88": ["工商题库/explanations/2_088_1.jpg"], "89": ["工商题库/explanations/2_089_1.jpg"], "90": ["工商题库/explanations/2_090_1.jpg"], "91": ["工商题库/explanations/2_091_1.jpg"], "92": ["工商题库/explanations/2_092_1.jpg"], "93": ["工商题库/explanations/2_093_1.jpg"], "94": ["工商题库/explanations/2_094_1.jpg"], "95": ["工商题库/explanations/2_095_1.jpg"], "96": ["工商题库/explanations/2_096_1.jpg"], "97": ["工商题库/explanations/2_097_1.jpg", "工商题库/explanations/2_097_2.jpg"], "98": ["工商题库/explanations/2_098_1.jpg"], "99": ["工商题库/explanations/2_099_1.jpg"], "100": ["工商题库/explanations/2_100_1.jpg"]}, "3": {"1": ["工商题库/explanations/3_001_1.jpg"], "2": ["工商题库/explanations/3_002_1.jpg"], "3": ["工商题库/explanations/3_003_1.jpg"], "4": ["工商题库/explanations/3_004_1.jpg"], "5": ["工商题库/explanations/3_005_1.jpg"], "6": ["工商题库/explanations/3_006_1.jpg"], "7": ["工商题库/explanations/3_007_1.jpg"], "8": ["工商题库/explanations/3_008_1.jpg"], "9": ["工商题库/explanations/3_009_1.jpg"], "10": ["工商题库/explanations/3_010_1.jpg"], "11": ["工商题库/explanations/3_011_1.jpg", "工商题库/explanations/3_011_2.jpg"], "12": ["工商题库/explanations/3_012_1.jpg"], "13": ["工商题库/explanations/3_013_1.jpg"], "14": ["工商题库/explanations/3_014_1.jpg"], "15": ["工商题库/explanations/3_015_1.jpg"], "16": ["工商题库/explanations/3_016_1.jpg"], "17": ["工商题库/explanations/3_017_1.jpg"], "18": ["工商题库/explanations/3_018_1.jpg"], "19": ["工商题库/explanations/3_019_1.jpg"], "20": ["工商题库/explanations/3_020_1.jpg"], "21": ["工商题库/explanations/3_021_1.jpg"], "22": ["工商题库/explanations/3_022_1.jpg"], "23": ["工商题库/explanations/3_023_1.jpg"], "24": ["工商题库/explanations/3_024_1.jpg"], "25": ["工商题库/explanations/3_025_1.jpg"], "26": ["工商题库/explanations/3_026_1.jpg"], "27": ["工商题库/explanations/3_027_1.jpg"], "28": ["工商题库/explanations/3_028_1.jpg"], "29": ["工商题库/explanations/3_029_1.jpg"], "30": ["工商题库/explanations/3_030_1.jpg"], "31": ["工商题库/explanations/3_031_1.jpg"], "32": ["工商题库/explanations/3_032_1.jpg"], "33": ["工商题库/explanations/3_033_1.jpg"], "34": ["工商题库/explanations/3_034_1.jpg"], "35": ["工商题库/explanations/3_035_1.jpg"], "36": ["工商题库/explanations/3_036_1.jpg"], "37": ["工商题库/explanations/3_037_1.jpg"], "38": ["工商题库/explanations/3_038_1.jpg", "工商题库/explanations/3_038_2.jpg"], "39": ["工商题库/explanations/3_039_1.jpg"], "40": ["工商题库/explanations/3_040_1.jpg"], "41": ["工商题库/explanations/3_041_1.jpg"], "42": ["工商题库/explanations/3_042_1.jpg"], "43": ["工商题库/explanations/3_043_1.jpg"], "44": ["工商题库/explanations/3_044_1.jpg"], "45": ["工商题库/explanations/3_045_1.jpg"], "46": ["工商题库/explanations/3_046_1.jpg"], "47": ["工商题库/explanations/3_047_1.jpg"], "48": ["工商题库/explanations/3_048_1.jpg"], "49": ["工商题库/explanations/3_049_1.jpg"], "50": ["工商题库/explanations/3_050_1.jpg"], "51": ["工商题库/explanations/3_051_1.jpg"], "52": ["工商题库/explanations/3_052_1.jpg"], "53": ["工商题库/explanations/3_053_1.jpg"], "54": ["工商题库/explanations/3_054_1.jpg"], "55": ["工商题库/explanations/3_055_1.jpg"], "56": ["工商题库/explanations/3_056_1.jpg"], "57": ["工商题库/explanations/3_057_1.jpg"], "58": ["工商题库/explanations/3_058_1.jpg"], "59": ["工商题库/explanations/3_059_1.jpg"], "60": ["工商题库/explanations/3_060_1.jpg"], "61": ["工商题库/explanations/3_061_1.jpg"], "62": ["工商题库/explanations/3_062_1.jpg"], "63": ["工商题库/explanations/3_063_1.jpg"], "64": ["工商题库/explanations/3_064_1.jpg"], "65": ["工商题库/explanations/3_065_1.jpg"], "66": ["工商题库/explanations/3_066_1.jpg"], "67": ["工商题库/explanations/3_067_1.jpg", "工商题库/explanations/3_067_2.jpg"], "68": ["工商题库/explanations/3_068_1.jpg"], "69": ["工商题库/explanations/3_069_1.jpg"], "70": ["工商题库/explanations/3_070_1.jpg"], "71": ["工商题库/explanations/3_071_1.jpg"], "72": ["工商题库/explanations/3_072_1.jpg"], "73": ["工商题库/explanations/3_073_1.jpg"], "74": ["工商题库/explanations/3_074_1.jpg"], "75": ["工商题库/explanations/3_075_1.jpg"], "76": ["工商题库/explanations/3_076_1.jpg"], "77": ["工商题库/explanations/3_077_1.jpg"], "78": ["工商题库/explanations/3_078_1.jpg", "工商题库/explanations/3_078_2.jpg"], "79": ["工商题库/explanations/3_079_1.jpg"], "80": ["工商题库/explanations/3_080_1.jpg"], "81": ["工商题库/explanations/3_081_1.jpg"], "82": ["工商题库/explanations/3_082_1.jpg"], "83": ["工商题库/explanations/3_083_1.jpg"], "84": ["工商题库/explanations/3_084_1.jpg"], "85": ["工商题库/explanations/3_085_1.jpg"], "86": ["工商题库/explanations/3_086_1.jpg"], "87": ["工商题库/explanations/3_087_1.jpg"], "88": ["工商题库/explanations/3_088_1.jpg"], "89": ["工商题库/explanations/3_089_1.jpg"], "90": ["工商题库/explanations/3_090_1.jpg"], "91": ["工商题库/explanations/3_091_1.jpg"], "92": ["工商题库/explanations/3_092_1.jpg"], "93": ["工商题库/explanations/3_093_1.jpg"], "94": ["工商题库/explanations/3_094_1.jpg"], "95": ["工商题库/explanations/3_095_1.jpg"], "96": ["工商题库/explanations/3_096_1.jpg", "工商题库/explanations/3_096_2.jpg"], "97": ["工商题库/explanations/3_097_1.jpg"], "98": ["工商题库/explanations/3_098_1.jpg"], "99": ["工商题库/explanations/3_099_1.jpg"], "100": ["工商题库/explanations/3_100_1.jpg"]}, "4": {"1": ["工商题库/explanations/4_001_1.jpg"], "2": ["工商题库/explanations/4_002_1.jpg"], "3": ["工商题库/explanations/4_003_1.jpg"], "4": ["工商题库/explanations/4_004_1.jpg"], "5": ["工商题库/explanations/4_005_1.jpg"], "6": ["工商题库/explanations/4_006_1.jpg"], "7": ["工商题库/explanations/4_007_1.jpg"], "8": ["工商题库/explanations/4_008_1.jpg"], "9": ["工商题库/explanations/4_009_1.jpg"], "10": ["工商题库/explanations/4_010_1.jpg", "工商题库/explanations/4_010_2.jpg"], "11": ["工商题库/explanations/4_011_1.jpg"], "12": ["工商题库/explanations/4_012_1.jpg"], "13": ["工商题库/explanations/4_013_1.jpg"], "14": ["工商题库/explanations/4_014_1.jpg"], "15": ["工商题库/explanations/4_015_1.jpg"], "16": ["工商题库/explanations/4_016_1.jpg"], "17": ["工商题库/explanations/4_017_1.jpg"], "18": ["工商题库/explanations/4_018_1.jpg"], "19": ["工商题库/explanations/4_019_1.jpg"], "20": ["工商题库/explanations/4_020_1.jpg"], "21": ["工商题库/explanations/4_021_1.jpg"], "22": ["工商题库/explanations/4_022_1.jpg"], "23": ["工商题库/explanations/4_023_1.jpg", "工商题库/explanations/4_023_2.jpg"], "24": ["工商题库/explanations/4_024_1.jpg"], "25": ["工商题库/explanations/4_025_1.jpg"], "26": ["工商题库/explanations/4_026_1.jpg"], "27": ["工商题库/explanations/4_027_1.jpg"], "28": ["工商题库/explanations/4_028_1.jpg"], "29": ["工商题库/explanations/4_029_1.jpg"], "30": ["工商题库/explanations/4_030_1.jpg"], "31": ["工商题库/explanations/4_031_1.jpg"], "32": ["工商题库/explanations/4_032_1.jpg"], "33": ["工商题库/explanations/4_033_1.jpg"], "34": ["工商题库/explanations/4_034_1.jpg"], "35": ["工商题库/explanations/4_035_1.jpg"], "36": ["工商题库/explanations/4_036_1.jpg"], "37": ["工商题库/explanations/4_037_1.jpg"], "38": ["工商题库/explanations/4_038_1.jpg"], "39": ["工商题库/explanations/4_039_1.jpg"], "40": ["工商题库/explanations/4_040_1.jpg"], "41": ["工商题库/explanations/4_041_1.jpg"], "42": ["工商题库/explanations/4_042_1.jpg"], "43": ["工商题库/explanations/4_043_1.jpg"], "44": ["工商题库/explanations/4_044_1.jpg"], "45": ["工商题库/explanations/4_045_1.jpg"], "46": ["工商题库/explanations/4_046_1.jpg"], "47": ["工商题库/explanations/4_047_1.jpg"], "48": ["工商题库/explanations/4_048_1.jpg"], "49": ["工商题库/explanations/4_049_1.jpg"], "50": ["工商题库/explanations/4_050_1.jpg"], "51": ["工商题库/explanations/4_051_1.jpg"], "52": ["工商题库/explanations/4_052_1.jpg"], "53": ["工商题库/explanations/4_053_1.jpg"], "54": ["工商题库/explanations/4_054_1.jpg"], "55": ["工商题库/explanations/4_055_1.jpg"], "56": ["工商题库/explanations/4_056_1.jpg"], "57": ["工商题库/explanations/4_057_1.jpg"], "58": ["工商题库/explanations/4_058_1.jpg"], "59": ["工商题库/explanations/4_059_1.jpg"], "60": ["工商题库/explanations/4_060_1.jpg", "工商题库/explanations/4_060_2.jpg"], "61": ["工商题库/explanations/4_061_1.jpg"], "62": ["工商题库/explanations/4_062_1.jpg"], "63": ["工商题库/explanations/4_063_1.jpg"], "64": ["工商题库/explanations/4_064_1.jpg"], "65": ["工商题库/explanations/4_065_1.jpg"], "66": ["工商题库/explanations/4_066_1.jpg"], "67": ["工商题库/explanations/4_067_1.jpg"], "68": ["工商题库/explanations/4_068_1.jpg"], "69": ["工商题库/explanations/4_069_1.jpg"], "70": ["工商题库/explanations/4_070_1.jpg"], "71": ["工商题库/explanations/4_071_1.jpg"], "72": ["工商题库/explanations/4_072_1.jpg"], "73": ["工商题库/explanations/4_073_1.jpg", "工商题库/explanations/4_073_2.jpg"], "74": ["工商题库/explanations/4_074_1.jpg"], "75": ["工商题库/explanations/4_075_1.jpg"], "76": ["工商题库/explanations/4_076_1.jpg"], "77": ["工商题库/explanations/4_077_1.jpg"], "78": ["工商题库/explanations/4_078_1.jpg"], "79": ["工商题库/explanations/4_079_1.jpg"], "80": ["工商题库/explanations/4_080_1.jpg"], "81": ["工商题库/explanations/4_081_1.jpg"], "82": ["工商题库/explanations/4_082_1.jpg"], "83": ["工商题库/explanations/4_083_1.jpg"], "84": ["工商题库/explanations/4_084_1.jpg"], "85": ["工商题库/explanations/4_085_1.jpg"], "86": ["工商题库/explanations/4_086_1.jpg"], "87": ["工商题库/explanations/4_087_1.jpg", "工商题库/explanations/4_087_2.jpg"], "88": ["工商题库/explanations/4_088_1.jpg"], "89": ["工商题库/explanations/4_089_1.jpg"], "90": ["工商题库/explanations/4_090_1.jpg"], "91": ["工商题库/explanations/4_091_1.jpg"], "92": ["工商题库/explanations/4_092_1.jpg"], "93": ["工商题库/explanations/4_093_1.jpg"], "94": ["工商题库/explanations/4_094_1.jpg"], "95": ["工商题库/explanations/4_095_1.jpg"], "96": ["工商题库/explanations/4_096_1.jpg"], "97": ["工商题库/explanations/4_097_1.jpg"], "98": ["工商题库/explanations/4_098_1.jpg"], "99": ["工商题库/explanations/4_099_1.jpg", "工商题库/explanations/4_099_2.jpg"], "100": ["工商题库/explanations/4_100_1.jpg"]}, "5": {"1": ["工商题库/explanations/5_001_1.jpg"], "2": ["工商题库/explanations/5_002_1.jpg"], "3": ["工商题库/explanations/5_003_1.jpg"], "4": ["工商题库/explanations/5_004_1.jpg"], "5": ["工商题库/explanations/5_005_1.jpg"], "6": ["工商题库/explanations/5_006_1.jpg"], "7": ["工商题库/explanations/5_007_1.jpg"], "8": ["工商题库/explanations/5_008_1.jpg"], "9": ["工商题库/explanations/5_009_1.jpg"], "10": ["工商题库/explanations/5_010_1.jpg"], "11": ["工商题库/explanations/5_011_1.jpg"], "12": ["工商题库/explanations/5_012_1.jpg"], "13": ["工商题库/explanations/5_013_1.jpg"], "14": ["工商题库/explanations/5_014_1.jpg"], "15": ["工商题库/explanations/5_015_1.jpg"], "16": ["工商题库/explanations/5_016_1.jpg"], "17": ["工商题库/explanations/5_017_1.jpg"], "18": ["工商题库/explanations/5_018_1.jpg"], "19": ["工商题库/explanations/5_019_1.jpg"], "20": ["工商题库/explanations/5_020_1.jpg"], "21": ["工商题库/explanations/5_021_1.jpg"], "22": ["工商题库/explanations/5_022_1.jpg"], "23": ["工商题库/explanations/5_023_1.jpg"], "24": ["工商题库/explanations/5_024_1.jpg"], "25": ["工商题库/explanations/5_025_1.jpg"], "26": ["工商题库/explanations/5_026_1.jpg", "工商题库/explanations/5_026_2.jpg"], "27": ["工商题库/explanations/5_027_1.jpg"], "28": ["工商题库/explanations/5_028_1.jpg"], "29": ["工商题库/explanations/5_029_1.jpg"], "30": ["工商题库/explanations/5_030_1.jpg"], "31": ["工商题库/explanations/5_031_1.jpg"], "32": ["工商题库/explanations/5_032_1.jpg"], "33": ["工商题库/explanations/5_033_1.jpg"], "34": ["工商题库/explanations/5_034_1.jpg"], "35": ["工商题库/explanations/5_035_1.jpg"], "36": ["工商题库/explanations/5_036_1.jpg"], "37": ["工商题库/explanations/5_037_1.jpg"], "38": ["工商题库/explanations/5_038_1.jpg"], "39": ["工商题库/explanations/5_039_1.jpg", "工商题库/explanations/5_039_2.jpg"], "40": ["工商题库/explanations/5_040_1.jpg"], "41": ["工商题库/explanations/5_041_1.jpg"], "42": ["工商题库/explanations/5_042_1.jpg"], "43": ["工商题库/explanations/5_043_1.jpg"], "44": ["工商题库/explanations/5_044_1.jpg"], "45": ["工商题库/explanations/5_045_1.jpg"], "46": ["工商题库/explanations/5_046_1.jpg"], "47": ["工商题库/explanations/5_047_1.jpg"], "48": ["工商题库/explanations/5_048_1.jpg"], "49": ["工商题库/explanations/5_049_1.jpg"], "50": ["工商题库/explanations/5_050_1.jpg"], "51": ["工商题库/explanations/5_051_1.jpg"], "52": ["工商题库/explanations/5_052_1.jpg", "工商题库/explanations/5_052_2.jpg"], "53": ["工商题库/explanations/5_053_1.jpg"], "54": ["工商题库/explanations/5_054_1.jpg"], "55": ["工商题库/explanations/5_055_1.jpg"], "56": ["工商题库/explanations/5_056_1.jpg"], "57": ["工商题库/explanations/5_057_1.jpg"], "58": ["工商题库/explanations/5_058_1.jpg"], "59": ["工商题库/explanations/5_059_1.jpg"], "60": ["工商题库/explanations/5_060_1.jpg"], "61": ["工商题库/explanations/5_061_1.jpg"], "62": ["工商题库/explanations/5_062_1.jpg"], "63": ["工商题库/explanations/5_063_1.jpg"], "64": ["工商题库/explanations/5_064_1.jpg"], "65": ["工商题库/explanations/5_065_1.jpg"], "66": ["工商题库/explanations/5_066_1.jpg"], "67": ["工商题库/explanations/5_067_1.jpg"], "68": ["工商题库/explanations/5_068_1.jpg"], "69": ["工商题库/explanations/5_069_1.jpg"], "70": ["工商题库/explanations/5_070_1.jpg"], "71": ["工商题库/explanations/5_071_1.jpg"], "72": ["工商题库/explanations/5_072_1.jpg"], "73": ["工商题库/explanations/5_073_1.jpg"], "74": ["工商题库/explanations/5_074_1.jpg"], "75": ["工商题库/explanations/5_075_1.jpg"], "76": ["工商题库/explanations/5_076_1.jpg"], "77": ["工商题库/explanations/5_077_1.jpg"], "78": ["工商题库/explanations/5_078_1.jpg"], "79": ["工商题库/explanations/5_079_1.jpg"], "80": ["工商题库/explanations/5_080_1.jpg"], "81": ["工商题库/explanations/5_081_1.jpg"], "82": ["工商题库/explanations/5_082_1.jpg"], "83": ["工商题库/explanations/5_083_1.jpg"], "84": ["工商题库/explanations/5_084_1.jpg"], "85": ["工商题库/explanations/5_085_1.jpg"], "86": ["工商题库/explanations/5_086_1.jpg"], "87": ["工商题库/explanations/5_087_1.jpg"], "88": ["工商题库/explanations/5_088_1.jpg"], "89": ["工商题库/explanations/5_089_1.jpg"], "90": ["工商题库/explanations/5_090_1.jpg"], "91": ["工商题库/explanations/5_091_1.jpg"], "92": ["工商题库/explanations/5_092_1.jpg"], "93": ["工商题库/explanations/5_093_1.jpg", "工商题库/explanations/5_093_2.jpg"], "94": ["工商题库/explanations/5_094_1.jpg"], "95": ["工商题库/explanations/5_095_1.jpg"], "96": ["工商题库/explanations/5_096_1.jpg"], "97": ["工商题库/explanations/5_097_1.jpg"], "98": ["工商题库/explanations/5_098_1.jpg"], "99": ["工商题库/explanations/5_099_1.jpg"], "100": ["工商题库/explanations/5_100_1.jpg"]}, "6": {"1": ["工商题库/explanations/6_001_1.jpg"], "2": ["工商题库/explanations/6_002_1.jpg"], "3": ["工商题库/explanations/6_003_1.jpg"], "4": ["工商题库/explanations/6_004_1.jpg"], "5": ["工商题库/explanations/6_005_1.jpg"], "6": ["工商题库/explanations/6_006_1.jpg"], "7": ["工商题库/explanations/6_007_1.jpg"], "8": ["工商题库/explanations/6_008_1.jpg"], "9": ["工商题库/explanations/6_009_1.jpg"], "10": ["工商题库/explanations/6_010_1.jpg"], "11": ["工商题库/explanations/6_011_1.jpg"], "12": ["工商题库/explanations/6_012_1.jpg", "工商题库/explanations/6_012_2.jpg"], "13": ["工商题库/explanations/6_013_1.jpg"], "14": ["工商题库/explanations/6_014_1.jpg"], "15": ["工商题库/explanations/6_015_1.jpg"], "16": ["工商题库/explanations/6_016_1.jpg"], "17": ["工商题库/explanations/6_017_1.jpg"], "18": ["工商题库/explanations/6_018_1.jpg"], "19": ["工商题库/explanations/6_019_1.jpg"], "20": ["工商题库/explanations/6_020_1.jpg"], "21": ["工商题库/explanations/6_021_1.jpg"], "22": ["工商题库/explanations/6_022_1.jpg"], "23": ["工商题库/explanations/6_023_1.jpg"], "24": ["工商题库/explanations/6_024_1.jpg"], "25": ["工商题库/explanations/6_025_1.jpg"], "26": ["工商题库/explanations/6_026_1.jpg"], "27": ["工商题库/explanations/6_027_1.jpg"], "28": ["工商题库/explanations/6_028_1.jpg"], "29": ["工商题库/explanations/6_029_1.jpg"], "30": ["工商题库/explanations/6_030_1.jpg"], "31": ["工商题库/explanations/6_031_1.jpg"], "32": ["工商题库/explanations/6_032_1.jpg"], "33": ["工商题库/explanations/6_033_1.jpg"], "34": ["工商题库/explanations/6_034_1.jpg"], "35": ["工商题库/explanations/6_035_1.jpg"], "36": ["工商题库/explanations/6_036_1.jpg"], "37": ["工商题库/explanations/6_037_1.jpg"], "38": ["工商题库/explanations/6_038_1.jpg"], "39": ["工商题库/explanations/6_039_1.jpg"], "40": ["工商题库/explanations/6_040_1.jpg"], "41": ["工商题库/explanations/6_041_1.jpg"], "42": ["工商题库/explanations/6_042_1.jpg"], "43": ["工商题库/explanations/6_043_1.jpg", "工商题库/explanations/6_043_2.jpg"], "44": ["工商题库/explanations/6_044_1.jpg"], "45": ["工商题库/explanations/6_045_1.jpg"], "46": ["工商题库/explanations/6_046_1.jpg"], "47": ["工商题库/explanations/6_047_1.jpg"], "48": ["工商题库/explanations/6_048_1.jpg"], "49": ["工商题库/explanations/6_049_1.jpg"], "50": ["工商题库/explanations/6_050_1.jpg"], "51": ["工商题库/explanations/6_051_1.jpg"], "52": ["工商题库/explanations/6_052_1.jpg"], "53": ["工商题库/explanations/6_053_1.jpg"], "54": ["工商题库/explanations/6_054_1.jpg"], "55": ["工商题库/explanations/6_055_1.jpg"], "56": ["工商题库/explanations/6_056_1.jpg"], "57": ["工商题库/explanations/6_057_1.jpg"], "58": ["工商题库/explanations/6_058_1.jpg"], "59": ["工商题库/explanations/6_059_1.jpg"], "60": ["工商题库/explanations/6_060_1.jpg"], "61": ["工商题库/explanations/6_061_1.jpg"], "62": ["工商题库/explanations/6_062_1.jpg"], "63": ["工商题库/explanations/6_063_1.jpg"], "64": ["工商题库/explanations/6_064_1.jpg"], "65": ["工商题库/explanations/6_065_1.jpg"], "66": ["工商题库/explanations/6_066_1.jpg"], "67": ["工商题库/explanations/6_067_1.jpg"], "68": ["工商题库/explanations/6_068_1.jpg", "工商题库/explanations/6_068_2.jpg"], "69": ["工商题库/explanations/6_069_1.jpg"], "70": ["工商题库/explanations/6_070_1.jpg"], "71": ["工商题库/explanations/6_071_1.jpg"], "72": ["工商题库/explanations/6_072_1.jpg"], "73": ["工商题库/explanations/6_073_1.jpg"], "74": ["工商题库/explanations/6_074_1.jpg"], "75": ["工商题库/explanations/6_075_1.jpg"], "76": ["工商题库/explanations/6_076_1.jpg"], "77": ["工商题库/explanations/6_077_1.jpg"], "78": ["工商题库/explanations/6_078_1.jpg"], "79": ["工商题库/explanations/6_079_1.jpg"], "80": ["工商题库/explanations/6_080_1.jpg"], "81": ["工商题库/explanations/6_081_1.jpg", "工商题库/explanations/6_081_2.jpg"], "82": ["工商题库/explanations/6_082_1.jpg"], "83": ["工商题库/explanations/6_083_1.jpg"], "84": ["工商题库/explanations/6_084_1.jpg"], "85": ["工商题库/explanations/6_085_1.jpg"], "86": ["工商题库/explanations/6_086_1.jpg"], "87": ["工商题库/explanations/6_087_1.jpg"], "88": ["工商题库/explanations/6_088_1.jpg"], "89": ["工商题库/explanations/6_089_1.jpg"], "90": ["工商题库/explanations/6_090_1.jpg"], "91": ["工商题库/explanations/6_091_1.jpg"], "92": ["工商题库/explanations/6_092_1.jpg"], "93": ["工商题库/explanations/6_093_1.jpg"], "94": ["工商题库/explanations/6_094_1.jpg"], "95": ["工商题库/explanations/6_095_1.jpg"], "96": ["工商题库/explanations/6_096_1.jpg", "工商题库/explanations/6_096_2.jpg"], "97": ["工商题库/explanations/6_097_1.jpg"], "98": ["工商题库/explanations/6_098_1.jpg"], "99": ["工商题库/explanations/6_099_1.jpg"], "100": ["工商题库/explanations/6_100_1.jpg"]}};
+const ANS = {"1": {"1": "B", "2": "D", "3": "C", "4": "A", "5": "B", "6": "A", "7": "A", "8": "D", "9": "A", "10": "C", "11": "B", "12": "C", "13": "A", "14": "B", "15": "D", "16": "B", "17": "D", "18": "B", "19": "D", "20": "A", "21": "B", "22": "B", "23": "B", "24": "B", "25": "C", "26": "A", "27": "B", "28": "A", "29": "D", "30": "C", "31": "A", "32": "B", "33": "C", "34": "A", "35": "C", "36": "C", "37": "C", "38": "A", "39": "D", "40": "A", "41": "B", "42": "B", "43": "B", "44": "A", "45": "C", "46": "D", "47": "B", "48": "D", "49": "D", "50": "D", "51": "A", "52": "B", "53": "D", "54": "A", "55": "C", "56": "B", "57": "B", "58": "D", "59": "B", "60": "B", "61": "ABDE", "62": "ABC", "63": "ABE", "64": "ABCD", "65": "ABD", "66": "ABCD", "67": "ACDE", "68": "ABCE", "69": "BD", "70": "ABCE", "71": "ABCD", "72": "ABE", "73": "BC", "74": "ACE", "75": "AB", "76": "CE", "77": "ACDE", "78": "ACE", "79": "BCDE", "80": "ABC", "81": "AB", "82": "AB", "83": "B", "84": "A", "85": "B", "86": "C", "87": "C", "88": "D", "89": "C", "90": "C", "91": "AB", "92": "C", "93": "B", "94": "A", "95": "BD", "96": "D", "97": "A", "98": "D", "99": "ABC", "100": "BCD"}, "2": {"1": "C", "2": "B", "3": "C", "4": "C", "5": "B", "6": "D", "7": "A", "8": "D", "9": "D", "10": "A", "11": "A", "12": "B", "13": "B", "14": "C", "15": "A", "16": "B", "17": "D", "18": "C", "19": "D", "20": "D", "21": "C", "22": "B", "23": "C", "24": "B", "25": "D", "26": "C", "27": "D", "28": "C", "29": "D", "30": "D", "31": "C", "32": "C", "33": "D", "34": "B", "35": "A", "36": "C", "37": "D", "38": "A", "39": "B", "40": "A", "41": "C", "42": "C", "43": "B", "44": "C", "45": "D", "46": "C", "47": "D", "48": "B", "49": "C", "50": "D", "51": "B", "52": "B", "53": "A", "54": "C", "55": "D", "56": "C", "57": "B", "58": "C", "59": "A", "60": "B", "61": "ABCD", "62": "ABD", "63": "ABC", "64": "ABCE", "65": "ACDE", "66": "ABCD", "67": "ABCE", "68": "ABD", "69": "CE", "70": "ABCD", "71": "AE", "72": "ABD", "73": "CD", "74": "ABDE", "75": "ABCD", "76": "AD", "77": "BCDE", "78": "CDE", "79": "ACD", "80": "ADE", "81": "C", "82": "B", "83": "C", "84": "C", "85": "B", "86": "AD", "87": "C", "88": "D", "89": "B", "90": "C", "91": "C", "92": "A", "93": "D", "94": "B", "95": "C", "96": "D", "97": "D", "98": "C", "99": "C", "100": "D"}, "3": {"1": "B", "2": "B", "3": "B", "4": "B", "5": "C", "6": "D", "7": "B", "8": "A", "9": "D", "10": "C", "11": "A", "12": "B", "13": "D", "14": "B", "15": "A", "16": "A", "17": "A", "18": "A", "19": "B", "20": "B", "21": "C", "22": "A", "23": "A", "24": "A", "25": "B", "26": "D", "27": "B", "28": "B", "29": "B", "30": "B", "31": "D", "32": "B", "33": "D", "34": "C", "35": "C", "36": "C", "37": "A", "38": "C", "39": "A", "40": "A", "41": "C", "42": "B", "43": "C", "44": "A", "45": "A", "46": "D", "47": "A", "48": "C", "49": "D", "50": "A", "51": "C", "52": "C", "53": "D", "54": "B", "55": "B", "56": "B", "57": "C", "58": "A", "59": "B", "60": "C", "61": "BDE", "62": "ABCD", "63": "BDE", "64": "ABC", "65": "ACD", "66": "ABE", "67": "CDE", "68": "BCDE", "69": "ACDE", "70": "BDE", "71": "AB", "72": "ABC", "73": "ABCD", "74": "ACE", "75": "ACDE", "76": "ABC", "77": "ABC", "78": "AD", "79": "ABCE", "80": "ACD", "81": "C", "82": "B", "83": "C", "84": "ABD", "85": "D", "86": "D", "87": "C", "88": "A", "89": "B", "90": "B", "91": "C", "92": "B", "93": "B", "94": "C", "95": "A", "96": "BCD", "97": "B", "98": "BC", "99": "C", "100": "D"}, "4": {"1": "A", "2": "B", "3": "C", "4": "C", "5": "D", "6": "C", "7": "A", "8": "C", "9": "B", "10": "D", "11": "C", "12": "B", "13": "A", "14": "A", "15": "A", "16": "A", "17": "C", "18": "C", "19": "C", "20": "A", "21": "C", "22": "B", "23": "B", "24": "D", "25": "A", "26": "A", "27": "D", "28": "D", "29": "B", "30": "A", "31": "C", "32": "B", "33": "C", "34": "B", "35": "D", "36": "C", "37": "C", "38": "D", "39": "C", "40": "C", "41": "D", "42": "C", "43": "A", "44": "A", "45": "C", "46": "B", "47": "B", "48": "A", "49": "C", "50": "C", "51": "A", "52": "C", "53": "C", "54": "D", "55": "C", "56": "D", "57": "C", "58": "A", "59": "C", "60": "B", "61": "ABCD", "62": "ABCD", "63": "ABCE", "64": "ABCD", "65": "BDE", "66": "ABC", "67": "ADE", "68": "ACE", "69": "BDE", "70": "AD", "71": "BD", "72": "ABE", "73": "ACDE", "74": "ACDE", "75": "ABCD", "76": "ACE", "77": "ABCD", "78": "CD", "79": "BCD", "80": "AB", "81": "B", "82": "C", "83": "C", "84": "A", "85": "C", "86": "C", "87": "C", "88": "D", "89": "B", "90": "A", "91": "B", "92": "ACD", "93": "BC", "94": "B", "95": "B", "96": "C", "97": "B", "98": "B", "99": "D", "100": "C"}, "5": {"1": "B", "2": "A", "3": "C", "4": "B", "5": "A", "6": "C", "7": "B", "8": "A", "9": "D", "10": "D", "11": "C", "12": "D", "13": "A", "14": "A", "15": "A", "16": "A", "17": "C", "18": "D", "19": "C", "20": "C", "21": "D", "22": "A", "23": "D", "24": "D", "25": "B", "26": "A", "27": "A", "28": "C", "29": "C", "30": "C", "31": "D", "32": "B", "33": "B", "34": "C", "35": "B", "36": "A", "37": "C", "38": "D", "39": "A", "40": "D", "41": "D", "42": "C", "43": "C", "44": "B", "45": "A", "46": "A", "47": "C", "48": "C", "49": "A", "50": "B", "51": "A", "52": "B", "53": "D", "54": "D", "55": "C", "56": "C", "57": "C", "58": "B", "59": "C", "60": "A", "61": "ABE", "62": "BCD", "63": "ACDE", "64": "ABCD", "65": "ABCD", "66": "ABE", "67": "ABC", "68": "ACDE", "69": "BDE", "70": "AD", "71": "AB", "72": "CD", "73": "ABCD", "74": "ABC", "75": "ABDE", "76": "ABCD", "77": "ABDE", "78": "BDE", "79": "BCD", "80": "ABCD", "81": "B", "82": "A", "83": "B", "84": "C", "85": "C", "86": "D", "87": "A", "88": "AD", "89": "B", "90": "D", "91": "AD", "92": "AC", "93": "ABC", "94": "B", "95": "A", "96": "BC", "97": "C", "98": "A", "99": "C", "100": "B"}, "6": {"1": "D", "2": "D", "3": "D", "4": "B", "5": "B", "6": "C", "7": "D", "8": "C", "9": "C", "10": "C", "11": "B", "12": "B", "13": "A", "14": "A", "15": "A", "16": "D", "17": "D", "18": "B", "19": "C", "20": "A", "21": "C", "22": "C", "23": "C", "24": "C", "25": "C", "26": "C", "27": "C", "28": "D", "29": "D", "30": "B", "31": "B", "32": "C", "33": "D", "34": "A", "35": "C", "36": "B", "37": "D", "38": "B", "39": "C", "40": "A", "41": "C", "42": "A", "43": "A", "44": "B", "45": "A", "46": "C", "47": "C", "48": "A", "49": "C", "50": "A", "51": "C", "52": "B", "53": "A", "54": "D", "55": "C", "56": "B", "57": "A", "58": "A", "59": "D", "60": "A", "61": "ABCD", "62": "ABC", "63": "ABCD", "64": "ABCE", "65": "BCE", "66": "ACD", "67": "BCD", "68": "ABCD", "69": "ABCD", "70": "ABDE", "71": "ABCD", "72": "ABCE", "73": "ABDE", "74": "ACDE", "75": "ABCD", "76": "ACE", "77": "CDE", "78": "ABC", "79": "AE", "80": "DE", "81": "ABC", "82": "B", "83": "A", "84": "BC", "85": "C", "86": "C", "87": "B", "88": "D", "89": "A", "90": "A", "91": "C", "92": "BD", "93": "C", "94": "C", "95": "B", "96": "AB", "97": "C", "98": "B", "99": "B", "100": "C"}};
+const CIMG = {"1": {"81": ["工商题库/materials/p012_144-65_324-44.jpg"], "82": ["工商题库/materials/p012_144-65_324-44.jpg"], "83": ["工商题库/materials/p012_144-65_324-44.jpg"], "84": ["工商题库/materials/p012_144-65_324-44.jpg"], "85": ["工商题库/materials/p012_561-25_704-59.jpg"], "86": ["工商题库/materials/p012_561-25_704-59.jpg"], "87": ["工商题库/materials/p012_561-25_704-59.jpg"], "88": ["工商题库/materials/p012_561-25_704-59.jpg"], "89": ["工商题库/materials/p013_227-47_461-67.jpg"], "90": ["工商题库/materials/p013_227-47_461-67.jpg"], "91": ["工商题库/materials/p013_227-47_461-67.jpg"], "92": ["工商题库/materials/p013_227-47_461-67.jpg"], "93": ["工商题库/materials/p013_727-41_798-94.jpg", "工商题库/materials/p014_71-41_106-46.jpg"], "94": ["工商题库/materials/p013_727-41_798-94.jpg", "工商题库/materials/p014_71-41_106-46.jpg"], "95": ["工商题库/materials/p013_727-41_798-94.jpg", "工商题库/materials/p014_71-41_106-46.jpg"], "96": ["工商题库/materials/p013_727-41_798-94.jpg", "工商题库/materials/p014_71-41_106-46.jpg"], "97": ["工商题库/materials/p014_381-92_490-74.jpg"], "98": ["工商题库/materials/p014_381-92_490-74.jpg"], "99": ["工商题库/materials/p014_381-92_490-74.jpg"], "100": ["工商题库/materials/p014_381-92_490-74.jpg"]}, "2": {"81": ["工商题库/materials/p022_724-18_760-36.jpg", "工商题库/materials/p023_82-65_207-01.jpg"], "82": ["工商题库/materials/p022_724-18_760-36.jpg", "工商题库/materials/p023_82-65_207-01.jpg"], "83": ["工商题库/materials/p022_724-18_760-36.jpg", "工商题库/materials/p023_82-65_207-01.jpg"], "84": ["工商题库/materials/p022_724-18_760-36.jpg", "工商题库/materials/p023_82-65_207-01.jpg"], "85": ["工商题库/materials/p023_493-70_668-41.jpg"], "86": ["工商题库/materials/p023_493-70_668-41.jpg"], "87": ["工商题库/materials/p023_493-70_668-41.jpg"], "88": ["工商题库/materials/p023_493-70_668-41.jpg"], "89": ["工商题库/materials/p024_179-55_271-37.jpg"], "90": ["工商题库/materials/p024_179-55_271-37.jpg"], "91": ["工商题库/materials/p024_179-55_271-37.jpg"], "92": ["工商题库/materials/p024_179-55_271-37.jpg"], "93": ["工商题库/materials/p024_526-61_635-51.jpg"], "94": ["工商题库/materials/p024_526-61_635-51.jpg"], "95": ["工商题库/materials/p024_526-61_635-51.jpg"], "96": ["工商题库/materials/p024_526-61_635-51.jpg"], "97": ["工商题库/materials/p025_130-43_219-91.jpg"], "98": ["工商题库/materials/p025_130-43_219-91.jpg"], "99": ["工商题库/materials/p025_130-43_219-91.jpg"], "100": ["工商题库/materials/p025_130-43_219-91.jpg"]}, "3": {"81": ["工商题库/materials/p033_725-72_799-17.jpg", "工商题库/materials/p034_71-92_107-46.jpg"], "82": ["工商题库/materials/p033_725-72_799-17.jpg", "工商题库/materials/p034_71-92_107-46.jpg"], "83": ["工商题库/materials/p033_725-72_799-17.jpg", "工商题库/materials/p034_71-92_107-46.jpg"], "84": ["工商题库/materials/p033_725-72_799-17.jpg", "工商题库/materials/p034_71-92_107-46.jpg"], "85": ["工商题库/materials/p034_366-03_475-41.jpg"], "86": ["工商题库/materials/p034_366-03_475-41.jpg"], "87": ["工商题库/materials/p034_366-03_475-41.jpg"], "88": ["工商题库/materials/p034_366-03_475-41.jpg"], "89": ["工商题库/materials/p034_691-74_798-44.jpg", "工商题库/materials/p035_75-48_92-66.jpg"], "90": ["工商题库/materials/p034_691-74_798-44.jpg", "工商题库/materials/p035_75-48_92-66.jpg"], "91": ["工商题库/materials/p034_691-74_798-44.jpg", "工商题库/materials/p035_75-48_92-66.jpg"], "92": ["工商题库/materials/p034_691-74_798-44.jpg", "工商题库/materials/p035_75-48_92-66.jpg"], "93": ["工商题库/materials/p035_330-51_508-52.jpg"], "94": ["工商题库/materials/p035_330-51_508-52.jpg"], "95": ["工商题库/materials/p035_330-51_508-52.jpg"], "96": ["工商题库/materials/p035_330-51_508-52.jpg"], "97": ["工商题库/materials/p035_757-32_793-36.jpg", "工商题库/materials/p036_75-13_363-48.jpg"], "98": ["工商题库/materials/p035_757-32_793-36.jpg", "工商题库/materials/p036_75-13_363-48.jpg"], "99": ["工商题库/materials/p035_757-32_793-36.jpg", "工商题库/materials/p036_75-13_363-48.jpg"], "100": ["工商题库/materials/p035_757-32_793-36.jpg", "工商题库/materials/p036_75-13_363-48.jpg"]}, "4": {"81": ["工商题库/materials/p044_726-36_796-55.jpg", "工商题库/materials/p045_75-35_291-17.jpg"], "82": ["工商题库/materials/p044_726-36_796-55.jpg", "工商题库/materials/p045_75-35_291-17.jpg"], "83": ["工商题库/materials/p044_726-36_796-55.jpg", "工商题库/materials/p045_75-35_291-17.jpg"], "84": ["工商题库/materials/p044_726-36_796-55.jpg", "工商题库/materials/p045_75-35_291-17.jpg"], "85": ["工商题库/materials/p045_541-64_789-10.jpg", "工商题库/materials/p046_75-48_233-98.jpg"], "86": ["工商题库/materials/p045_541-64_789-10.jpg", "工商题库/materials/p046_75-48_233-98.jpg"], "87": ["工商题库/materials/p045_541-64_789-10.jpg", "工商题库/materials/p046_75-48_233-98.jpg"], "88": ["工商题库/materials/p045_541-64_789-10.jpg", "工商题库/materials/p046_75-48_233-98.jpg"], "89": ["工商题库/materials/p046_452-28_746-75.jpg"], "90": ["工商题库/materials/p046_452-28_746-75.jpg"], "91": ["工商题库/materials/p046_452-28_746-75.jpg"], "92": ["工商题库/materials/p046_452-28_746-75.jpg"], "93": ["工商题库/materials/p047_240-77_295-22.jpg"], "94": ["工商题库/materials/p047_240-77_295-22.jpg"], "95": ["工商题库/materials/p047_240-77_295-22.jpg"], "96": ["工商题库/materials/p047_240-77_295-22.jpg"], "97": ["工商题库/materials/p047_564-22_762-68.jpg"], "98": ["工商题库/materials/p047_564-22_762-68.jpg"], "99": ["工商题库/materials/p047_564-22_762-68.jpg"], "100": ["工商题库/materials/p047_564-22_762-68.jpg"]}, "5": {"81": ["工商题库/materials/p057_286-64_430-36.jpg"], "82": ["工商题库/materials/p057_286-64_430-36.jpg"], "83": ["工商题库/materials/p057_286-64_430-36.jpg"], "84": ["工商题库/materials/p057_286-64_430-36.jpg"], "85": ["工商题库/materials/p057_648-09_683-41.jpg"], "86": ["工商题库/materials/p057_648-09_683-41.jpg"], "87": ["工商题库/materials/p057_648-09_683-41.jpg"], "88": ["工商题库/materials/p057_648-09_683-41.jpg"], "89": ["工商题库/materials/p058_181-99_255-71.jpg"], "90": ["工商题库/materials/p058_181-99_255-71.jpg"], "91": ["工商题库/materials/p058_181-99_255-71.jpg"], "92": ["工商题库/materials/p058_181-99_255-71.jpg"], "93": ["工商题库/materials/p058_474-84_792-47.jpg", "工商题库/materials/p059_70-76_76-00.jpg"], "94": ["工商题库/materials/p058_474-84_792-47.jpg", "工商题库/materials/p059_70-76_76-00.jpg"], "95": ["工商题库/materials/p058_474-84_792-47.jpg", "工商题库/materials/p059_70-76_76-00.jpg"], "96": ["工商题库/materials/p058_474-84_792-47.jpg", "工商题库/materials/p059_70-76_76-00.jpg"], "97": ["工商题库/materials/p059_362-81_417-38.jpg"], "98": ["工商题库/materials/p059_362-81_417-38.jpg"], "99": ["工商题库/materials/p059_362-81_417-38.jpg"], "100": ["工商题库/materials/p059_362-81_417-38.jpg"]}, "6": {"81": ["工商题库/materials/p067_703-04_775-06.jpg", "工商题库/materials/p068_74-91_206-86.jpg"], "82": ["工商题库/materials/p067_703-04_775-06.jpg", "工商题库/materials/p068_74-91_206-86.jpg"], "83": ["工商题库/materials/p067_703-04_775-06.jpg", "工商题库/materials/p068_74-91_206-86.jpg"], "84": ["工商题库/materials/p067_703-04_775-06.jpg", "工商题库/materials/p068_74-91_206-86.jpg"], "85": ["工商题库/materials/p068_499-35_591-15.jpg"], "86": ["工商题库/materials/p068_499-35_591-15.jpg"], "87": ["工商题库/materials/p068_499-35_591-15.jpg"], "88": ["工商题库/materials/p068_499-35_591-15.jpg"], "89": ["工商题库/materials/p069_144-04_252-04.jpg"], "90": ["工商题库/materials/p069_144-04_252-04.jpg"], "91": ["工商题库/materials/p069_144-04_252-04.jpg"], "92": ["工商题库/materials/p069_144-04_252-04.jpg"], "93": ["工商题库/materials/p069_524-54_789-58.jpg", "工商题库/materials/p070_66-72_285-86.jpg"], "94": ["工商题库/materials/p069_524-54_789-58.jpg", "工商题库/materials/p070_66-72_285-86.jpg"], "95": ["工商题库/materials/p069_524-54_789-58.jpg", "工商题库/materials/p070_66-72_285-86.jpg"], "96": ["工商题库/materials/p069_524-54_789-58.jpg", "工商题库/materials/p070_66-72_285-86.jpg"], "97": ["工商题库/materials/p070_527-24_656-46.jpg"], "98": ["工商题库/materials/p070_527-24_656-46.jpg"], "99": ["工商题库/materials/p070_527-24_656-46.jpg"], "100": ["工商题库/materials/p070_527-24_656-46.jpg"]}};
+const TOTAL = 100, SINGLE = 60, MULTI_END = 80, SECONDS = 90 * 60;
+
+const $ = s => document.querySelector(s);
+const KEY = n => 'jjjs_gs_full6_' + n;
+
+let st = null;       // {set, ans:{}, flag:{}, idx, endAt, startedAt, done}
+let tick = null;
+
+/* ---------------- 首页 ---------------- */
+function buildHome(){
+  const box = $('#setList');
+  box.innerHTML = '';
+  for (let n = 1; n <= 6; n++){
+    const saved = localStorage.getItem(KEY(n));
+    const b = document.createElement('button');
+    b.className = 'setcard';
+    let extra = '';
+    if (saved){
+      try {
+        const s = JSON.parse(saved);
+        const done = Object.keys(s.ans || {}).length;
+        extra = s.done && s.grade ? ` <span class="tag">${s.grade.total} 分 · 查看成绩</span>` : ` <span class="tag">已答 ${done} 题</span>`;
+      } catch(e){}
+    }
+    b.innerHTML = `<b>全真模拟（${CN6[n-1]}）${extra}</b><span>100 题 · 90 分钟</span>`;
+    b.onclick = () => {
+      const s = load(n);
+      if (s && s.done && s.grade){ st = s; $('#home').hidden = true; showResult(s.grade, s.used); return; }
+      if (s && !s.done){
+        if (confirm('这套有没做完的记录，继续上次？\n（点「取消」则重新开始，原记录作废）')) startExam(n, true);
+        else { localStorage.removeItem(KEY(n)); startExam(n); }
+      } else startExam(n);
+    };
+    box.appendChild(b);
+  }
+}
+
+/* ---------------- 开始 / 续考 ---------------- */
+function load(n){
+  try { return JSON.parse(localStorage.getItem(KEY(n))); } catch(e){ return null; }
+}
+function save(){
+  if (!st) return;
+  localStorage.setItem(KEY(st.set), JSON.stringify(st));
+}
+
+function startExam(n, resume){
+  const old = load(n);
+  if (resume && old && !old.done){
+    st = old;
+  } else {
+    st = { set:n, ans:{}, flag:{}, idx:0, startedAt:Date.now(),
+           endAt:Date.now() + SECONDS * 1000, done:false };
+  }
+  $('#home').hidden = true;
+  $('#result').hidden = true;
+  $('#exam').hidden = false;
+  $('#examName').textContent = `全真模拟（${CN6[n-1]}）· 工商管理专业知识和实务`;
+  if (st.idx >= TOTAL || st.idx < 0) st.idx = 0;
+  render();
+  startTimer();
+  save();
+}
+
+/* ---------------- 计时 ---------------- */
+function startTimer(){
+  clearInterval(tick);
+  paintTimer();
+  tick = setInterval(() => {
+    paintTimer();
+    if (st && Date.now() >= st.endAt){ submit(true); }
+  }, 500);
+}
+function paintTimer(){
+  if (!st) return;
+  let left = Math.max(0, Math.round((st.endAt - Date.now()) / 1000));
+  const m = String(Math.floor(left / 60)).padStart(2, '0');
+  const s = String(left % 60).padStart(2, '0');
+  const el = $('#timer');
+  el.textContent = m + ':' + s;
+  el.classList.toggle('low', left <= 300);
+}
+
+/* ---------------- 渲染题目 ---------------- */
+function curNo(){ return st.idx + 1; }
+function isMulti(n){ return n > SINGLE; }
+function isCase(n){ return n > MULTI_END; }
+function typeLabel(n){ return isCase(n) ? "案例分析题（不定项）" : isMulti(n) ? "多选题" : "单选题"; }
+
+function render(){
+  const n = curNo();
+  const files = QIMG[st.set][n] || [];
+  const materials = CIMG[st.set][n] || [];
+  const context = materials.length ? '<details class="case-material" open><summary>案例材料（本组共用）</summary><div class="qimgwrap">' + materials.map(f => `<a href="${f}" target="_blank"><img class="qimg" src="${f}" alt="案例材料"></a>`).join('') + '</div></details>' : '';
+  $('#qimgs').innerHTML = context + '<div class="qimgwrap">' + files.map(f =>
+    `<a href="${f}" target="_blank" title="点击看原图"><img class="qimg" src="${f}" alt="第${n}题"></a>`).join('') + '</div>';
+  $('#qno').textContent = `第 ${n} 题`;
+  const t = $('#qtype');
+  t.textContent = typeLabel(n);
+  t.className = 'pill' + (isMulti(n) ? ' multi' : '');
+
+  const letters = n > SINGLE && !isCase(n) ? ['A','B','C','D','E'] : ['A','B','C','D'];
+  const chosen = st.ans[n] || '';
+  const box = $('#opts');
+  box.innerHTML = '';
+  letters.forEach(L => {
+    const b = document.createElement('button');
+    b.className = 'opt' + (chosen.includes(L) ? ' on' : '');
+    b.textContent = L;
+    b.onclick = () => pick(L);
+    box.appendChild(b);
+  });
+  $('#btnFlag').textContent = st.flag[n] ? '★ 已标记 (空格取消)' : '标记存疑 (空格)';
+  $('#answerHint').textContent = chosen
+    ? (isMulti(n) ? `已选 ${chosen.split('').join(' ')}` : `已选 ${chosen}`) : '未作答';
+  $('#prog').textContent = `${Object.keys(st.ans).length} / ${TOTAL}`;
+  renderSheet();
+}
+
+function pick(L){
+  const n = curNo();
+  if (!'ABCD'.includes(L) && !(L === 'E' && n > SINGLE && !isCase(n))) return;
+  if (isMulti(n)){
+    let cur = (st.ans[n] || '').split('');
+    if (cur.includes(L)) cur = cur.filter(x => x !== L);
+    else cur.push(L);
+    cur.sort();
+    if (cur.length) st.ans[n] = cur.join(''); else delete st.ans[n];
+    save(); render();
+  } else {
+    st.ans[n] = L;
+    save(); render();
+    if (n < TOTAL) setTimeout(() => go(st.idx + 1), 140);
+  }
+}
+
+function go(i){
+  if (i < 0 || i >= TOTAL) return;
+  st.idx = i; save(); render();
+}
+
+function renderSheet(){
+  [[1, SINGLE, '#cells1'], [SINGLE + 1, MULTI_END, '#cells2'], [MULTI_END + 1, TOTAL, '#cells3']].forEach(([a, b, sel]) => {
+    const box = $(sel);
+    box.innerHTML = '';
+    for (let n = a; n <= b; n++){
+      const d = document.createElement('button');
+      d.className = 'cell';
+      d.textContent = n;
+      if (st.ans[n]) d.classList.add('done');
+      if (st.flag[n]) d.classList.add('flag');
+      if (n === curNo()) d.classList.add('now');
+      d.onclick = () => go(n - 1);
+      box.appendChild(d);
+    }
+  });
+}
+
+/* ---------------- 交卷与判分 ---------------- */
+function grade(){
+  let single = 0, multi = 0, cases = 0, wrong = 0, reviews = [];
+  for (let n = 1; n <= TOTAL; n++){
+    const right = ANS[st.set][n];
+    const mine = st.ans[n] || '';
+    let got = 0, kind = '';
+    if (!mine){ kind = 'none'; }
+    else if (n <= SINGLE){ if (mine === right) got = 1; else kind = 'wrong'; }
+    else if ([...mine].some(x => !right.includes(x))){ kind = 'zero'; }
+    else if (mine === right){ got = 2; }
+    else { got = 0.5 * mine.length; kind = 'less'; }
+    if (n <= SINGLE) single += got;
+    else if (isCase(n)) cases += got;
+    else multi += got;
+    if (kind){ wrong++; reviews.push({n,mine,right,got,kind}); }
+  }
+  return {single,multi,cases,total:single+multi+cases,wrong,reviews};
+}
+
+function submit(auto){
+  if (!st || st.done) return;
+  if (!auto){
+    const un = TOTAL - Object.keys(st.ans).length;
+    if (un > 0 && !confirm(`还有 ${un} 题没答，确定交卷？`)) return;
+  }
+  clearInterval(tick);
+  const g = grade();
+  const used = Math.min(SECONDS, Math.round((Date.now() - st.startedAt) / 1000));
+  st.done = true; st.grade = g; st.used = used; st.subject = '工商管理专业知识和实务（初级）';
+  localStorage.setItem('jjjs_gs_attempt_' + st.set + '_' + st.startedAt, JSON.stringify(st));
+  localStorage.setItem(KEY(st.set), JSON.stringify(st));
+  showResult(g, used);
+  /* auto-export-on-submit */
+  try {
+    void exportRecords({automatic:true});
+  } catch (error) {
+    $('#exportStatus').textContent = '作答和成绩已保存，但自动下载未能发起：' + error.message;
+  }
+}
+
+function fmt(sec){
+  const m = Math.floor(sec / 60), s = sec % 60;
+  return `${m} 分 ${String(s).padStart(2,'0')} 秒`;
+}
+
+function showResult(g, used){
+  $('#exportStatus').textContent = '作答记录已保存。';
+  $('#exam').hidden = true;
+  $('#result').hidden = false;
+  $('#resName').textContent = `全真模拟（${CN6[st.set-1]}）· 成绩`;
+  $('#resScore').innerHTML = `${g.total}<small> / 140 分</small>`;
+  $('#resSingle').textContent = g.single;
+  $('#resMulti').textContent = g.multi;
+  $('#resCase').textContent = g.cases;
+  $('#resTime').textContent = fmt(used);
+  $('#resWrong').textContent = g.wrong;
+  const pass = g.total >= 84;
+  $('#resVerdict').innerHTML = pass
+    ? `✅ 过了 84 分线（超 ${ (g.total - 84).toFixed(1) } 分）。但真实考试建议留 6–8 分安全垫。`
+    : `⚠️ 差 ${(84 - g.total).toFixed(1)} 分到 84。重点看下面「错选归零」和「少选」两类。`;
+
+  const tabs = [
+    ['all','全部错题', g.reviews],
+    ['zero','错选归零', g.reviews.filter(r => r.kind === 'zero')],
+    ['less','少选扣分', g.reviews.filter(r => r.kind === 'less')],
+    ['wrong','单选答错', g.reviews.filter(r => r.kind === 'wrong')],
+    ['none','未作答', g.reviews.filter(r => r.kind === 'none')],
+  ];
+  const tb = $('#tabs'); tb.innerHTML = '';
+  tabs.forEach(([k, label, arr], i) => {
+    const b = document.createElement('button');
+    b.className = 'tab' + (i === 0 ? ' on' : '');
+    b.textContent = `${label} (${arr.length})`;
+    b.onclick = () => {
+      [...tb.children].forEach(c => c.classList.remove('on'));
+      b.classList.add('on');
+      renderRev(arr);
+    };
+    tb.appendChild(b);
+  });
+  renderRev(g.reviews);
+  window.scrollTo(0, 0);
+}
+
+function renderRev(arr){
+  const box = $('#revList');
+  if (!arr.length){ box.innerHTML = '<div class="empty">这一类没有题目 🎉</div>'; return; }
+  arr.sort((a, b) => a.n - b.n);
+  box.innerHTML = arr.map(r => {
+    const context = (CIMG[st.set][r.n] || []).map(f => `<img loading="lazy" src="${f}" alt="案例材料">`).join('');
+    const qf = (context ? '<details open><summary>案例材料</summary>' + context + '</details>' : '') + (QIMG[st.set][r.n] || []).map(f => `<img loading="lazy" src="${f}" alt="第${r.n}题">`).join('');
+    const af = (AIMG[st.set][r.n] || []).map(f => `<img loading="lazy" src="${f}" alt="原卷解析">`).join('');
+    const label = r.kind === 'zero' ? '错选归零' : r.kind === 'less' ? '少选' :
+                  r.kind === 'none' ? '未答' : '答错';
+    return `<div class="rev">
+      <div class="top">
+        <b>第 ${r.n} 题</b>
+        <span class="pill">${typeLabel(r.n)}</span>
+        <span class="pill">${label}</span>
+        <span class="spacer"></span>
+        <span>你选 <span class="mine bad">${r.mine || '—'}</span></span>
+        <span>正确 <span class="right">${r.right}</span></span>
+        <span>得 ${r.got} 分</span>
+      </div>
+      ${qf}
+      ${st.set === 6 && r.n === 53 ? '<p class="hint">原卷解析的答案字母缺损；解析描述“单个业主制企业”，对应本题 A，已据此设置答案。</p>' : ''}
+      <details><summary>查看解析</summary>${af}</details>
+    </div>`;
+  }).join('');
+}
+
+/* ---------------- 事件 ---------------- */
+$('#btnSubmit').onclick = () => submit(false);
+$('#btnSheet').onclick = () => {
+  const box = $('#sheetBox');
+  box.classList.toggle('show');
+  if (box.classList.contains('show')) box.scrollIntoView({behavior:'smooth', block:'start'});
+};
+$('#btnPrev').onclick = () => go(st.idx - 1);
+$('#btnNext').onclick = () => go(st.idx + 1);
+$('#btnFlag').onclick = () => {
+  const n = curNo();
+  if (st.flag[n]) delete st.flag[n]; else st.flag[n] = 1;
+  save(); render();
+};
+$('#btnHome').onclick = () => { $('#result').hidden = true; $('#home').hidden = false; buildHome(); };
+$('#btnAgain').onclick = () => {
+  localStorage.removeItem(KEY(st.set));
+  startExam(st.set);
+};
+
+document.addEventListener('keydown', e => {
+  if (!st || $('#exam').hidden) return;
+  const k = e.key.toUpperCase();
+  if (['A','B','C','D','E'].includes(k)){ e.preventDefault(); pick(k); }
+  else if (e.key === 'ArrowLeft'){ e.preventDefault(); go(st.idx - 1); }
+  else if (e.key === 'ArrowRight'){ e.preventDefault(); go(st.idx + 1); }
+  else if (e.key === ' '){ e.preventDefault(); $('#btnFlag').click(); }
+});
+
+/* ---------------- 记录导出 / 导入 ---------------- */
+function collectRecords(){
+  const rec = {};
+  for (let i = 0; i < localStorage.length; i++){
+    const k = localStorage.key(i);
+    if (!k || k.indexOf('jjjs_gs_') !== 0) continue;
+    try { rec[k] = JSON.parse(localStorage.getItem(k)); }
+    catch(e){ rec[k] = localStorage.getItem(k); }
+  }
+  return rec;
+}
+async function exportRecords(options = {}){
+  const data = {
+    app: '工商管理专业知识和实务（初级）机考模拟',
+    schema: 1,
+    exportedAt: new Date().toISOString(),
+    source: decodeURIComponent(location.pathname.split('/').pop()),
+    subject: '工商管理专业知识和实务（初级）',
+    scoring: {total:100,single:60,multiple:20,cases:20,fullMarks:140,seconds:5400},
+    note: 'records 的键就是 localStorage 键（jjjs_gs_full6_1..6 / jjjs_gs_attempt_套号_时间戳）；done=true 表示已交卷；grade 是判分结果，grade.reviews 只列错题。',
+    records: collectRecords()
+  };
+  const d = new Date(), pad = x => String(x).padStart(2, '0');
+  const name = `工商管理_记录_${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}-${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}-${String(d.getMilliseconds()).padStart(3, '0')}.json`;
+  /* direct-record-archive */
+  const setMessage = message => {
+    const tip = $('#toolHint'), status = $('#exportStatus');
+    if (tip) tip.textContent = message;
+    if (status) status.textContent = message;
+  };
+  setMessage('正在将作答记录保存到“备考\\作答记录”…');
+  let timer;
+  try {
+    const controller = new AbortController();
+    timer = setTimeout(() => controller.abort(), 6000);
+    const response = await fetch('http://127.0.0.1:19363/api/records', {
+      method:'POST', headers:{'Content-Type':'application/json','X-Exam-Token':'256a55d0a85573b31b632781f508920cce8e62f70a07d7655fbd1a13b7a29aa5'},
+      body:JSON.stringify({filename:name,data}), signal:controller.signal
+    });
+    if (!response.ok) throw new Error('保存程序返回 ' + response.status);
+    const result = await response.json();
+    if (!result.ok) throw new Error(result.error || '保存失败');
+    setMessage(`已自动保存到“备考\\作答记录”：${name}`);
+    return name;
+  } catch (error) {
+    // Keep a downloadable copy if the local archive helper is temporarily unavailable.
+    const blob = new Blob([JSON.stringify(data, null, 1)], {type:'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    setMessage('本机归档暂未连接，已改为下载备份。记录仍保存在浏览器；请通过桌面试卷图标打开。');
+    return name;
+  } finally { clearTimeout(timer); }
+
+}
+function importRecords(file){
+  const fr = new FileReader();
+  fr.onload = () => {
+    const tip = $('#toolHint');
+    try {
+      const raw = JSON.parse(fr.result);
+      const rec = raw.records || raw;
+      const keys = Object.keys(rec).filter(k => k.indexOf('jjjs_gs_') === 0);
+      if (!keys.length) throw new Error('empty');
+      keys.forEach(k => {
+        const v = typeof rec[k] === 'string' ? rec[k] : JSON.stringify(rec[k]);
+        localStorage.setItem(k, v);
+      });
+      if (tip) tip.textContent = `已导入 ${keys.length} 条：${keys.join('、')}，页面将刷新`;
+      setTimeout(() => location.reload(), 900);
+    } catch(e){
+      if (tip) tip.textContent = '导入失败：不是有效的记录 JSON';
+    }
+  };
+  fr.readAsText(file, 'utf-8');
+}
+$('#btnExport').onclick = exportRecords;
+$('#btnExport2').onclick = exportRecords;
+$('#btnImport').onclick = () => $('#fileImport').click();
+$('#fileImport').onchange = e => { if (e.target.files[0]) importRecords(e.target.files[0]); };
+
+/* ---------------- 启动 ---------------- */
+(function init(){
+  buildHome();
+  // 支持 #set=1 直接开考；#test 用于自检（随机作答后交卷）
+  const m = location.hash.match(/set=(\d)/);
+  const qm = location.hash.match(/q=(\d{1,3})/);
+  const t = location.hash.includes('test');
+  if (m && +m[1] >= 1 && +m[1] <= 6){
+    startExam(+m[1], false);
+    if (qm){ st.idx = Math.min(TOTAL - 1, Math.max(0, +qm[1] - 1)); render(); }
+    if (t){
+      const truth = ANS[String(+m[1])];
+      for (let n = 1; n <= TOTAL; n++){
+        let r = truth[n];
+        const roll = Math.random();
+        if (roll < 0.18) continue;                        // 空着
+        if (n <= SINGLE){ st.ans[n] = roll < 0.35 ? 'ABCD'[Math.floor(Math.random()*4)] : r; }
+        else {
+          const arr = r.split('');
+          if (roll < 0.30) st.ans[n] = arr.slice(0, Math.max(1, arr.length - 1)).join('');
+          else if (roll < 0.45) st.ans[n] = (r + 'ABCDE'[Math.floor(Math.random()*5)]).split('').filter((v,i,a)=>a.indexOf(v)===i).sort().join('');
+          else st.ans[n] = r;
+        }
+      }
+      st.endAt = Date.now() + 55 * 60 * 1000;
+      submit(true);
+    }
+  }
+})();
+</script>
+<style id="dsh-mobile-fit">
+@media (max-width: 640px) {
+  [class*="imgwrap"] { overflow-x: visible !important; max-width: 100% !important; }
+  [class*="imgwrap"] img { min-width: 0 !important; width: 100% !important; height: auto !important; }
+  img.qimg { max-width: 100% !important; height: auto !important; }
+}
+</style>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第一套卷 · 错题一眼卡（48 题）</title>
+<style>
+:root{--ink:#1a1a1a;--sub:#666;--line:#e3e6ea;--bg:#f6f7f9;--blue:#1f5eff;--green:#0a7d3c;--red:#c62828;--amber:#b26b00}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 "Microsoft YaHei","PingFang SC",system-ui,sans-serif}
+.wrap{max-width:1000px;margin:0 auto;padding:16px 14px 70px}
+header{background:linear-gradient(135deg,#1f5eff,#3b82f6);color:#fff;border-radius:12px;padding:16px 20px}
+header h1{margin:0 0 4px;font-size:19px}
+header p{margin:0;font-size:12.5px;opacity:.93}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0 6px;position:sticky;top:0;background:var(--bg);padding:8px 0;z-index:9}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 13px;font-size:13px;cursor:pointer;color:#333}
+.chip.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.prog{margin-left:auto;font-size:13px;color:var(--sub)}
+.prog b{color:var(--green);font-size:15px}
+.track{height:6px;background:#e7ebf3;border-radius:99px;overflow:hidden;margin:6px 0 14px}
+.track i{display:block;height:100%;background:var(--green);width:0;transition:width .25s}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}}
+.card{background:#fff;border:1px solid var(--line);border-left:4px solid var(--blue);border-radius:10px;padding:11px 13px;display:flex;flex-direction:column;gap:7px}
+.card.ok{border-left-color:var(--green);opacity:.62}
+.card.no{border-left-color:var(--red);background:#fffafa}
+.top{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--sub)}
+.num{background:#eef2ff;color:var(--blue);font-weight:700;border-radius:6px;padding:1px 7px;font-size:12.5px}
+.mod{color:var(--blue);font-weight:600}
+.hide .top .typ{color:var(--sub)}
+.q{font-size:14.5px;font-weight:600;line-height:1.45}
+.a{display:flex;align-items:baseline;gap:8px;background:#f4f8f4;border:1px dashed #cfe3d5;border-radius:8px;padding:7px 10px;filter:blur(6px);cursor:pointer;user-select:none;transition:filter .12s}
+.a.show{filter:none}
+.a .ltr{font-weight:800;color:var(--green);font-size:16px;letter-spacing:1px}
+.a .kw{font-size:13.5px}
+.hook{font-size:12.5px;color:var(--amber);display:none}
+.a.show ~ .hook{display:block}
+.ctl{display:flex;gap:6px}
+.ctl button{flex:1;border:1px solid var(--line);background:#fff;border-radius:8px;padding:5px 0;font-size:12.5px;cursor:pointer;color:#444}
+.ctl .ok.on{background:var(--green);border-color:var(--green);color:#fff}
+.ctl .no.on{background:var(--red);border-color:var(--red);color:#fff}
+.empty{text-align:center;color:var(--sub);padding:40px 0;font-size:14px}
+footer{margin-top:24px;color:var(--sub);font-size:12px;text-align:center}
+@media print{.bar,.ctl,footer{display:none}.a{filter:none}.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>第一套卷 · 错题一眼卡</h1>
+  <p>48 题 · 每题只记「看到这句 → 勾这个」 · 灰底答案点击可看 · 会了打勾就淡出</p>
+</header>
+
+<div class="bar">
+  <button class="chip on" data-f="all">全部 48</button>
+  <button class="chip" data-f="no">还不会</button>
+  <button class="chip" data-f="new">未标记</button>
+  <button class="chip" id="shuffle">洗牌</button>
+  <button class="chip" id="revealAll">全部显示</button>
+  <span class="prog">已会 <b id="cnt">0</b>/48</span>
+</div>
+<div class="track"><i id="fill"></i></div>
+<div class="grid" id="grid"></div>
+<footer>点"看答案"→ 记住 → 点"会了"。明早再洗一次牌，5 分钟能过完就稳了。</footer>
+</div>
+<script>
+const DATA = [{"n": 3, "mod": "经济基础", "typ": "单选", "q": "社会主义市场经济中，资源配置起决定作用的是", "a": "D", "t": "市场", "hook": "记住\"市场决定、政府更好发挥作用\""}, {"n": 4, "mod": "经济基础", "typ": "单选", "q": "公证、仲裁机构在市场里属于", "a": "D", "t": "市场中介组织", "hook": "会计所、律所、公证、仲裁、质检认证＝市场中介"}, {"n": 5, "mod": "经济基础", "typ": "单选", "q": "商品价值的表现形式是", "a": "C", "t": "交换价值", "hook": "内容是价值，形式是交换价值"}, {"n": 6, "mod": "财政", "typ": "单选", "q": "财政\"经济稳定与发展职能\"【未使用】的手段", "a": "A", "t": "直接操纵经济运行", "hook": "市场经济下财政不直接操纵经济运行"}, {"n": 7, "mod": "财政", "typ": "单选", "q": "中央执行权上移、地方决策权下放，体现的原则", "a": "B", "t": "权责利相统一", "hook": "\"上移+下放\"＝权责利统一"}, {"n": 8, "mod": "财政", "typ": "单选", "q": "财政支出增长的边际倾向（2025 年数据）", "a": "C", "t": "5.17%", "hook": "2783 ÷ 53813，两个都是\"增长额\""}, {"n": 9, "mod": "财政", "typ": "单选", "q": "衡量一国政府财力的重要指标", "a": "D", "t": "财政收入", "hook": "不是税收、不是 GDP"}, {"n": 13, "mod": "财政", "typ": "单选", "q": "非居民企业境内所得（未设机构）预提所得税率", "a": "B", "t": "20%", "hook": "法定 20%；10% 是优惠税率，别混"}, {"n": 17, "mod": "货币金融", "typ": "单选", "q": "企业发行的债券属于哪种信用", "a": "A", "t": "直接信用", "hook": "发股发债＝直接；银行放贷＝间接"}, {"n": 19, "mod": "货币金融", "typ": "单选", "q": "期汇比现汇贵，叫什么", "a": "A", "t": "远期升水", "hook": "贵＝升水，便宜＝贴水"}, {"n": 23, "mod": "统计", "typ": "单选", "q": "拉氏指数【不正确】的说法", "a": "B", "t": "权数固定在报告期", "hook": "拉氏＝固定基期；帕氏＝固定报告期"}, {"n": 24, "mod": "会计", "typ": "单选", "q": "按实际成本计量、不得自行调账，属于", "a": "C", "t": "历史成本原则", "hook": "又叫实际成本/原始成本原则"}, {"n": 25, "mod": "会计", "typ": "单选", "q": "外来原始凭证一般都是", "a": "A", "t": "一次凭证", "hook": "外来凭证＝一次凭证"}, {"n": 31, "mod": "货币金融", "typ": "单选", "q": "抛补利率平价理论讨论的是什么的决定", "a": "B", "t": "远期汇率", "hook": "利率平价讲远期汇率"}, {"n": 35, "mod": "法律", "typ": "单选", "q": "关于法律规范的正确表述", "a": "A", "t": "法是\"细胞\"", "hook": "规范≠条文；也有任意性规范"}, {"n": 43, "mod": "统计", "typ": "单选", "q": "80 分以下频率合计", "a": "D", "t": "0.78", "hook": "(8+15+16)÷50"}, {"n": 45, "mod": "财政", "typ": "单选", "q": "直接改变社会财富分配结构的支出", "a": "D", "t": "转移性支出", "hook": "购买性＝配置资源；转移性＝分配"}, {"n": 49, "mod": "财政", "typ": "单选", "q": "财政收入在层次上分为几级", "a": "B", "t": "类、款、项、目 四级", "hook": "四级，不是三级"}, {"n": 56, "mod": "法律", "typ": "单选", "q": "【不属于】行政诉讼基本原则的是", "a": "D", "t": "审查合法性与适当性", "hook": "行政诉讼只审合法性"}, {"n": 57, "mod": "财政", "typ": "单选", "q": "所得税特点【不正确】的描述", "a": "C", "t": "只能就国内所得征税", "hook": "居民企业境内外全部所得都征"}, {"n": 63, "mod": "货币金融", "typ": "单选", "q": "货币本质【不正确】的说法", "a": "C", "t": "有价值、没有使用价值", "hook": "货币既有价值也有使用价值"}, {"n": 64, "mod": "法律", "typ": "单选", "q": "【不属于】民事法律行为生效要件的是", "a": "B", "t": "必须合法", "hook": "生效要件里没有\"必须合法\"这一条"}, {"n": 72, "mod": "经济基础", "typ": "多选", "q": "建立社会主义经济制度的基本途径", "a": "ABC", "t": "没收官僚资本·和平赎买民族资本·个体合作化", "hook": "D/E 说\"直接没收、强制没收\"＝错"}, {"n": 73, "mod": "经济基础", "typ": "多选", "q": "深化收入分配制度改革的要求", "a": "ABCD", "t": "四项都对", "hook": "E 说\"金字塔型\"＝错，应\"橄榄型\""}, {"n": 76, "mod": "财政", "typ": "多选", "q": "实行出口退税的税种", "a": "AD", "t": "增值税·消费税", "hook": "只退这两个，不关关税所得税"}, {"n": 77, "mod": "财政", "typ": "多选", "q": "\"综合所得\"包括哪些", "a": "ABDE", "t": "工资薪金·劳务报酬·稿酬·特许权使用费", "hook": "财产租赁不属于综合所得"}, {"n": 78, "mod": "财政", "typ": "多选", "q": "中央预算包括哪几本账", "a": "ABCD", "t": "一般公共·政府性基金·国有资本经营·社保基金", "hook": "四本账，含社保基金；E 国债限额是干扰"}, {"n": 79, "mod": "货币金融", "typ": "多选", "q": "黄金不参与流通的货币制度", "a": "DE", "t": "金块本位·金汇兑本位", "hook": "金币本位有金币流通，不算"}, {"n": 81, "mod": "统计", "typ": "多选", "q": "调查结果【不能】推断总体的方法", "a": "CD", "t": "重点调查·典型调查", "hook": "普查＝全体本身，不需推断；抽样能推断"}, {"n": 82, "mod": "会计", "typ": "多选", "q": "资产负债表的基本要素", "a": "ABC", "t": "资产·负债·所有者权益", "hook": "收入、费用在利润表"}, {"n": 84, "mod": "会计", "typ": "多选", "q": "财务会计报告使用者", "a": "ACDE", "t": "投资者·管理层·政府·社会公众", "hook": "没有\"竞争对手\""}, {"n": 85, "mod": "经济基础", "typ": "多选", "q": "自然经济占主导的社会形态", "a": "ABC", "t": "原始·奴隶·封建社会", "hook": "资本主义是商品经济"}, {"n": 86, "mod": "法律", "typ": "多选", "q": "我国司法解释制度的正确说法", "a": "ABCD", "t": "四项都对", "hook": "E\"交国务院法制机构裁决\"＝错，应报全国人大常委会"}, {"n": 88, "mod": "财政", "typ": "多选", "q": "国库单一账户制度的\"特点\"", "a": "ADE", "t": "全纳入·收入直缴·支出直达", "hook": "B 讲的是\"地位\"，不是特点"}, {"n": 89, "mod": "法律", "typ": "多选", "q": "中国特色社会主义法治体系包括", "a": "ABDE", "t": "规范·实施·监督·保障·党内法规", "hook": "五大体系，党内法规也算一个"}, {"n": 90, "mod": "法律", "typ": "多选", "q": "属于行政立法权主体的是", "a": "BCDE", "t": "国务院·国务院部门·省级政府·设区市政府", "hook": "人大常委会是权力机关，不是行政立法"}, {"n": 91, "mod": "法律", "typ": "多选", "q": "行政许可的特点", "a": "ABC", "t": "依申请·授益性·一般禁止前提", "hook": "D\"非要式\"、E\"依职权主动\"＝错"}, {"n": 92, "mod": "法律", "typ": "多选", "q": "行政复议的特征", "a": "ABE", "t": "行政机关的行为·处理行政争议·相对人启动", "hook": "C 民事争议✗；D 司法保障✗（是救济）"}, {"n": 93, "mod": "法律", "typ": "多选", "q": "行政复议的基本制度", "a": "ABCD", "t": "一级复议·不停止执行·被申请人举证·调解", "hook": "E 说法本身是编的"}, {"n": 95, "mod": "财政", "typ": "多选", "q": "国有资本经营预算的编制原则", "a": "CD", "t": "以收定支·不列赤字", "hook": "另外：收支两条线、结余结转不是\"原则\""}, {"n": 97, "mod": "财政", "typ": "多选", "q": "税收制度的基本构成要素（本书口径）", "a": "ACE", "t": "纳税人·课税对象·纳税期限", "hook": "本题按书答，别按\"税率\"三要素答"}, {"n": 98, "mod": "法律", "typ": "多选", "q": "我国行政诉讼的特征", "a": "ABE", "t": "法院统一受理·只审合法性·开庭审理", "hook": "复议非前置✗、原则上可调解✗"}, {"n": 99, "mod": "财政", "typ": "多选", "q": "\"十五五\"规划对财税工作的要求", "a": "ABCD", "t": "四项都对", "hook": "E\"降低税负、减少中央支出\"与原文相反"}, {"n": 100, "mod": "统计", "typ": "多选", "q": "统计中值【不可能】大于 1 的指标", "a": "AB", "t": "频率·比例", "hook": "比率、频数可以大于 1"}, {"n": 101, "mod": "财政", "typ": "多选", "q": "加大预算收入统筹力度的内容", "a": "ABCE", "t": "规范管理·政府性资源·部门单位·盘活存量", "hook": "D\"优化国库集中收付\"不属于本题"}, {"n": 102, "mod": "法律", "typ": "多选", "q": "撤销权消灭的情形", "a": "ACD", "t": "一年·胁迫终止起一年·明示放弃", "hook": "B 应\"90 日\"（题写半年）；E 应\"5 年\"（题写三年）"}, {"n": 103, "mod": "法律", "typ": "多选", "q": "效力待定的民事法律行为", "a": "ACDE", "t": "限制行为能力人·无权处分·无权代理·无权代表", "hook": "B 无行为能力人实施＝无效，不是待定"}, {"n": 105, "mod": "法律", "typ": "多选", "q": "一般侵权责任的构成要件", "a": "ABDE", "t": "违法行为·损害事实·因果关系·主观过错", "hook": "四要件里没有\"行为能力\""}];
+const KEY = 'jjjs_cards_v1';
+let mark = JSON.parse(localStorage.getItem(KEY) || '{}');
+let filter = 'all';
+const shown = new Set();
+
+const grid = document.getElementById('grid');
+
+function render() {
+  grid.innerHTML = '';
+  let list = DATA.slice();
+  if (filter === 'no') list = list.filter(d => mark[d.n] === 'no');
+  if (filter === 'new') list = list.filter(d => !mark[d.n]);
+  if (!list.length) { grid.innerHTML = '<div class="empty">这一类暂时没有题，切换上面的按钮看看。</div>'; }
+  for (const d of list) {
+    const el = document.createElement('article');
+    el.className = 'card' + (mark[d.n] === 'ok' ? ' ok' : mark[d.n] === 'no' ? ' no' : '');
+    el.innerHTML = `
+      <div class="top"><span class="num">${d.n}</span><span class="mod">${d.mod}</span>
+      <span class="typ">${d.typ}</span></div>
+      <div class="q">${d.q}</div>
+      <div class="a${shown.has(d.n) ? ' show' : ''}"><span class="ltr">${d.a}</span><span class="kw">${d.t}</span></div>
+      <div class="hook">${d.hook}</div>
+      <div class="ctl">
+        <button class="reveal">看答案</button>
+        <button class="ok${mark[d.n] === 'ok' ? ' on' : ''}">会了</button>
+        <button class="no${mark[d.n] === 'no' ? ' on' : ''}">不会</button>
+      </div>`;
+    const a = el.querySelector('.a');
+    a.onclick = () => { a.classList.toggle('show'); a.classList.contains('show') ? shown.add(d.n) : shown.delete(d.n); };
+    el.querySelector('.reveal').onclick = () => { a.classList.add('show'); shown.add(d.n); };
+    el.querySelector('.ok').onclick = () => { mark[d.n] = 'ok'; save(); render(); };
+    el.querySelector('.no').onclick = () => { mark[d.n] = 'no'; save(); render(); };
+    grid.appendChild(el);
+  }
+  paint();
+}
+
+function save() { localStorage.setItem(KEY, JSON.stringify(mark)); }
+function paint() {
+  const n = Object.values(mark).filter(v => v === 'ok').length;
+  document.getElementById('cnt').textContent = n;
+  document.getElementById('fill').style.width = (n / DATA.length * 100) + '%';
+}
+
+document.querySelectorAll('[data-f]').forEach(b => b.onclick = () => {
+  filter = b.dataset.f;
+  document.querySelectorAll('[data-f]').forEach(x => x.classList.toggle('on', x === b));
+  render();
+});
+document.getElementById('shuffle').onclick = () => {
+  DATA.sort(() => Math.random() - 0.5); render();
+};
+document.getElementById('revealAll').onclick = () => {
+  const on = shown.size < DATA.length;
+  shown.clear();
+  if (on) DATA.forEach(d => shown.add(d.n));
+  render();
+};
+
+render();
+</script>
+<style id="dsh-mobile-fit">
+@media (max-width: 640px) {
+  [class*="imgwrap"] { overflow-x: visible !important; max-width: 100% !important; }
+  [class*="imgwrap"] img { min-width: 0 !important; width: 100% !important; height: auto !important; }
+  img.qimg { max-width: 100% !important; height: auto !important; }
+}
+</style>
+</body>
+</html>

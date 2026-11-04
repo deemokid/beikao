@@ -1,0 +1,654 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>初级经济师 · 经济基础知识 机考模拟</title>
+<style>
+:root{
+  --bg:#f4f6fa; --card:#fff; --ink:#1b2430; --sub:#6b7686;
+  --line:#e2e7ef; --accent:#2563eb; --accent-soft:#e8efff;
+  --ok:#0f9d58; --warn:#e8a300; --bad:#d93025;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);overflow-x:hidden;
+  font:15px/1.6 -apple-system,"Segoe UI","Microsoft YaHei",sans-serif}
+button{font:inherit;cursor:pointer}
+.wrap{max-width:1180px;margin:0 auto;padding:16px}
+
+/* ---------- 首页 ---------- */
+.hero{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;border-radius:16px;
+  padding:28px 26px;box-shadow:0 10px 30px rgba(37,99,235,.25)}
+.hero h1{margin:0 0 6px;font-size:22px}
+.hero p{margin:0;opacity:.9;font-size:13.5px}
+.sets{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin-top:18px}
+.tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:14px}
+.tools .hint{font-size:12.5px;color:var(--sub)}
+.setcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;
+  text-align:left;transition:.15s;box-shadow:0 2px 8px rgba(20,30,50,.05)}
+.setcard:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 20px rgba(37,99,235,.15)}
+.setcard b{display:block;font-size:16px;margin-bottom:4px}
+.setcard span{color:var(--sub);font-size:13px}
+.tag{display:inline-block;font-size:12px;padding:1px 8px;border-radius:20px;
+  background:var(--accent-soft);color:var(--accent);margin-left:6px}
+.rules{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:16px 20px;font-size:13.5px;color:var(--sub)}
+.rules b{color:var(--ink)}
+.rules ul{margin:8px 0 0;padding-left:18px}
+.rules li{margin:4px 0}
+
+/* ---------- 考试页 ---------- */
+.bar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.bar .in{max-width:1180px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:14px}
+.bar .name{font-weight:600}
+.timer{font-variant-numeric:tabular-nums;font-weight:700;font-size:17px;
+  padding:4px 12px;border-radius:8px;background:var(--accent-soft);color:var(--accent)}
+.timer.low{background:#fdecea;color:var(--bad)}
+.spacer{flex:1}
+.btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:9px;
+  padding:7px 14px;transition:.15s}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary:hover{filter:brightness(1.08);color:#fff}
+.btn.ghost{background:transparent}
+
+.grid{display:grid;grid-template-columns:1fr 250px;gap:16px;align-items:start}
+.grid>*{min-width:0}
+.card{min-width:0}
+@media(max-width:600px){
+  .bar .name{display:none}
+  #btnSheet,#btnSubmit{padding:6px 11px;font-size:13px}
+  .timer{font-size:14px}
+}
+@media(max-width:860px){
+  .grid{grid-template-columns:1fr}
+  .wrap{padding:10px}
+  .bar .in{padding:8px 10px;gap:8px}
+  .bar .name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:38%}
+  .timer{font-size:15px;padding:3px 9px}
+  #prog{display:none}
+  .card{padding:12px 12px}
+  .qhead{gap:6px}
+  #btnFlag{font-size:12px;padding:5px 8px}
+  .opts{gap:7px}
+  .opt{width:44px;height:44px}
+  .cells{gap:4px}
+  .cell{font-size:11px}
+  .qimgwrap{overflow-x:auto;max-width:100%}
+  .qimgwrap img{min-width:720px}
+  .sheet{position:static;display:none}
+  .sheet.show{display:block}
+  #btnSheet{display:inline-block}
+}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:18px 20px;box-shadow:0 2px 10px rgba(20,30,50,.04)}
+.qhead{display:flex;align-items:center;gap:10px;margin-bottom:12px;color:var(--sub);font-size:13px}
+.qhead b{color:var(--ink);font-size:15px}
+.pill{font-size:12px;padding:1px 8px;border-radius:20px;background:#eef2f8;color:var(--sub)}
+.pill.multi{background:#fff4e0;color:#a86500}
+.qimg{display:block;width:100%;border-radius:8px;margin:6px 0 2px}
+.opts{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.opt{width:46px;height:46px;border-radius:10px;border:1.5px solid var(--line);background:#fff;
+  font-weight:700;font-size:16px;color:var(--ink);transition:.12s}
+.opt:hover{border-color:var(--accent);color:var(--accent)}
+.opt.on{background:var(--accent);border-color:var(--accent);color:#fff;
+  box-shadow:0 4px 12px rgba(37,99,235,.3)}
+.nav{display:flex;gap:10px;margin-top:18px;align-items:center}
+.hint{color:var(--sub);font-size:12.5px}
+
+/* 答题卡 */
+.sheet{position:sticky;top:64px}
+.sheet h3{margin:0 0 4px;font-size:14px}
+.sheet .sec{margin:10px 0 4px;font-size:12px;color:var(--sub)}
+.cells{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.cell{aspect-ratio:1;border:1px solid var(--line);border-radius:6px;background:#fff;
+  font-size:12px;color:var(--sub);display:flex;align-items:center;justify-content:center;
+  position:relative;padding:0}
+.cell.done{background:var(--accent-soft);border-color:#b9cdfb;color:var(--accent);font-weight:600}
+.cell.now{outline:2px solid var(--accent);outline-offset:1px}
+.cell.flag::after{content:"";position:absolute;top:2px;right:2px;width:5px;height:5px;
+  border-radius:50%;background:var(--warn)}
+.legend{display:flex;gap:12px;font-size:12px;color:var(--sub);margin-top:10px;flex-wrap:wrap}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;
+  vertical-align:-1px;border:1px solid var(--line)}
+
+/* ---------- 结果页 ---------- */
+.score{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+.big{font-size:44px;font-weight:800;line-height:1;min-width:170px}
+.big small{font-size:15px;font-weight:500;color:var(--sub)}
+.score .kv{flex:1;min-width:280px}
+.kv{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:6px}
+@media(max-width:620px){.kv{grid-template-columns:repeat(2,1fr)}}
+.kv div{background:#f7f9fc;border-radius:10px;padding:8px 12px}
+.kv b{display:block;font-size:17px}
+.kv span{font-size:12px;color:var(--sub)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 12px}
+.tab{border:1px solid var(--line);background:#fff;border-radius:20px;padding:5px 14px;font-size:13px;color:var(--sub)}
+.tab.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.rev{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:12px;background:#fff}
+.rev .top{display:flex;gap:10px;align-items:center;font-size:13px;color:var(--sub);margin-bottom:8px;flex-wrap:wrap}
+.rev .mine,.rev .right{font-weight:700}
+.rev .mine.bad{color:var(--bad)}
+.rev .right{color:var(--ok)}
+.rev img{width:100%;border-radius:8px;display:block}
+.rev details{margin-top:8px}
+.rev summary{cursor:pointer;color:var(--accent);font-size:13px}
+.empty{color:var(--sub);text-align:center;padding:30px}
+</style>
+</head>
+<body>
+
+<!-- ============ 首页 ============ -->
+<section id="home" class="wrap">
+  <div class="hero">
+    <h1>经济基础知识（初级）· 机考模拟</h1>
+    <p>6 套全真模拟 · 90 分钟 · 105 题 · 满分 140 分 · 及格 84 分</p>
+  </div>
+  <div class="sets" id="setList"></div>
+  <div class="tools">
+    <button class="btn" id="btnExport">⬇ 导出记录（JSON）</button>
+    <button class="btn" id="btnImport">⬆ 导入记录</button>
+    <input type="file" id="fileImport" accept=".json,application/json" hidden>
+    <span class="hint" id="toolHint">交卷后自动保存到“备考 / 作答记录”，用于后续复盘</span>
+  </div>
+  <div class="rules">
+    <b>机考规则</b>
+    <ul>
+      <li>70 道单选（1–70，每题 1 分）+ 35 道多选（71–105，每题 2 分），共 140 分，<b>84 分及格</b>，90 分钟。</li>
+      <li>多选：全部选对得 2 分；<b>少选</b>每个正确选项得 0.5 分；<b>错选一题归零</b>。</li>
+      <li>键盘：A–E 选，← → 切题，空格标记存疑。</li>
+      <li>交卷后可以看总分、错题、正确答案和解析，并自动保存作答记录到“备考 / 作答记录”。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 考试页 ============ -->
+<section id="exam" hidden>
+  <div class="bar"><div class="in">
+    <span class="name" id="examName">模拟卷</span>
+    <span class="timer" id="timer">90:00</span>
+    <span class="spacer"></span>
+    <span class="hint" id="prog">0 / 105</span>
+    <button class="btn" id="btnSheet">答题卡</button>
+    <button class="btn primary" id="btnSubmit">交卷</button>
+  </div></div>
+
+  <div class="wrap grid">
+    <div>
+      <div class="card">
+        <div class="qhead">
+          <b id="qno">第 1 题</b>
+          <span class="pill" id="qtype">单选题</span>
+          <span class="spacer"></span>
+          <button class="btn ghost" id="btnFlag">标记存疑 (空格)</button>
+        </div>
+        <div id="qimgs"></div>
+        <div class="opts" id="opts"></div>
+        <div class="nav">
+          <button class="btn" id="btnPrev">← 上一题</button>
+          <button class="btn" id="btnNext">下一题 →</button>
+          <span class="hint" id="answerHint"></span>
+        </div>
+      </div>
+    </div>
+
+    <aside class="card sheet" id="sheetBox">
+      <h3>答题卡</h3>
+      <div class="legend">
+        <span><i style="background:var(--accent-soft);border-color:#b9cdfb"></i>已答</span>
+        <span><i style="background:#fff"></i>未答</span>
+        <span><i style="background:var(--warn);border-radius:50%"></i>存疑</span>
+      </div>
+      <div class="sec">一、单项选择题（1–70）</div>
+      <div class="cells" id="cells1"></div>
+      <div class="sec">二、多项选择题（71–105）</div>
+      <div class="cells" id="cells2"></div>
+    </aside>
+  </div>
+</section>
+
+<!-- ============ 结果页 ============ -->
+<section id="result" hidden>
+  <div class="bar"><div class="in">
+    <span class="name" id="resName">成绩</span>
+    <span class="spacer"></span>
+    <button class="btn" id="btnHome">返回首页</button>
+    <button class="btn" id="btnExport2">导出记录</button>
+    <button class="btn primary" id="btnAgain">再考一次</button>
+  </div></div>
+  <div class="wrap">
+    <div class="card">
+      <div class="score">
+        <div class="big" id="resScore">0<small> / 140 分</small></div>
+        <div class="kv">
+          <div><b id="resSingle">0</b><span>单选 / 70</span></div>
+          <div><b id="resMulti">0</b><span>多选 / 70</span></div>
+          <div><b id="resTime">—</b><span>用时</span></div>
+          <div><b id="resWrong">0</b><span>错题数</span></div>
+        </div>
+      </div>
+      <div id="resVerdict" class="hint" style="margin-top:12px"></div>
+      <div id="exportStatus" class="hint" role="status" aria-live="polite" style="margin-top:8px"></div>
+    </div>
+    <div class="tabs" id="tabs"></div>
+    <div id="revList"></div>
+  </div>
+</section>
+
+<script>
+const CN6 = "\u4e00\u4e8c\u4e09\u56db\u4e94\u516d";
+
+const QIMG = {"1": {"1": ["q3/1_001.jpg"], "2": ["q3/1_002.jpg"], "3": ["q3/1_003.jpg"], "4": ["q3/1_004.jpg"], "5": ["q3/1_005.jpg"], "6": ["q3/1_006.jpg"], "7": ["q3/1_007.jpg"], "8": ["q3/1_008.jpg"], "9": ["q3/1_009.jpg"], "10": ["q3/1_010.jpg", "q3/1_010_b.jpg"], "11": ["q3/1_011.jpg"], "12": ["q3/1_012.jpg"], "13": ["q3/1_013.jpg"], "14": ["q3/1_014.jpg"], "15": ["q3/1_015.jpg"], "16": ["q3/1_016.jpg"], "17": ["q3/1_017.jpg"], "18": ["q3/1_018.jpg"], "19": ["q3/1_019.jpg"], "20": ["q3/1_020.jpg", "q3/1_020_b.jpg"], "21": ["q3/1_021.jpg"], "22": ["q3/1_022.jpg"], "23": ["q3/1_023.jpg"], "24": ["q3/1_024.jpg"], "25": ["q3/1_025.jpg"], "26": ["q3/1_026.jpg"], "27": ["q3/1_027.jpg"], "28": ["q3/1_028.jpg"], "29": ["q3/1_029.jpg"], "30": ["q3/1_030.jpg"], "31": ["q3/1_031.jpg", "q3/1_031_b.jpg"], "32": ["q3/1_032.jpg"], "33": ["q3/1_033.jpg"], "34": ["q3/1_034.jpg"], "35": ["q3/1_035.jpg"], "36": ["q3/1_036.jpg"], "37": ["q3/1_037.jpg"], "38": ["q3/1_038.jpg"], "39": ["q3/1_039.jpg"], "40": ["q3/1_040.jpg"], "41": ["q3/1_041.jpg"], "42": ["q3/1_042.jpg"], "43": ["q3/1_043.jpg", "q3/1_043_b.jpg"], "44": ["q3/1_044.jpg"], "45": ["q3/1_045.jpg"], "46": ["q3/1_046.jpg"], "47": ["q3/1_047.jpg"], "48": ["q3/1_048.jpg"], "49": ["q3/1_049.jpg"], "50": ["q3/1_050.jpg"], "51": ["q3/1_051.jpg"], "52": ["q3/1_052.jpg"], "53": ["q3/1_053.jpg"], "54": ["q3/1_054.jpg"], "55": ["q3/1_055.jpg"], "56": ["q3/1_056.jpg", "q3/1_056_b.jpg"], "57": ["q3/1_057.jpg"], "58": ["q3/1_058.jpg"], "59": ["q3/1_059.jpg"], "60": ["q3/1_060.jpg"], "61": ["q3/1_061.jpg"], "62": ["q3/1_062.jpg"], "63": ["q3/1_063.jpg"], "64": ["q3/1_064.jpg"], "65": ["q3/1_065.jpg"], "66": ["q3/1_066.jpg"], "67": ["q3/1_067.jpg"], "68": ["q3/1_068.jpg", "q3/1_068_b.jpg"], "69": ["q3/1_069.jpg"], "70": ["q3/1_070.jpg"], "71": ["q3/1_071.jpg"], "72": ["q3/1_072.jpg"], "73": ["q3/1_073.jpg"], "74": ["q3/1_074.jpg"], "75": ["q3/1_075.jpg"], "76": ["q3/1_076.jpg", "q3/1_076_b.jpg"], "77": ["q3/1_077.jpg"], "78": ["q3/1_078.jpg"], "79": ["q3/1_079.jpg"], "80": ["q3/1_080.jpg"], "81": ["q3/1_081.jpg"], "82": ["q3/1_082.jpg"], "83": ["q3/1_083.jpg"], "84": ["q3/1_084.jpg"], "85": ["q3/1_085.jpg"], "86": ["q3/1_086.jpg", "q3/1_086_b.jpg"], "87": ["q3/1_087.jpg"], "88": ["q3/1_088.jpg"], "89": ["q3/1_089.jpg"], "90": ["q3/1_090.jpg"], "91": ["q3/1_091.jpg"], "92": ["q3/1_092.jpg"], "93": ["q3/1_093.jpg"], "94": ["q3/1_094.jpg"], "95": ["q3/1_095.jpg"], "96": ["q3/1_096.jpg", "q3/1_096_b.jpg"], "97": ["q3/1_097.jpg"], "98": ["q3/1_098.jpg"], "99": ["q3/1_099.jpg"], "100": ["q3/1_100.jpg"], "101": ["q3/1_101.jpg"], "102": ["q3/1_102.jpg"], "103": ["q3/1_103.jpg"], "104": ["q3/1_104.jpg", "q3/1_104_b.jpg"], "105": ["q3/1_105.jpg"]}, "2": {"1": ["q3/2_001.jpg"], "2": ["q3/2_002.jpg"], "3": ["q3/2_003.jpg"], "4": ["q3/2_004.jpg"], "5": ["q3/2_005.jpg"], "6": ["q3/2_006.jpg"], "7": ["q3/2_007.jpg"], "8": ["q3/2_008.jpg"], "9": ["q3/2_009.jpg", "q3/2_009_b.jpg"], "10": ["q3/2_010.jpg"], "11": ["q3/2_011.jpg"], "12": ["q3/2_012.jpg"], "13": ["q3/2_013.jpg"], "14": ["q3/2_014.jpg"], "15": ["q3/2_015.jpg"], "16": ["q3/2_016.jpg"], "17": ["q3/2_017.jpg"], "18": ["q3/2_018.jpg"], "19": ["q3/2_019.jpg"], "20": ["q3/2_020.jpg"], "21": ["q3/2_021.jpg", "q3/2_021_b.jpg"], "22": ["q3/2_022.jpg"], "23": ["q3/2_023.jpg"], "24": ["q3/2_024.jpg"], "25": ["q3/2_025.jpg"], "26": ["q3/2_026.jpg"], "27": ["q3/2_027.jpg"], "28": ["q3/2_028.jpg"], "29": ["q3/2_029.jpg"], "30": ["q3/2_030.jpg"], "31": ["q3/2_031.jpg"], "32": ["q3/2_032.jpg", "q3/2_032_b.jpg"], "33": ["q3/2_033.jpg"], "34": ["q3/2_034.jpg"], "35": ["q3/2_035.jpg"], "36": ["q3/2_036.jpg"], "37": ["q3/2_037.jpg"], "38": ["q3/2_038.jpg"], "39": ["q3/2_039.jpg"], "40": ["q3/2_040.jpg"], "41": ["q3/2_041.jpg"], "42": ["q3/2_042.jpg"], "43": ["q3/2_043.jpg", "q3/2_043_b.jpg"], "44": ["q3/2_044.jpg"], "45": ["q3/2_045.jpg"], "46": ["q3/2_046.jpg"], "47": ["q3/2_047.jpg"], "48": ["q3/2_048.jpg"], "49": ["q3/2_049.jpg"], "50": ["q3/2_050.jpg"], "51": ["q3/2_051.jpg"], "52": ["q3/2_052.jpg"], "53": ["q3/2_053.jpg", "q3/2_053_b.jpg"], "54": ["q3/2_054.jpg"], "55": ["q3/2_055.jpg"], "56": ["q3/2_056.jpg"], "57": ["q3/2_057.jpg"], "58": ["q3/2_058.jpg"], "59": ["q3/2_059.jpg"], "60": ["q3/2_060.jpg"], "61": ["q3/2_061.jpg"], "62": ["q3/2_062.jpg"], "63": ["q3/2_063.jpg"], "64": ["q3/2_064.jpg"], "65": ["q3/2_065.jpg", "q3/2_065_b.jpg"], "66": ["q3/2_066.jpg"], "67": ["q3/2_067.jpg"], "68": ["q3/2_068.jpg"], "69": ["q3/2_069.jpg"], "70": ["q3/2_070.jpg"], "71": ["q3/2_071.jpg"], "72": ["q3/2_072.jpg"], "73": ["q3/2_073.jpg"], "74": ["q3/2_074.jpg", "q3/2_074_b.jpg"], "75": ["q3/2_075.jpg"], "76": ["q3/2_076.jpg"], "77": ["q3/2_077.jpg"], "78": ["q3/2_078.jpg"], "79": ["q3/2_079.jpg"], "80": ["q3/2_080.jpg"], "81": ["q3/2_081.jpg"], "82": ["q3/2_082.jpg"], "83": ["q3/2_083.jpg", "q3/2_083_b.jpg"], "84": ["q3/2_084.jpg"], "85": ["q3/2_085.jpg"], "86": ["q3/2_086.jpg"], "87": ["q3/2_087.jpg"], "88": ["q3/2_088.jpg"], "89": ["q3/2_089.jpg"], "90": ["q3/2_090.jpg"], "91": ["q3/2_091.jpg", "q3/2_091_b.jpg"], "92": ["q3/2_092.jpg"], "93": ["q3/2_093.jpg"], "94": ["q3/2_094.jpg"], "95": ["q3/2_095.jpg"], "96": ["q3/2_096.jpg"], "97": ["q3/2_097.jpg"], "98": ["q3/2_098.jpg"], "99": ["q3/2_099.jpg"], "100": ["q3/2_100.jpg", "q3/2_100_b.jpg"], "101": ["q3/2_101.jpg"], "102": ["q3/2_102.jpg"], "103": ["q3/2_103.jpg"], "104": ["q3/2_104.jpg"], "105": ["q3/2_105.jpg"]}, "3": {"1": ["q3/3_001.jpg"], "2": ["q3/3_002.jpg"], "3": ["q3/3_003.jpg"], "4": ["q3/3_004.jpg"], "5": ["q3/3_005.jpg"], "6": ["q3/3_006.jpg"], "7": ["q3/3_007.jpg"], "8": ["q3/3_008.jpg"], "9": ["q3/3_009.jpg"], "10": ["q3/3_010.jpg", "q3/3_010_b.jpg"], "11": ["q3/3_011.jpg"], "12": ["q3/3_012.jpg"], "13": ["q3/3_013.jpg"], "14": ["q3/3_014.jpg"], "15": ["q3/3_015.jpg"], "16": ["q3/3_016.jpg"], "17": ["q3/3_017.jpg"], "18": ["q3/3_018.jpg"], "19": ["q3/3_019.jpg"], "20": ["q3/3_020.jpg"], "21": ["q3/3_021.jpg"], "22": ["q3/3_022.jpg", "q3/3_022_b.jpg"], "23": ["q3/3_023.jpg"], "24": ["q3/3_024.jpg"], "25": ["q3/3_025.jpg"], "26": ["q3/3_026.jpg"], "27": ["q3/3_027.jpg"], "28": ["q3/3_028.jpg"], "29": ["q3/3_029.jpg"], "30": ["q3/3_030.jpg", "q3/3_030_b.jpg"], "31": ["q3/3_031.jpg"], "32": ["q3/3_032.jpg"], "33": ["q3/3_033.jpg"], "34": ["q3/3_034.jpg"], "35": ["q3/3_035.jpg"], "36": ["q3/3_036.jpg"], "37": ["q3/3_037.jpg"], "38": ["q3/3_038.jpg"], "39": ["q3/3_039.jpg"], "40": ["q3/3_040.jpg", "q3/3_040_b.jpg"], "41": ["q3/3_041.jpg"], "42": ["q3/3_042.jpg"], "43": ["q3/3_043.jpg"], "44": ["q3/3_044.jpg"], "45": ["q3/3_045.jpg"], "46": ["q3/3_046.jpg"], "47": ["q3/3_047.jpg"], "48": ["q3/3_048.jpg"], "49": ["q3/3_049.jpg"], "50": ["q3/3_050.jpg"], "51": ["q3/3_051.jpg"], "52": ["q3/3_052.jpg", "q3/3_052_b.jpg"], "53": ["q3/3_053.jpg"], "54": ["q3/3_054.jpg"], "55": ["q3/3_055.jpg"], "56": ["q3/3_056.jpg"], "57": ["q3/3_057.jpg"], "58": ["q3/3_058.jpg"], "59": ["q3/3_059.jpg"], "60": ["q3/3_060.jpg"], "61": ["q3/3_061.jpg"], "62": ["q3/3_062.jpg"], "63": ["q3/3_063.jpg", "q3/3_063_b.jpg"], "64": ["q3/3_064.jpg"], "65": ["q3/3_065.jpg"], "66": ["q3/3_066.jpg"], "67": ["q3/3_067.jpg"], "68": ["q3/3_068.jpg"], "69": ["q3/3_069.jpg"], "70": ["q3/3_070.jpg"], "71": ["q3/3_071.jpg"], "72": ["q3/3_072.jpg", "q3/3_072_b.jpg"], "73": ["q3/3_073.jpg"], "74": ["q3/3_074.jpg"], "75": ["q3/3_075.jpg"], "76": ["q3/3_076.jpg"], "77": ["q3/3_077.jpg"], "78": ["q3/3_078.jpg"], "79": ["q3/3_079.jpg"], "80": ["q3/3_080.jpg", "q3/3_080_b.jpg"], "81": ["q3/3_081.jpg"], "82": ["q3/3_082.jpg"], "83": ["q3/3_083.jpg"], "84": ["q3/3_084.jpg"], "85": ["q3/3_085.jpg"], "86": ["q3/3_086.jpg"], "87": ["q3/3_087.jpg"], "88": ["q3/3_088.jpg", "q3/3_088_b.jpg"], "89": ["q3/3_089.jpg"], "90": ["q3/3_090.jpg"], "91": ["q3/3_091.jpg"], "92": ["q3/3_092.jpg"], "93": ["q3/3_093.jpg"], "94": ["q3/3_094.jpg"], "95": ["q3/3_095.jpg"], "96": ["q3/3_096.jpg", "q3/3_096_b.jpg"], "97": ["q3/3_097.jpg"], "98": ["q3/3_098.jpg"], "99": ["q3/3_099.jpg"], "100": ["q3/3_100.jpg"], "101": ["q3/3_101.jpg"], "102": ["q3/3_102.jpg"], "103": ["q3/3_103.jpg"], "104": ["q3/3_104.jpg"], "105": ["q3/3_105.jpg"]}, "4": {"1": ["q3/4_001.jpg"], "2": ["q3/4_002.jpg"], "3": ["q3/4_003.jpg"], "4": ["q3/4_004.jpg"], "5": ["q3/4_005.jpg"], "6": ["q3/4_006.jpg"], "7": ["q3/4_007.jpg"], "8": ["q3/4_008.jpg"], "9": ["q3/4_009.jpg"], "10": ["q3/4_010.jpg", "q3/4_010_b.jpg"], "11": ["q3/4_011.jpg"], "12": ["q3/4_012.jpg"], "13": ["q3/4_013.jpg"], "14": ["q3/4_014.jpg"], "15": ["q3/4_015.jpg"], "16": ["q3/4_016.jpg"], "17": ["q3/4_017.jpg"], "18": ["q3/4_018.jpg"], "19": ["q3/4_019.jpg"], "20": ["q3/4_020.jpg"], "21": ["q3/4_021.jpg"], "22": ["q3/4_022.jpg"], "23": ["q3/4_023.jpg", "q3/4_023_b.jpg"], "24": ["q3/4_024.jpg"], "25": ["q3/4_025.jpg"], "26": ["q3/4_026.jpg"], "27": ["q3/4_027.jpg"], "28": ["q3/4_028.jpg"], "29": ["q3/4_029.jpg"], "30": ["q3/4_030.jpg"], "31": ["q3/4_031.jpg"], "32": ["q3/4_032.jpg"], "33": ["q3/4_033.jpg"], "34": ["q3/4_034.jpg"], "35": ["q3/4_035.jpg", "q3/4_035_b.jpg"], "36": ["q3/4_036.jpg"], "37": ["q3/4_037.jpg"], "38": ["q3/4_038.jpg"], "39": ["q3/4_039.jpg"], "40": ["q3/4_040.jpg"], "41": ["q3/4_041.jpg"], "42": ["q3/4_042.jpg"], "43": ["q3/4_043.jpg"], "44": ["q3/4_044.jpg"], "45": ["q3/4_045.jpg"], "46": ["q3/4_046.jpg"], "47": ["q3/4_047.jpg", "q3/4_047_b.jpg"], "48": ["q3/4_048.jpg"], "49": ["q3/4_049.jpg"], "50": ["q3/4_050.jpg"], "51": ["q3/4_051.jpg"], "52": ["q3/4_052.jpg"], "53": ["q3/4_053.jpg"], "54": ["q3/4_054.jpg"], "55": ["q3/4_055.jpg"], "56": ["q3/4_056.jpg"], "57": ["q3/4_057.jpg", "q3/4_057_b.jpg"], "58": ["q3/4_058.jpg"], "59": ["q3/4_059.jpg"], "60": ["q3/4_060.jpg"], "61": ["q3/4_061.jpg"], "62": ["q3/4_062.jpg"], "63": ["q3/4_063.jpg"], "64": ["q3/4_064.jpg"], "65": ["q3/4_065.jpg"], "66": ["q3/4_066.jpg"], "67": ["q3/4_067.jpg"], "68": ["q3/4_068.jpg", "q3/4_068_b.jpg"], "69": ["q3/4_069.jpg"], "70": ["q3/4_070.jpg"], "71": ["q3/4_071.jpg"], "72": ["q3/4_072.jpg"], "73": ["q3/4_073.jpg"], "74": ["q3/4_074.jpg"], "75": ["q3/4_075.jpg"], "76": ["q3/4_076.jpg"], "77": ["q3/4_077.jpg", "q3/4_077_b.jpg"], "78": ["q3/4_078.jpg"], "79": ["q3/4_079.jpg"], "80": ["q3/4_080.jpg"], "81": ["q3/4_081.jpg"], "82": ["q3/4_082.jpg"], "83": ["q3/4_083.jpg"], "84": ["q3/4_084.jpg"], "85": ["q3/4_085.jpg"], "86": ["q3/4_086.jpg", "q3/4_086_b.jpg"], "87": ["q3/4_087.jpg"], "88": ["q3/4_088.jpg"], "89": ["q3/4_089.jpg"], "90": ["q3/4_090.jpg"], "91": ["q3/4_091.jpg"], "92": ["q3/4_092.jpg"], "93": ["q3/4_093.jpg"], "94": ["q3/4_094.jpg"], "95": ["q3/4_095.jpg", "q3/4_095_b.jpg"], "96": ["q3/4_096.jpg"], "97": ["q3/4_097.jpg"], "98": ["q3/4_098.jpg"], "99": ["q3/4_099.jpg"], "100": ["q3/4_100.jpg"], "101": ["q3/4_101.jpg"], "102": ["q3/4_102.jpg"], "103": ["q3/4_103.jpg"], "104": ["q3/4_104.jpg", "q3/4_104_b.jpg"], "105": ["q3/4_105.jpg"]}, "5": {"1": ["q3/5_001.jpg"], "2": ["q3/5_002.jpg"], "3": ["q3/5_003.jpg"], "4": ["q3/5_004.jpg"], "5": ["q3/5_005.jpg"], "6": ["q3/5_006.jpg"], "7": ["q3/5_007.jpg"], "8": ["q3/5_008.jpg"], "9": ["q3/5_009.jpg"], "10": ["q3/5_010.jpg", "q3/5_010_b.jpg"], "11": ["q3/5_011.jpg"], "12": ["q3/5_012.jpg"], "13": ["q3/5_013.jpg"], "14": ["q3/5_014.jpg"], "15": ["q3/5_015.jpg"], "16": ["q3/5_016.jpg"], "17": ["q3/5_017.jpg"], "18": ["q3/5_018.jpg"], "19": ["q3/5_019.jpg"], "20": ["q3/5_020.jpg"], "21": ["q3/5_021.jpg", "q3/5_021_b.jpg"], "22": ["q3/5_022.jpg"], "23": ["q3/5_023.jpg"], "24": ["q3/5_024.jpg"], "25": ["q3/5_025.jpg"], "26": ["q3/5_026.jpg"], "27": ["q3/5_027.jpg"], "28": ["q3/5_028.jpg"], "29": ["q3/5_029.jpg"], "30": ["q3/5_030.jpg"], "31": ["q3/5_031.jpg"], "32": ["q3/5_032.jpg", "q3/5_032_b.jpg"], "33": ["q3/5_033.jpg"], "34": ["q3/5_034.jpg"], "35": ["q3/5_035.jpg"], "36": ["q3/5_036.jpg"], "37": ["q3/5_037.jpg"], "38": ["q3/5_038.jpg"], "39": ["q3/5_039.jpg"], "40": ["q3/5_040.jpg"], "41": ["q3/5_041.jpg"], "42": ["q3/5_042.jpg"], "43": ["q3/5_043.jpg", "q3/5_043_b.jpg"], "44": ["q3/5_044.jpg"], "45": ["q3/5_045.jpg"], "46": ["q3/5_046.jpg"], "47": ["q3/5_047.jpg"], "48": ["q3/5_048.jpg"], "49": ["q3/5_049.jpg"], "50": ["q3/5_050.jpg"], "51": ["q3/5_051.jpg", "q3/5_051_b.jpg"], "52": ["q3/5_052.jpg"], "53": ["q3/5_053.jpg"], "54": ["q3/5_054.jpg"], "55": ["q3/5_055.jpg"], "56": ["q3/5_056.jpg"], "57": ["q3/5_057.jpg"], "58": ["q3/5_058.jpg"], "59": ["q3/5_059.jpg"], "60": ["q3/5_060.jpg"], "61": ["q3/5_061.jpg"], "62": ["q3/5_062.jpg"], "63": ["q3/5_063.jpg", "q3/5_063_b.jpg"], "64": ["q3/5_064.jpg"], "65": ["q3/5_065.jpg"], "66": ["q3/5_066.jpg"], "67": ["q3/5_067.jpg"], "68": ["q3/5_068.jpg"], "69": ["q3/5_069.jpg"], "70": ["q3/5_070.jpg"], "71": ["q3/5_071.jpg"], "72": ["q3/5_072.jpg"], "73": ["q3/5_073.jpg", "q3/5_073_b.jpg"], "74": ["q3/5_074.jpg"], "75": ["q3/5_075.jpg"], "76": ["q3/5_076.jpg"], "77": ["q3/5_077.jpg"], "78": ["q3/5_078.jpg"], "79": ["q3/5_079.jpg"], "80": ["q3/5_080.jpg"], "81": ["q3/5_081.jpg", "q3/5_081_b.jpg"], "82": ["q3/5_082.jpg"], "83": ["q3/5_083.jpg"], "84": ["q3/5_084.jpg"], "85": ["q3/5_085.jpg"], "86": ["q3/5_086.jpg"], "87": ["q3/5_087.jpg"], "88": ["q3/5_088.jpg"], "89": ["q3/5_089.jpg"], "90": ["q3/5_090.jpg", "q3/5_090_b.jpg"], "91": ["q3/5_091.jpg"], "92": ["q3/5_092.jpg"], "93": ["q3/5_093.jpg"], "94": ["q3/5_094.jpg"], "95": ["q3/5_095.jpg"], "96": ["q3/5_096.jpg"], "97": ["q3/5_097.jpg"], "98": ["q3/5_098.jpg"], "99": ["q3/5_099.jpg"], "100": ["q3/5_100.jpg", "q3/5_100_b.jpg"], "101": ["q3/5_101.jpg"], "102": ["q3/5_102.jpg"], "103": ["q3/5_103.jpg"], "104": ["q3/5_104.jpg"], "105": ["q3/5_105.jpg"]}, "6": {"1": ["q3/6_001.jpg"], "2": ["q3/6_002.jpg"], "3": ["q3/6_003.jpg"], "4": ["q3/6_004.jpg"], "5": ["q3/6_005.jpg"], "6": ["q3/6_006.jpg"], "7": ["q3/6_007.jpg"], "8": ["q3/6_008.jpg"], "9": ["q3/6_009.jpg"], "10": ["q3/6_010.jpg", "q3/6_010_b.jpg"], "11": ["q3/6_011.jpg"], "12": ["q3/6_012.jpg"], "13": ["q3/6_013.jpg"], "14": ["q3/6_014.jpg"], "15": ["q3/6_015.jpg"], "16": ["q3/6_016.jpg"], "17": ["q3/6_017.jpg"], "18": ["q3/6_018.jpg"], "19": ["q3/6_019.jpg"], "20": ["q3/6_020.jpg"], "21": ["q3/6_021.jpg", "q3/6_021_b.jpg"], "22": ["q3/6_022.jpg"], "23": ["q3/6_023.jpg"], "24": ["q3/6_024.jpg"], "25": ["q3/6_025.jpg"], "26": ["q3/6_026.jpg"], "27": ["q3/6_027.jpg"], "28": ["q3/6_028.jpg"], "29": ["q3/6_029.jpg"], "30": ["q3/6_030.jpg"], "31": ["q3/6_031.jpg", "q3/6_031_b.jpg"], "32": ["q3/6_032.jpg"], "33": ["q3/6_033.jpg"], "34": ["q3/6_034.jpg"], "35": ["q3/6_035.jpg"], "36": ["q3/6_036.jpg"], "37": ["q3/6_037.jpg"], "38": ["q3/6_038.jpg"], "39": ["q3/6_039.jpg"], "40": ["q3/6_040.jpg"], "41": ["q3/6_041.jpg"], "42": ["q3/6_042.jpg"], "43": ["q3/6_043.jpg", "q3/6_043_b.jpg"], "44": ["q3/6_044.jpg"], "45": ["q3/6_045.jpg"], "46": ["q3/6_046.jpg"], "47": ["q3/6_047.jpg"], "48": ["q3/6_048.jpg"], "49": ["q3/6_049.jpg"], "50": ["q3/6_050.jpg"], "51": ["q3/6_051.jpg"], "52": ["q3/6_052.jpg"], "53": ["q3/6_053.jpg"], "54": ["q3/6_054.jpg"], "55": ["q3/6_055.jpg", "q3/6_055_b.jpg"], "56": ["q3/6_056.jpg"], "57": ["q3/6_057.jpg"], "58": ["q3/6_058.jpg"], "59": ["q3/6_059.jpg"], "60": ["q3/6_060.jpg"], "61": ["q3/6_061.jpg"], "62": ["q3/6_062.jpg", "q3/6_062_b.jpg"], "63": ["q3/6_063.jpg"], "64": ["q3/6_064.jpg"], "65": ["q3/6_065.jpg"], "66": ["q3/6_066.jpg"], "67": ["q3/6_067.jpg"], "68": ["q3/6_068.jpg"], "69": ["q3/6_069.jpg"], "70": ["q3/6_070.jpg"], "71": ["q3/6_071.jpg"], "72": ["q3/6_072.jpg"], "73": ["q3/6_073.jpg", "q3/6_073_b.jpg"], "74": ["q3/6_074.jpg"], "75": ["q3/6_075.jpg"], "76": ["q3/6_076.jpg"], "77": ["q3/6_077.jpg"], "78": ["q3/6_078.jpg"], "79": ["q3/6_079.jpg"], "80": ["q3/6_080.jpg"], "81": ["q3/6_081.jpg"], "82": ["q3/6_082.jpg"], "83": ["q3/6_083.jpg", "q3/6_083_b.jpg"], "84": ["q3/6_084.jpg"], "85": ["q3/6_085.jpg"], "86": ["q3/6_086.jpg"], "87": ["q3/6_087.jpg"], "88": ["q3/6_088.jpg"], "89": ["q3/6_089.jpg"], "90": ["q3/6_090.jpg"], "91": ["q3/6_091.jpg", "q3/6_091_b.jpg"], "92": ["q3/6_092.jpg"], "93": ["q3/6_093.jpg"], "94": ["q3/6_094.jpg"], "95": ["q3/6_095.jpg"], "96": ["q3/6_096.jpg"], "97": ["q3/6_097.jpg"], "98": ["q3/6_098.jpg"], "99": ["q3/6_099.jpg"], "100": ["q3/6_100.jpg", "q3/6_100_b.jpg"], "101": ["q3/6_101.jpg"], "102": ["q3/6_102.jpg"], "103": ["q3/6_103.jpg"], "104": ["q3/6_104.jpg"], "105": ["q3/6_105.jpg"]}};
+const AIMG = {"1": {"1": ["a3/1_001.jpg"], "2": ["a3/1_002.jpg"], "3": ["a3/1_003.jpg"], "4": ["a3/1_004.jpg"], "5": ["a3/1_005.jpg"], "6": ["a3/1_006.jpg"], "7": ["a3/1_007.jpg"], "8": ["a3/1_008.jpg"], "9": ["a3/1_009.jpg"], "10": ["a3/1_010.jpg"], "11": ["a3/1_011.jpg"], "12": ["a3/1_012.jpg"], "13": ["a3/1_013.jpg"], "14": ["a3/1_014.jpg"], "15": ["a3/1_015.jpg"], "16": ["a3/1_016.jpg", "a3/1_016_b.jpg"], "17": ["a3/1_017.jpg"], "18": ["a3/1_018.jpg"], "19": ["a3/1_019.jpg"], "20": ["a3/1_020.jpg"], "21": ["a3/1_021.jpg"], "22": ["a3/1_022.jpg"], "23": ["a3/1_023.jpg"], "24": ["a3/1_024.jpg"], "25": ["a3/1_025.jpg"], "26": ["a3/1_026.jpg"], "27": ["a3/1_027.jpg"], "28": ["a3/1_028.jpg"], "29": ["a3/1_029.jpg", "a3/1_029_b.jpg"], "30": ["a3/1_030.jpg"], "31": ["a3/1_031.jpg"], "32": ["a3/1_032.jpg"], "33": ["a3/1_033.jpg"], "34": ["a3/1_034.jpg"], "35": ["a3/1_035.jpg"], "36": ["a3/1_036.jpg"], "37": ["a3/1_037.jpg"], "38": ["a3/1_038.jpg"], "39": ["a3/1_039.jpg"], "40": ["a3/1_040.jpg"], "41": ["a3/1_041.jpg"], "42": ["a3/1_042.jpg"], "43": ["a3/1_043.jpg"], "44": ["a3/1_044.jpg"], "45": ["a3/1_045.jpg"], "46": ["a3/1_046.jpg"], "47": ["a3/1_047.jpg"], "48": ["a3/1_048.jpg"], "49": ["a3/1_049.jpg"], "50": ["a3/1_050.jpg", "a3/1_050_b.jpg"], "51": ["a3/1_051.jpg"], "52": ["a3/1_052.jpg"], "53": ["a3/1_053.jpg"], "54": ["a3/1_054.jpg"], "55": ["a3/1_055.jpg"], "56": ["a3/1_056.jpg"], "57": ["a3/1_057.jpg"], "58": ["a3/1_058.jpg"], "59": ["a3/1_059.jpg"], "60": ["a3/1_060.jpg"], "61": ["a3/1_061.jpg"], "62": ["a3/1_062.jpg"], "63": ["a3/1_063.jpg"], "64": ["a3/1_064.jpg"], "65": ["a3/1_065.jpg", "a3/1_065_b.jpg"], "66": ["a3/1_066.jpg"], "67": ["a3/1_067.jpg"], "68": ["a3/1_068.jpg"], "69": ["a3/1_069.jpg"], "70": ["a3/1_070.jpg"], "71": ["a3/1_071.jpg"], "72": ["a3/1_072.jpg"], "73": ["a3/1_073.jpg"], "74": ["a3/1_074.jpg"], "75": ["a3/1_075.jpg"], "76": ["a3/1_076.jpg"], "77": ["a3/1_077.jpg"], "78": ["a3/1_078.jpg", "a3/1_078_b.jpg"], "79": ["a3/1_079.jpg"], "80": ["a3/1_080.jpg"], "81": ["a3/1_081.jpg"], "82": ["a3/1_082.jpg"], "83": ["a3/1_083.jpg"], "84": ["a3/1_084.jpg"], "85": ["a3/1_085.jpg"], "86": ["a3/1_086.jpg"], "87": ["a3/1_087.jpg"], "88": ["a3/1_088.jpg"], "89": ["a3/1_089.jpg"], "90": ["a3/1_090.jpg"], "91": ["a3/1_091.jpg"], "92": ["a3/1_092.jpg"], "93": ["a3/1_093.jpg"], "94": ["a3/1_094.jpg"], "95": ["a3/1_095.jpg"], "96": ["a3/1_096.jpg"], "97": ["a3/1_097.jpg", "a3/1_097_b.jpg"], "98": ["a3/1_098.jpg"], "99": ["a3/1_099.jpg"], "100": ["a3/1_100.jpg"], "101": ["a3/1_101.jpg"], "102": ["a3/1_102.jpg"], "103": ["a3/1_103.jpg"], "104": ["a3/1_104.jpg"], "105": ["a3/1_105.jpg"]}, "2": {"1": ["a3/2_001.jpg"], "2": ["a3/2_002.jpg"], "3": ["a3/2_003.jpg"], "4": ["a3/2_004.jpg"], "5": ["a3/2_005.jpg"], "6": ["a3/2_006.jpg"], "7": ["a3/2_007.jpg"], "8": ["a3/2_008.jpg"], "9": ["a3/2_009.jpg"], "10": ["a3/2_010.jpg"], "11": ["a3/2_011.jpg"], "12": ["a3/2_012.jpg", "a3/2_012_b.jpg"], "13": ["a3/2_013.jpg"], "14": ["a3/2_014.jpg"], "15": ["a3/2_015.jpg"], "16": ["a3/2_016.jpg"], "17": ["a3/2_017.jpg"], "18": ["a3/2_018.jpg"], "19": ["a3/2_019.jpg"], "20": ["a3/2_020.jpg"], "21": ["a3/2_021.jpg"], "22": ["a3/2_022.jpg"], "23": ["a3/2_023.jpg"], "24": ["a3/2_024.jpg"], "25": ["a3/2_025.jpg"], "26": ["a3/2_026.jpg", "a3/2_026_b.jpg"], "27": ["a3/2_027.jpg"], "28": ["a3/2_028.jpg"], "29": ["a3/2_029.jpg"], "30": ["a3/2_030.jpg"], "31": ["a3/2_031.jpg"], "32": ["a3/2_032.jpg"], "33": ["a3/2_033.jpg"], "34": ["a3/2_034.jpg"], "35": ["a3/2_035.jpg"], "36": ["a3/2_036.jpg"], "37": ["a3/2_037.jpg"], "38": ["a3/2_038.jpg"], "39": ["a3/2_039.jpg", "a3/2_039_b.jpg"], "40": ["a3/2_040.jpg"], "41": ["a3/2_041.jpg"], "42": ["a3/2_042.jpg"], "43": ["a3/2_043.jpg"], "44": ["a3/2_044.jpg"], "45": ["a3/2_045.jpg"], "46": ["a3/2_046.jpg"], "47": ["a3/2_047.jpg"], "48": ["a3/2_048.jpg"], "49": ["a3/2_049.jpg"], "50": ["a3/2_050.jpg"], "51": ["a3/2_051.jpg", "a3/2_051_b.jpg"], "52": ["a3/2_052.jpg"], "53": ["a3/2_053.jpg"], "54": ["a3/2_054.jpg"], "55": ["a3/2_055.jpg"], "56": ["a3/2_056.jpg"], "57": ["a3/2_057.jpg"], "58": ["a3/2_058.jpg"], "59": ["a3/2_059.jpg"], "60": ["a3/2_060.jpg"], "61": ["a3/2_061.jpg"], "62": ["a3/2_062.jpg"], "63": ["a3/2_063.jpg"], "64": ["a3/2_064.jpg", "a3/2_064_b.jpg"], "65": ["a3/2_065.jpg"], "66": ["a3/2_066.jpg"], "67": ["a3/2_067.jpg"], "68": ["a3/2_068.jpg"], "69": ["a3/2_069.jpg"], "70": ["a3/2_070.jpg"], "71": ["a3/2_071.jpg"], "72": ["a3/2_072.jpg"], "73": ["a3/2_073.jpg"], "74": ["a3/2_074.jpg"], "75": ["a3/2_075.jpg"], "76": ["a3/2_076.jpg"], "77": ["a3/2_077.jpg"], "78": ["a3/2_078.jpg"], "79": ["a3/2_079.jpg", "a3/2_079_b.jpg"], "80": ["a3/2_080.jpg"], "81": ["a3/2_081.jpg"], "82": ["a3/2_082.jpg"], "83": ["a3/2_083.jpg"], "84": ["a3/2_084.jpg"], "85": ["a3/2_085.jpg"], "86": ["a3/2_086.jpg"], "87": ["a3/2_087.jpg"], "88": ["a3/2_088.jpg"], "89": ["a3/2_089.jpg"], "90": ["a3/2_090.jpg", "a3/2_090_b.jpg"], "91": ["a3/2_091.jpg"], "92": ["a3/2_092.jpg"], "93": ["a3/2_093.jpg"], "94": ["a3/2_094.jpg"], "95": ["a3/2_095.jpg"], "96": ["a3/2_096.jpg"], "97": ["a3/2_097.jpg"], "98": ["a3/2_098.jpg"], "99": ["a3/2_099.jpg"], "100": ["a3/2_100.jpg"], "101": ["a3/2_101.jpg"], "102": ["a3/2_102.jpg"], "103": ["a3/2_103.jpg", "a3/2_103_b.jpg"], "104": ["a3/2_104.jpg"], "105": ["a3/2_105.jpg"]}, "3": {"1": ["a3/3_001.jpg"], "2": ["a3/3_002.jpg"], "3": ["a3/3_003.jpg"], "4": ["a3/3_004.jpg"], "5": ["a3/3_005.jpg"], "6": ["a3/3_006.jpg"], "7": ["a3/3_007.jpg"], "8": ["a3/3_008.jpg"], "9": ["a3/3_009.jpg"], "10": ["a3/3_010.jpg"], "11": ["a3/3_011.jpg"], "12": ["a3/3_012.jpg"], "13": ["a3/3_013.jpg", "a3/3_013_b.jpg"], "14": ["a3/3_014.jpg"], "15": ["a3/3_015.jpg"], "16": ["a3/3_016.jpg"], "17": ["a3/3_017.jpg"], "18": ["a3/3_018.jpg"], "19": ["a3/3_019.jpg"], "20": ["a3/3_020.jpg"], "21": ["a3/3_021.jpg"], "22": ["a3/3_022.jpg"], "23": ["a3/3_023.jpg"], "24": ["a3/3_024.jpg"], "25": ["a3/3_025.jpg"], "26": ["a3/3_026.jpg", "a3/3_026_b.jpg"], "27": ["a3/3_027.jpg"], "28": ["a3/3_028.jpg"], "29": ["a3/3_029.jpg"], "30": ["a3/3_030.jpg"], "31": ["a3/3_031.jpg"], "32": ["a3/3_032.jpg"], "33": ["a3/3_033.jpg"], "34": ["a3/3_034.jpg"], "35": ["a3/3_035.jpg"], "36": ["a3/3_036.jpg"], "37": ["a3/3_037.jpg"], "38": ["a3/3_038.jpg"], "39": ["a3/3_039.jpg"], "40": ["a3/3_040.jpg"], "41": ["a3/3_041.jpg", "a3/3_041_b.jpg"], "42": ["a3/3_042.jpg"], "43": ["a3/3_043.jpg"], "44": ["a3/3_044.jpg"], "45": ["a3/3_045.jpg"], "46": ["a3/3_046.jpg"], "47": ["a3/3_047.jpg"], "48": ["a3/3_048.jpg"], "49": ["a3/3_049.jpg"], "50": ["a3/3_050.jpg"], "51": ["a3/3_051.jpg"], "52": ["a3/3_052.jpg"], "53": ["a3/3_053.jpg", "a3/3_053_b.jpg"], "54": ["a3/3_054.jpg"], "55": ["a3/3_055.jpg"], "56": ["a3/3_056.jpg"], "57": ["a3/3_057.jpg"], "58": ["a3/3_058.jpg"], "59": ["a3/3_059.jpg"], "60": ["a3/3_060.jpg"], "61": ["a3/3_061.jpg"], "62": ["a3/3_062.jpg"], "63": ["a3/3_063.jpg"], "64": ["a3/3_064.jpg"], "65": ["a3/3_065.jpg"], "66": ["a3/3_066.jpg"], "67": ["a3/3_067.jpg", "a3/3_067_b.jpg"], "68": ["a3/3_068.jpg"], "69": ["a3/3_069.jpg"], "70": ["a3/3_070.jpg"], "71": ["a3/3_071.jpg"], "72": ["a3/3_072.jpg"], "73": ["a3/3_073.jpg"], "74": ["a3/3_074.jpg"], "75": ["a3/3_075.jpg"], "76": ["a3/3_076.jpg"], "77": ["a3/3_077.jpg", "a3/3_077_b.jpg"], "78": ["a3/3_078.jpg"], "79": ["a3/3_079.jpg"], "80": ["a3/3_080.jpg"], "81": ["a3/3_081.jpg"], "82": ["a3/3_082.jpg"], "83": ["a3/3_083.jpg"], "84": ["a3/3_084.jpg"], "85": ["a3/3_085.jpg"], "86": ["a3/3_086.jpg"], "87": ["a3/3_087.jpg"], "88": ["a3/3_088.jpg"], "89": ["a3/3_089.jpg"], "90": ["a3/3_090.jpg"], "91": ["a3/3_091.jpg", "a3/3_091_b.jpg"], "92": ["a3/3_092.jpg"], "93": ["a3/3_093.jpg"], "94": ["a3/3_094.jpg"], "95": ["a3/3_095.jpg"], "96": ["a3/3_096.jpg"], "97": ["a3/3_097.jpg"], "98": ["a3/3_098.jpg"], "99": ["a3/3_099.jpg"], "100": ["a3/3_100.jpg"], "101": ["a3/3_101.jpg"], "102": ["a3/3_102.jpg"], "103": ["a3/3_103.jpg", "a3/3_103_b.jpg"], "104": ["a3/3_104.jpg"], "105": ["a3/3_105.jpg"]}, "4": {"1": ["a3/4_001.jpg"], "2": ["a3/4_002.jpg"], "3": ["a3/4_003.jpg"], "4": ["a3/4_004.jpg"], "5": ["a3/4_005.jpg"], "6": ["a3/4_006.jpg"], "7": ["a3/4_007.jpg"], "8": ["a3/4_008.jpg"], "9": ["a3/4_009.jpg"], "10": ["a3/4_010.jpg"], "11": ["a3/4_011.jpg"], "12": ["a3/4_012.jpg"], "13": ["a3/4_013.jpg", "a3/4_013_b.jpg"], "14": ["a3/4_014.jpg"], "15": ["a3/4_015.jpg"], "16": ["a3/4_016.jpg"], "17": ["a3/4_017.jpg"], "18": ["a3/4_018.jpg"], "19": ["a3/4_019.jpg"], "20": ["a3/4_020.jpg"], "21": ["a3/4_021.jpg"], "22": ["a3/4_022.jpg"], "23": ["a3/4_023.jpg"], "24": ["a3/4_024.jpg"], "25": ["a3/4_025.jpg", "a3/4_025_b.jpg"], "26": ["a3/4_026.jpg"], "27": ["a3/4_027.jpg"], "28": ["a3/4_028.jpg"], "29": ["a3/4_029.jpg"], "30": ["a3/4_030.jpg"], "31": ["a3/4_031.jpg"], "32": ["a3/4_032.jpg"], "33": ["a3/4_033.jpg"], "34": ["a3/4_034.jpg"], "35": ["a3/4_035.jpg"], "36": ["a3/4_036.jpg"], "37": ["a3/4_037.jpg"], "38": ["a3/4_038.jpg"], "39": ["a3/4_039.jpg"], "40": ["a3/4_040.jpg", "a3/4_040_b.jpg"], "41": ["a3/4_041.jpg"], "42": ["a3/4_042.jpg"], "43": ["a3/4_043.jpg"], "44": ["a3/4_044.jpg"], "45": ["a3/4_045.jpg"], "46": ["a3/4_046.jpg"], "47": ["a3/4_047.jpg"], "48": ["a3/4_048.jpg"], "49": ["a3/4_049.jpg"], "50": ["a3/4_050.jpg"], "51": ["a3/4_051.jpg"], "52": ["a3/4_052.jpg"], "53": ["a3/4_053.jpg"], "54": ["a3/4_054.jpg"], "55": ["a3/4_055.jpg"], "56": ["a3/4_056.jpg"], "57": ["a3/4_057.jpg", "a3/4_057_b.jpg"], "58": ["a3/4_058.jpg"], "59": ["a3/4_059.jpg"], "60": ["a3/4_060.jpg"], "61": ["a3/4_061.jpg"], "62": ["a3/4_062.jpg"], "63": ["a3/4_063.jpg"], "64": ["a3/4_064.jpg"], "65": ["a3/4_065.jpg"], "66": ["a3/4_066.jpg"], "67": ["a3/4_067.jpg"], "68": ["a3/4_068.jpg"], "69": ["a3/4_069.jpg"], "70": ["a3/4_070.jpg", "a3/4_070_b.jpg"], "71": ["a3/4_071.jpg"], "72": ["a3/4_072.jpg"], "73": ["a3/4_073.jpg"], "74": ["a3/4_074.jpg"], "75": ["a3/4_075.jpg"], "76": ["a3/4_076.jpg"], "77": ["a3/4_077.jpg"], "78": ["a3/4_078.jpg"], "79": ["a3/4_079.jpg"], "80": ["a3/4_080.jpg"], "81": ["a3/4_081.jpg", "a3/4_081_b.jpg"], "82": ["a3/4_082.jpg"], "83": ["a3/4_083.jpg"], "84": ["a3/4_084.jpg"], "85": ["a3/4_085.jpg"], "86": ["a3/4_086.jpg"], "87": ["a3/4_087.jpg"], "88": ["a3/4_088.jpg"], "89": ["a3/4_089.jpg"], "90": ["a3/4_090.jpg"], "91": ["a3/4_091.jpg"], "92": ["a3/4_092.jpg"], "93": ["a3/4_093.jpg"], "94": ["a3/4_094.jpg", "a3/4_094_b.jpg"], "95": ["a3/4_095.jpg"], "96": ["a3/4_096.jpg"], "97": ["a3/4_097.jpg"], "98": ["a3/4_098.jpg"], "99": ["a3/4_099.jpg"], "100": ["a3/4_100.jpg"], "101": ["a3/4_101.jpg"], "102": ["a3/4_102.jpg"], "103": ["a3/4_103.jpg"], "104": ["a3/4_104.jpg", "a3/4_104_b.jpg"], "105": ["a3/4_105.jpg"]}, "5": {"1": ["a3/5_001.jpg"], "2": ["a3/5_002.jpg"], "3": ["a3/5_003.jpg"], "4": ["a3/5_004.jpg"], "5": ["a3/5_005.jpg"], "6": ["a3/5_006.jpg"], "7": ["a3/5_007.jpg"], "8": ["a3/5_008.jpg"], "9": ["a3/5_009.jpg"], "10": ["a3/5_010.jpg"], "11": ["a3/5_011.jpg"], "12": ["a3/5_012.jpg"], "13": ["a3/5_013.jpg"], "14": ["a3/5_014.jpg"], "15": ["a3/5_015.jpg"], "16": ["a3/5_016.jpg", "a3/5_016_b.jpg"], "17": ["a3/5_017.jpg"], "18": ["a3/5_018.jpg"], "19": ["a3/5_019.jpg"], "20": ["a3/5_020.jpg"], "21": ["a3/5_021.jpg"], "22": ["a3/5_022.jpg"], "23": ["a3/5_023.jpg"], "24": ["a3/5_024.jpg"], "25": ["a3/5_025.jpg"], "26": ["a3/5_026.jpg"], "27": ["a3/5_027.jpg"], "28": ["a3/5_028.jpg"], "29": ["a3/5_029.jpg"], "30": ["a3/5_030.jpg"], "31": ["a3/5_031.jpg", "a3/5_031_b.jpg"], "32": ["a3/5_032.jpg"], "33": ["a3/5_033.jpg"], "34": ["a3/5_034.jpg"], "35": ["a3/5_035.jpg"], "36": ["a3/5_036.jpg"], "37": ["a3/5_037.jpg"], "38": ["a3/5_038.jpg"], "39": ["a3/5_039.jpg"], "40": ["a3/5_040.jpg"], "41": ["a3/5_041.jpg", "a3/5_041_b.jpg"], "42": ["a3/5_042.jpg"], "43": ["a3/5_043.jpg"], "44": ["a3/5_044.jpg"], "45": ["a3/5_045.jpg"], "46": ["a3/5_046.jpg"], "47": ["a3/5_047.jpg"], "48": ["a3/5_048.jpg"], "49": ["a3/5_049.jpg"], "50": ["a3/5_050.jpg"], "51": ["a3/5_051.jpg"], "52": ["a3/5_052.jpg"], "53": ["a3/5_053.jpg"], "54": ["a3/5_054.jpg"], "55": ["a3/5_055.jpg"], "56": ["a3/5_056.jpg", "a3/5_056_b.jpg"], "57": ["a3/5_057.jpg"], "58": ["a3/5_058.jpg"], "59": ["a3/5_059.jpg"], "60": ["a3/5_060.jpg"], "61": ["a3/5_061.jpg"], "62": ["a3/5_062.jpg"], "63": ["a3/5_063.jpg"], "64": ["a3/5_064.jpg"], "65": ["a3/5_065.jpg"], "66": ["a3/5_066.jpg"], "67": ["a3/5_067.jpg"], "68": ["a3/5_068.jpg"], "69": ["a3/5_069.jpg"], "70": ["a3/5_070.jpg", "a3/5_070_b.jpg"], "71": ["a3/5_071.jpg"], "72": ["a3/5_072.jpg"], "73": ["a3/5_073.jpg"], "74": ["a3/5_074.jpg"], "75": ["a3/5_075.jpg"], "76": ["a3/5_076.jpg"], "77": ["a3/5_077.jpg"], "78": ["a3/5_078.jpg"], "79": ["a3/5_079.jpg"], "80": ["a3/5_080.jpg"], "81": ["a3/5_081.jpg"], "82": ["a3/5_082.jpg", "a3/5_082_b.jpg"], "83": ["a3/5_083.jpg"], "84": ["a3/5_084.jpg"], "85": ["a3/5_085.jpg"], "86": ["a3/5_086.jpg"], "87": ["a3/5_087.jpg"], "88": ["a3/5_088.jpg"], "89": ["a3/5_089.jpg"], "90": ["a3/5_090.jpg"], "91": ["a3/5_091.jpg"], "92": ["a3/5_092.jpg"], "93": ["a3/5_093.jpg"], "94": ["a3/5_094.jpg"], "95": ["a3/5_095.jpg"], "96": ["a3/5_096.jpg"], "97": ["a3/5_097.jpg", "a3/5_097_b.jpg"], "98": ["a3/5_098.jpg"], "99": ["a3/5_099.jpg"], "100": ["a3/5_100.jpg"], "101": ["a3/5_101.jpg"], "102": ["a3/5_102.jpg"], "103": ["a3/5_103.jpg"], "104": ["a3/5_104.jpg"], "105": ["a3/5_105.jpg"]}, "6": {"1": ["a3/6_001.jpg"], "2": ["a3/6_002.jpg"], "3": ["a3/6_003.jpg"], "4": ["a3/6_004.jpg"], "5": ["a3/6_005.jpg"], "6": ["a3/6_006.jpg"], "7": ["a3/6_007.jpg"], "8": ["a3/6_008.jpg"], "9": ["a3/6_009.jpg"], "10": ["a3/6_010.jpg"], "11": ["a3/6_011.jpg"], "12": ["a3/6_012.jpg"], "13": ["a3/6_013.jpg", "a3/6_013_b.jpg"], "14": ["a3/6_014.jpg"], "15": ["a3/6_015.jpg"], "16": ["a3/6_016.jpg"], "17": ["a3/6_017.jpg"], "18": ["a3/6_018.jpg"], "19": ["a3/6_019.jpg"], "20": ["a3/6_020.jpg"], "21": ["a3/6_021.jpg"], "22": ["a3/6_022.jpg"], "23": ["a3/6_023.jpg"], "24": ["a3/6_024.jpg"], "25": ["a3/6_025.jpg"], "26": ["a3/6_026.jpg"], "27": ["a3/6_027.jpg"], "28": ["a3/6_028.jpg"], "29": ["a3/6_029.jpg"], "30": ["a3/6_030.jpg", "a3/6_030_b.jpg"], "31": ["a3/6_031.jpg"], "32": ["a3/6_032.jpg"], "33": ["a3/6_033.jpg"], "34": ["a3/6_034.jpg"], "35": ["a3/6_035.jpg"], "36": ["a3/6_036.jpg"], "37": ["a3/6_037.jpg"], "38": ["a3/6_038.jpg"], "39": ["a3/6_039.jpg"], "40": ["a3/6_040.jpg"], "41": ["a3/6_041.jpg"], "42": ["a3/6_042.jpg", "a3/6_042_b.jpg"], "43": ["a3/6_043.jpg"], "44": ["a3/6_044.jpg"], "45": ["a3/6_045.jpg"], "46": ["a3/6_046.jpg"], "47": ["a3/6_047.jpg"], "48": ["a3/6_048.jpg"], "49": ["a3/6_049.jpg"], "50": ["a3/6_050.jpg"], "51": ["a3/6_051.jpg"], "52": ["a3/6_052.jpg"], "53": ["a3/6_053.jpg"], "54": ["a3/6_054.jpg"], "55": ["a3/6_055.jpg"], "56": ["a3/6_056.jpg"], "57": ["a3/6_057.jpg", "a3/6_057_b.jpg"], "58": ["a3/6_058.jpg"], "59": ["a3/6_059.jpg"], "60": ["a3/6_060.jpg"], "61": ["a3/6_061.jpg"], "62": ["a3/6_062.jpg"], "63": ["a3/6_063.jpg"], "64": ["a3/6_064.jpg"], "65": ["a3/6_065.jpg"], "66": ["a3/6_066.jpg"], "67": ["a3/6_067.jpg"], "68": ["a3/6_068.jpg"], "69": ["a3/6_069.jpg"], "70": ["a3/6_070.jpg"], "71": ["a3/6_071.jpg"], "72": ["a3/6_072.jpg"], "73": ["a3/6_073.jpg"], "74": ["a3/6_074.jpg", "a3/6_074_b.jpg"], "75": ["a3/6_075.jpg"], "76": ["a3/6_076.jpg"], "77": ["a3/6_077.jpg"], "78": ["a3/6_078.jpg"], "79": ["a3/6_079.jpg"], "80": ["a3/6_080.jpg"], "81": ["a3/6_081.jpg"], "82": ["a3/6_082.jpg"], "83": ["a3/6_083.jpg"], "84": ["a3/6_084.jpg"], "85": ["a3/6_085.jpg"], "86": ["a3/6_086.jpg"], "87": ["a3/6_087.jpg", "a3/6_087_b.jpg"], "88": ["a3/6_088.jpg"], "89": ["a3/6_089.jpg"], "90": ["a3/6_090.jpg"], "91": ["a3/6_091.jpg"], "92": ["a3/6_092.jpg"], "93": ["a3/6_093.jpg"], "94": ["a3/6_094.jpg"], "95": ["a3/6_095.jpg"], "96": ["a3/6_096.jpg"], "97": ["a3/6_097.jpg"], "98": ["a3/6_098.jpg"], "99": ["a3/6_099.jpg"], "100": ["a3/6_100.jpg"], "101": ["a3/6_101.jpg", "a3/6_101_b.jpg"], "102": ["a3/6_102.jpg"], "103": ["a3/6_103.jpg"], "104": ["a3/6_104.jpg"], "105": ["a3/6_105.jpg"]}};
+const ANS  = {"1": {"1": "D", "2": "B", "3": "C", "4": "D", "5": "A", "6": "A", "7": "A", "8": "C", "9": "B", "10": "A", "11": "D", "12": "A", "13": "C", "14": "C", "15": "D", "16": "C", "17": "A", "18": "D", "19": "A", "20": "D", "21": "C", "22": "D", "23": "A", "24": "D", "25": "B", "26": "C", "27": "B", "28": "B", "29": "A", "30": "C", "31": "C", "32": "B", "33": "A", "34": "B", "35": "B", "36": "B", "37": "C", "38": "A", "39": "C", "40": "D", "41": "C", "42": "B", "43": "B", "44": "C", "45": "A", "46": "A", "47": "C", "48": "D", "49": "B", "50": "B", "51": "B", "52": "B", "53": "B", "54": "D", "55": "B", "56": "A", "57": "C", "58": "B", "59": "C", "60": "C", "61": "B", "62": "C", "63": "C", "64": "B", "65": "D", "66": "C", "67": "C", "68": "A", "69": "B", "70": "A", "71": "ABD", "72": "BE", "73": "BCE", "74": "AC", "75": "ABCD", "76": "ACDE", "77": "ABCE", "78": "BCDE", "79": "AB", "80": "ABCE", "81": "ABCD", "82": "ABCD", "83": "ABC", "84": "ABE", "85": "ABCD", "86": "ACE", "87": "BDE", "88": "ABE", "89": "ABCE", "90": "CE", "91": "AB", "92": "BDE", "93": "ACDE", "94": "AB", "95": "AB", "96": "ABDE", "97": "ABCD", "98": "ABCD", "99": "ACD", "100": "AB", "101": "AD", "102": "ABE", "103": "ACD", "104": "ABCE", "105": "BCD"}, "2": {"1": "B", "2": "A", "3": "A", "4": "C", "5": "D", "6": "C", "7": "A", "8": "D", "9": "D", "10": "B", "11": "A", "12": "C", "13": "D", "14": "B", "15": "A", "16": "A", "17": "A", "18": "D", "19": "C", "20": "B", "21": "C", "22": "A", "23": "D", "24": "B", "25": "B", "26": "B", "27": "C", "28": "B", "29": "A", "30": "B", "31": "A", "32": "A", "33": "D", "34": "D", "35": "B", "36": "C", "37": "C", "38": "C", "39": "B", "40": "A", "41": "A", "42": "A", "43": "B", "44": "C", "45": "C", "46": "D", "47": "A", "48": "D", "49": "D", "50": "D", "51": "A", "52": "A", "53": "C", "54": "D", "55": "D", "56": "B", "57": "C", "58": "C", "59": "B", "60": "B", "61": "C", "62": "D", "63": "D", "64": "B", "65": "C", "66": "B", "67": "C", "68": "D", "69": "A", "70": "A", "71": "ABDE", "72": "AC", "73": "BCD", "74": "ABCE", "75": "BCD", "76": "ACD", "77": "BDE", "78": "ABE", "79": "BDE", "80": "ABCD", "81": "BDE", "82": "CE", "83": "ABCE", "84": "CE", "85": "ABCD", "86": "ABDE", "87": "DE", "88": "ABC", "89": "ABCD", "90": "DE", "91": "BDE", "92": "AC", "93": "ABE", "94": "ABC", "95": "AE", "96": "ABCD", "97": "ABE", "98": "ABE", "99": "ABDE", "100": "ABCD", "101": "ABDE", "102": "ABCD", "103": "ABCD", "104": "AB", "105": "ABC"}, "3": {"1": "D", "2": "C", "3": "C", "4": "A", "5": "C", "6": "B", "7": "A", "8": "D", "9": "A", "10": "B", "11": "B", "12": "C", "13": "B", "14": "A", "15": "B", "16": "C", "17": "A", "18": "C", "19": "B", "20": "B", "21": "A", "22": "A", "23": "D", "24": "B", "25": "B", "26": "C", "27": "D", "28": "B", "29": "C", "30": "C", "31": "B", "32": "D", "33": "C", "34": "D", "35": "C", "36": "B", "37": "B", "38": "A", "39": "D", "40": "C", "41": "A", "42": "A", "43": "B", "44": "B", "45": "A", "46": "B", "47": "B", "48": "D", "49": "A", "50": "A", "51": "D", "52": "C", "53": "C", "54": "B", "55": "C", "56": "D", "57": "B", "58": "D", "59": "B", "60": "A", "61": "D", "62": "B", "63": "C", "64": "D", "65": "C", "66": "B", "67": "B", "68": "A", "69": "B", "70": "B", "71": "ABC", "72": "BCDE", "73": "AE", "74": "ABDE", "75": "ABC", "76": "BCE", "77": "ABCE", "78": "ACE", "79": "BCD", "80": "ABD", "81": "ABC", "82": "ABCE", "83": "ABCD", "84": "CD", "85": "BCD", "86": "CDE", "87": "ABCD", "88": "ACDE", "89": "ADE", "90": "BCE", "91": "CE", "92": "ABCD", "93": "ACD", "94": "BDE", "95": "ABCE", "96": "AD", "97": "CDE", "98": "CDE", "99": "ABCD", "100": "ABCE", "101": "ACE", "102": "ABCE", "103": "ABCD", "104": "ABCD", "105": "ABC"}, "4": {"1": "C", "2": "A", "3": "C", "4": "C", "5": "B", "6": "C", "7": "C", "8": "C", "9": "B", "10": "B", "11": "B", "12": "B", "13": "D", "14": "B", "15": "C", "16": "B", "17": "C", "18": "C", "19": "D", "20": "B", "21": "D", "22": "C", "23": "A", "24": "C", "25": "C", "26": "C", "27": "B", "28": "B", "29": "C", "30": "A", "31": "A", "32": "A", "33": "A", "34": "D", "35": "C", "36": "A", "37": "A", "38": "C", "39": "A", "40": "A", "41": "A", "42": "B", "43": "C", "44": "D", "45": "B", "46": "D", "47": "D", "48": "C", "49": "A", "50": "A", "51": "D", "52": "C", "53": "B", "54": "A", "55": "B", "56": "B", "57": "B", "58": "C", "59": "C", "60": "B", "61": "A", "62": "B", "63": "C", "64": "C", "65": "B", "66": "B", "67": "B", "68": "A", "69": "B", "70": "D", "71": "ABDE", "72": "ABCD", "73": "ABC", "74": "ABDE", "75": "ABD", "76": "ACD", "77": "BCE", "78": "ABCD", "79": "ABCE", "80": "ABE", "81": "ABD", "82": "ABCD", "83": "ABDE", "84": "ABD", "85": "AB", "86": "ABC", "87": "ABC", "88": "ABC", "89": "ACE", "90": "BCDE", "91": "AC", "92": "BC", "93": "AB", "94": "ABC", "95": "ABCE", "96": "BDE", "97": "ADE", "98": "AD", "99": "ABD", "100": "ABC", "101": "ABCE", "102": "BCDE", "103": "ABDE", "104": "ABDE", "105": "ABDE"}, "5": {"1": "D", "2": "A", "3": "B", "4": "B", "5": "B", "6": "A", "7": "D", "8": "C", "9": "B", "10": "B", "11": "B", "12": "C", "13": "A", "14": "B", "15": "D", "16": "D", "17": "D", "18": "C", "19": "D", "20": "C", "21": "B", "22": "B", "23": "B", "24": "C", "25": "D", "26": "C", "27": "C", "28": "B", "29": "A", "30": "A", "31": "D", "32": "B", "33": "C", "34": "C", "35": "A", "36": "B", "37": "B", "38": "A", "39": "B", "40": "C", "41": "C", "42": "B", "43": "C", "44": "C", "45": "B", "46": "C", "47": "A", "48": "B", "49": "D", "50": "A", "51": "C", "52": "C", "53": "B", "54": "C", "55": "C", "56": "D", "57": "C", "58": "C", "59": "D", "60": "A", "61": "B", "62": "B", "63": "B", "64": "D", "65": "C", "66": "B", "67": "B", "68": "D", "69": "B", "70": "A", "71": "BE", "72": "ABC", "73": "ABCD", "74": "ACD", "75": "AB", "76": "ABCE", "77": "ACDE", "78": "ACD", "79": "ABCD", "80": "ABCD", "81": "ABCD", "82": "ABC", "83": "ABCD", "84": "ADE", "85": "ABC", "86": "AC", "87": "ACD", "88": "AB", "89": "ABDE", "90": "BCDE", "91": "ABC", "92": "ABC", "93": "ABD", "94": "ABD", "95": "ABCD", "96": "ABD", "97": "ABCD", "98": "ABC", "99": "ABC", "100": "AC", "101": "ABDE", "102": "ABE", "103": "ABD", "104": "ADE", "105": "ABC"}, "6": {"1": "B", "2": "B", "3": "B", "4": "B", "5": "A", "6": "B", "7": "B", "8": "C", "9": "B", "10": "C", "11": "A", "12": "A", "13": "D", "14": "B", "15": "B", "16": "A", "17": "D", "18": "C", "19": "D", "20": "A", "21": "C", "22": "A", "23": "A", "24": "C", "25": "B", "26": "A", "27": "C", "28": "B", "29": "D", "30": "B", "31": "D", "32": "C", "33": "D", "34": "B", "35": "C", "36": "C", "37": "B", "38": "C", "39": "D", "40": "C", "41": "C", "42": "A", "43": "D", "44": "A", "45": "A", "46": "A", "47": "B", "48": "B", "49": "B", "50": "B", "51": "D", "52": "C", "53": "C", "54": "D", "55": "C", "56": "C", "57": "B", "58": "C", "59": "D", "60": "B", "61": "D", "62": "C", "63": "A", "64": "B", "65": "B", "66": "D", "67": "C", "68": "B", "69": "B", "70": "C", "71": "ABC", "72": "ABCD", "73": "BCD", "74": "BCDE", "75": "CDE", "76": "ACE", "77": "CD", "78": "ACE", "79": "ACD", "80": "ABC", "81": "ABCE", "82": "BCDE", "83": "ADE", "84": "ABC", "85": "BCE", "86": "AE", "87": "ACDE", "88": "ABC", "89": "AC", "90": "ABCD", "91": "ABDE", "92": "BCD", "93": "ABC", "94": "ABCE", "95": "BCD", "96": "ABC", "97": "BDE", "98": "ADE", "99": "ABCD", "100": "ABE", "101": "CDE", "102": "ABC", "103": "BDE", "104": "ACD", "105": "ACE"}};
+const TOTAL = 105, SINGLE = 70, SECONDS = 90 * 60;
+
+const $ = s => document.querySelector(s);
+const KEY = n => 'jjjs_full6_' + n;
+
+let st = null;       // {set, ans:{}, flag:{}, idx, endAt, startedAt, done}
+let tick = null;
+
+/* ---------------- 首页 ---------------- */
+function buildHome(){
+  const box = $('#setList');
+  box.innerHTML = '';
+  for (let n = 1; n <= 6; n++){
+    const saved = localStorage.getItem(KEY(n));
+    const b = document.createElement('button');
+    b.className = 'setcard';
+    let extra = '';
+    if (saved){
+      try {
+        const s = JSON.parse(saved);
+        const done = Object.keys(s.ans || {}).length;
+        extra = ` <span class="tag">已答 ${done} 题</span>`;
+      } catch(e){}
+    }
+    b.innerHTML = `<b>全真模拟（${CN6[n-1]}）${extra}</b><span>105 题 · 90 分钟</span>`;
+    b.onclick = () => {
+      const s = load(n);
+      if (s && !s.done){
+        if (confirm('这套有没做完的记录，继续上次？\n（点「取消」则重新开始，原记录作废）')) startExam(n, true);
+        else { localStorage.removeItem(KEY(n)); startExam(n); }
+      } else startExam(n);
+    };
+    box.appendChild(b);
+  }
+}
+
+/* ---------------- 开始 / 续考 ---------------- */
+function load(n){
+  try { return JSON.parse(localStorage.getItem(KEY(n))); } catch(e){ return null; }
+}
+function save(){
+  if (!st) return;
+  localStorage.setItem(KEY(st.set), JSON.stringify(st));
+}
+
+function startExam(n, resume){
+  const old = load(n);
+  if (resume && old && !old.done){
+    st = old;
+  } else {
+    st = { set:n, ans:{}, flag:{}, idx:0, startedAt:Date.now(),
+           endAt:Date.now() + SECONDS * 1000, done:false };
+  }
+  $('#home').hidden = true;
+  $('#result').hidden = true;
+  $('#exam').hidden = false;
+  $('#examName').textContent = `全真模拟（${CN6[n-1]}）· 经济基础知识`;
+  if (st.idx >= TOTAL || st.idx < 0) st.idx = 0;
+  render();
+  startTimer();
+  save();
+}
+
+/* ---------------- 计时 ---------------- */
+function startTimer(){
+  clearInterval(tick);
+  paintTimer();
+  tick = setInterval(() => {
+    paintTimer();
+    if (st && Date.now() >= st.endAt){ submit(true); }
+  }, 500);
+}
+function paintTimer(){
+  if (!st) return;
+  let left = Math.max(0, Math.round((st.endAt - Date.now()) / 1000));
+  const m = String(Math.floor(left / 60)).padStart(2, '0');
+  const s = String(left % 60).padStart(2, '0');
+  const el = $('#timer');
+  el.textContent = m + ':' + s;
+  el.classList.toggle('low', left <= 300);
+}
+
+/* ---------------- 渲染题目 ---------------- */
+function curNo(){ return st.idx + 1; }
+function isMulti(n){ return n > SINGLE; }
+
+function render(){
+  const n = curNo();
+  const files = QIMG[st.set][n] || [];
+  $('#qimgs').innerHTML = '<div class="qimgwrap">' + files.map(f =>
+    `<a href="${f}" target="_blank" title="点击看原图"><img class="qimg" src="${f}" alt="第${n}题"></a>`).join('') + '</div>';
+  $('#qno').textContent = `第 ${n} 题`;
+  const t = $('#qtype');
+  t.textContent = isMulti(n) ? '多选题' : '单选题';
+  t.className = 'pill' + (isMulti(n) ? ' multi' : '');
+
+  const letters = isMulti(n) ? ['A','B','C','D','E'] : ['A','B','C','D'];
+  const chosen = st.ans[n] || '';
+  const box = $('#opts');
+  box.innerHTML = '';
+  letters.forEach(L => {
+    const b = document.createElement('button');
+    b.className = 'opt' + (chosen.includes(L) ? ' on' : '');
+    b.textContent = L;
+    b.onclick = () => pick(L);
+    box.appendChild(b);
+  });
+  $('#btnFlag').textContent = st.flag[n] ? '★ 已标记 (空格取消)' : '标记存疑 (空格)';
+  $('#answerHint').textContent = chosen
+    ? (isMulti(n) ? `已选 ${chosen.split('').join(' ')}` : `已选 ${chosen}`) : '未作答';
+  $('#prog').textContent = `${Object.keys(st.ans).length} / ${TOTAL}`;
+  renderSheet();
+}
+
+function pick(L){
+  const n = curNo();
+  if (isMulti(n)){
+    let cur = (st.ans[n] || '').split('');
+    if (cur.includes(L)) cur = cur.filter(x => x !== L);
+    else cur.push(L);
+    cur.sort();
+    if (cur.length) st.ans[n] = cur.join(''); else delete st.ans[n];
+    save(); render();
+  } else {
+    st.ans[n] = L;
+    save(); render();
+    if (n < TOTAL) setTimeout(() => go(st.idx + 1), 140);
+  }
+}
+
+function go(i){
+  if (i < 0 || i >= TOTAL) return;
+  st.idx = i; save(); render();
+}
+
+function renderSheet(){
+  [[1, SINGLE, '#cells1'], [SINGLE + 1, TOTAL, '#cells2']].forEach(([a, b, sel]) => {
+    const box = $(sel);
+    box.innerHTML = '';
+    for (let n = a; n <= b; n++){
+      const d = document.createElement('button');
+      d.className = 'cell';
+      d.textContent = n;
+      if (st.ans[n]) d.classList.add('done');
+      if (st.flag[n]) d.classList.add('flag');
+      if (n === curNo()) d.classList.add('now');
+      d.onclick = () => go(n - 1);
+      box.appendChild(d);
+    }
+  });
+}
+
+/* ---------------- 交卷与判分 ---------------- */
+function grade(){
+  let single = 0, multi = 0, wrong = 0, reviews = [];
+  for (let n = 1; n <= TOTAL; n++){
+    const right = (ANS[st.set][n] || '').split('');
+    const mine = (st.ans[n] || '').split('');
+    let got = 0, kind = '';
+    if (!mine.length){ kind = 'none'; wrong++; reviews.push({n, mine:'', right:right.join(''), got:0, kind}); continue; }
+    if (n <= SINGLE){
+      if (mine[0] === right[0]) got = 1; else { kind = 'wrong'; wrong++; }
+    } else {
+      const bad = mine.filter(x => !right.includes(x));
+      if (bad.length){ got = 0; kind = 'zero'; wrong++; }
+      else if (mine.length === right.length){ got = 2; }
+      else { got = 0.5 * mine.length; kind = 'less'; wrong++; }
+    }
+    if (n <= SINGLE) single += got; else multi += got;
+    if (kind) reviews.push({n, mine:mine.join(''), right:right.join(''), got, kind});
+  }
+  return {single, multi, total: single + multi, wrong, reviews};
+}
+
+function submit(auto){
+  if (!st || st.done) return;
+  if (!auto){
+    const un = TOTAL - Object.keys(st.ans).length;
+    if (un > 0 && !confirm(`还有 ${un} 题没答，确定交卷？`)) return;
+  }
+  clearInterval(tick);
+  const g = grade();
+  const used = Math.min(SECONDS, Math.round((Date.now() - st.startedAt) / 1000));
+  st.done = true; st.grade = g; st.used = used;
+  localStorage.setItem(KEY(st.set), JSON.stringify(st));
+  showResult(g, used);
+  /* auto-export-on-submit */
+  try {
+    void exportRecords({automatic:true});
+  } catch (error) {
+    $('#exportStatus').textContent = '作答和成绩已保存，但自动下载未能发起：' + error.message;
+  }
+}
+
+function fmt(sec){
+  const m = Math.floor(sec / 60), s = sec % 60;
+  return `${m} 分 ${String(s).padStart(2,'0')} 秒`;
+}
+
+function showResult(g, used){
+  $('#exportStatus').textContent = '作答记录已保存。';
+  $('#exam').hidden = true;
+  $('#result').hidden = false;
+  $('#resName').textContent = `全真模拟（${CN6[st.set-1]}）· 成绩`;
+  $('#resScore').innerHTML = `${g.total}<small> / 140 分</small>`;
+  $('#resSingle').textContent = g.single;
+  $('#resMulti').textContent = g.multi;
+  $('#resTime').textContent = fmt(used);
+  $('#resWrong').textContent = g.wrong;
+  const pass = g.total >= 84;
+  $('#resVerdict').innerHTML = pass
+    ? `✅ 过了 84 分线（超 ${ (g.total - 84).toFixed(1) } 分）。但真实考试建议留 6–8 分安全垫。`
+    : `⚠️ 差 ${(84 - g.total).toFixed(1)} 分到 84。重点看下面「错选归零」和「少选」两类。`;
+
+  const tabs = [
+    ['all','全部错题', g.reviews],
+    ['zero','错选归零', g.reviews.filter(r => r.kind === 'zero')],
+    ['less','少选扣分', g.reviews.filter(r => r.kind === 'less')],
+    ['wrong','单选答错', g.reviews.filter(r => r.kind === 'wrong')],
+    ['none','未作答', g.reviews.filter(r => r.kind === 'none')],
+  ];
+  const tb = $('#tabs'); tb.innerHTML = '';
+  tabs.forEach(([k, label, arr], i) => {
+    const b = document.createElement('button');
+    b.className = 'tab' + (i === 0 ? ' on' : '');
+    b.textContent = `${label} (${arr.length})`;
+    b.onclick = () => {
+      [...tb.children].forEach(c => c.classList.remove('on'));
+      b.classList.add('on');
+      renderRev(arr);
+    };
+    tb.appendChild(b);
+  });
+  renderRev(g.reviews);
+}
+
+function renderRev(arr){
+  const box = $('#revList');
+  if (!arr.length){ box.innerHTML = '<div class="empty">这一类没有题目 🎉</div>'; return; }
+  arr.sort((a, b) => a.n - b.n);
+  box.innerHTML = arr.map(r => {
+    const qf = (QIMG[st.set][r.n] || []).map(f => `<img src="${f}">`).join('');
+    const af = (AIMG[st.set][r.n] || []).map(f => `<img src="${f}">`).join('');
+    const label = r.kind === 'zero' ? '错选归零' : r.kind === 'less' ? '少选' :
+                  r.kind === 'none' ? '未答' : '答错';
+    return `<div class="rev">
+      <div class="top">
+        <b>第 ${r.n} 题</b>
+        <span class="pill">${r.n > SINGLE ? '多选' : '单选'}</span>
+        <span class="pill">${label}</span>
+        <span class="spacer"></span>
+        <span>你选 <span class="mine bad">${r.mine || '—'}</span></span>
+        <span>正确 <span class="right">${r.right}</span></span>
+        <span>得 ${r.got} 分</span>
+      </div>
+      ${qf}
+      <details><summary>查看解析</summary>${af}</details>
+    </div>`;
+  }).join('');
+}
+
+/* ---------------- 事件 ---------------- */
+$('#btnSubmit').onclick = () => submit(false);
+$('#btnSheet').onclick = () => {
+  const box = $('#sheetBox');
+  box.classList.toggle('show');
+  if (box.classList.contains('show')) box.scrollIntoView({behavior:'smooth', block:'start'});
+};
+$('#btnPrev').onclick = () => go(st.idx - 1);
+$('#btnNext').onclick = () => go(st.idx + 1);
+$('#btnFlag').onclick = () => {
+  const n = curNo();
+  if (st.flag[n]) delete st.flag[n]; else st.flag[n] = 1;
+  save(); render();
+};
+$('#btnHome').onclick = () => { $('#result').hidden = true; $('#home').hidden = false; buildHome(); };
+$('#btnAgain').onclick = () => {
+  localStorage.removeItem(KEY(st.set));
+  startExam(st.set);
+};
+
+document.addEventListener('keydown', e => {
+  if (!st || $('#exam').hidden) return;
+  const k = e.key.toUpperCase();
+  if (['A','B','C','D','E'].includes(k)){ e.preventDefault(); pick(k); }
+  else if (e.key === 'ArrowLeft'){ e.preventDefault(); go(st.idx - 1); }
+  else if (e.key === 'ArrowRight'){ e.preventDefault(); go(st.idx + 1); }
+  else if (e.key === ' '){ e.preventDefault(); $('#btnFlag').click(); }
+});
+
+/* ---------------- 记录导出 / 导入 ---------------- */
+function collectRecords(){
+  const rec = {};
+  for (let i = 0; i < localStorage.length; i++){
+    const k = localStorage.key(i);
+    if (!k || k.indexOf('jjjs_') !== 0) continue;
+    try { rec[k] = JSON.parse(localStorage.getItem(k)); }
+    catch(e){ rec[k] = localStorage.getItem(k); }
+  }
+  return rec;
+}
+async function exportRecords(options = {}){
+  const data = {
+    app: '经济基础知识（初级）机考模拟',
+    schema: 1,
+    exportedAt: new Date().toISOString(),
+    source: decodeURIComponent(location.pathname.split('/').pop()),
+    note: 'records 的键就是 localStorage 键（jjjs_full6_1..6 / jjjs_exam_v3_1..3）；done=true 表示已交卷；grade 是判分结果，grade.reviews 只列错题。',
+    records: collectRecords()
+  };
+  const d = new Date(), pad = x => String(x).padStart(2, '0');
+  const name = `经济基础_全真6套_记录_${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}-${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}-${String(d.getMilliseconds()).padStart(3, '0')}.json`;
+  /* direct-record-archive */
+  const setMessage = message => {
+    const tip = $('#toolHint'), status = $('#exportStatus');
+    if (tip) tip.textContent = message;
+    if (status) status.textContent = message;
+  };
+  setMessage('正在将作答记录保存到“备考\\作答记录”…');
+  let timer;
+  try {
+    const controller = new AbortController();
+    timer = setTimeout(() => controller.abort(), 6000);
+    const response = await fetch('http://127.0.0.1:19363/api/records', {
+      method:'POST', headers:{'Content-Type':'application/json','X-Exam-Token':'256a55d0a85573b31b632781f508920cce8e62f70a07d7655fbd1a13b7a29aa5'},
+      body:JSON.stringify({filename:name,data}), signal:controller.signal
+    });
+    if (!response.ok) throw new Error('保存程序返回 ' + response.status);
+    const result = await response.json();
+    if (!result.ok) throw new Error(result.error || '保存失败');
+    setMessage(`已自动保存到“备考\\作答记录”：${name}`);
+    return name;
+  } catch (error) {
+    // Keep a downloadable copy if the local archive helper is temporarily unavailable.
+    const blob = new Blob([JSON.stringify(data, null, 1)], {type:'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    setMessage('本机归档暂未连接，已改为下载备份。记录仍保存在浏览器；请通过桌面试卷图标打开。');
+    return name;
+  } finally { clearTimeout(timer); }
+
+}
+function importRecords(file){
+  const fr = new FileReader();
+  fr.onload = () => {
+    const tip = $('#toolHint');
+    try {
+      const raw = JSON.parse(fr.result);
+      const rec = raw.records || raw;
+      const keys = Object.keys(rec).filter(k => k.indexOf('jjjs_') === 0);
+      if (!keys.length) throw new Error('empty');
+      keys.forEach(k => {
+        const v = typeof rec[k] === 'string' ? rec[k] : JSON.stringify(rec[k]);
+        localStorage.setItem(k, v);
+      });
+      if (tip) tip.textContent = `已导入 ${keys.length} 条：${keys.join('、')}，页面将刷新`;
+      setTimeout(() => location.reload(), 900);
+    } catch(e){
+      if (tip) tip.textContent = '导入失败：不是有效的记录 JSON';
+    }
+  };
+  fr.readAsText(file, 'utf-8');
+}
+$('#btnExport').onclick = exportRecords;
+$('#btnExport2').onclick = exportRecords;
+$('#btnImport').onclick = () => $('#fileImport').click();
+$('#fileImport').onchange = e => { if (e.target.files[0]) importRecords(e.target.files[0]); };
+
+/* ---------------- 启动 ---------------- */
+(function init(){
+  buildHome();
+  // 支持 #set=1 直接开考；#test 用于自检（随机作答后交卷）
+  const m = location.hash.match(/set=(\d)/);
+  const qm = location.hash.match(/q=(\d{1,3})/);
+  const t = location.hash.includes('test');
+  if (m){
+    startExam(+m[1], false);
+    if (qm){ st.idx = Math.min(TOTAL - 1, Math.max(0, +qm[1] - 1)); render(); }
+    if (t){
+      const truth = ANS[String(+m[1])];
+      for (let n = 1; n <= TOTAL; n++){
+        let r = truth[n];
+        const roll = Math.random();
+        if (roll < 0.18) continue;                        // 空着
+        if (n <= SINGLE){ st.ans[n] = roll < 0.35 ? 'ABCD'[Math.floor(Math.random()*4)] : r; }
+        else {
+          const arr = r.split('');
+          if (roll < 0.30) st.ans[n] = arr.slice(0, Math.max(1, arr.length - 1)).join('');
+          else if (roll < 0.45) st.ans[n] = (r + 'ABCDE'[Math.floor(Math.random()*5)]).split('').filter((v,i,a)=>a.indexOf(v)===i).sort().join('');
+          else st.ans[n] = r;
+        }
+      }
+      st.endAt = Date.now() + 55 * 60 * 1000;
+      submit(true);
+    }
+  }
+})();
+</script>
+<style id="dsh-mobile-fit">
+@media (max-width: 640px) {
+  [class*="imgwrap"] { overflow-x: visible !important; max-width: 100% !important; }
+  [class*="imgwrap"] img { min-width: 0 !important; width: 100% !important; height: auto !important; }
+  img.qimg { max-width: 100% !important; height: auto !important; }
+}
+</style>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>经济基础知识（初级）· 背诵清单</title>
+<style>
+:root{--ink:#1a1a1a;--sub:#666;--line:#e3e6ea;--bg:#f6f7f9;--blue:#1f5eff;--green:#0a7d3c;--amber:#b26b00}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 "Microsoft YaHei","PingFang SC",system-ui,sans-serif}
+.wrap{max-width:900px;margin:0 auto;padding:18px 16px 60px}
+header{background:linear-gradient(135deg,#1f5eff,#3b82f6);color:#fff;border-radius:12px;padding:20px 22px}
+header h1{margin:0 0 6px;font-size:21px}
+header p{margin:0;font-size:13px;opacity:.92}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 18px;position:sticky;top:0;background:var(--bg);padding:8px 0;z-index:9}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px;font-size:13px;cursor:pointer;color:#333}
+.chip.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.chip.ghost{color:var(--sub)}
+.daytitle{margin:24px 0 10px;font-size:15px;font-weight:700;color:#333;display:flex;align-items:center;gap:8px}
+.daytitle span{font-size:12px;font-weight:400;color:var(--sub)}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:10px}
+.card .no{display:inline-block;min-width:26px;height:22px;line-height:22px;text-align:center;background:#eef2ff;color:var(--blue);border-radius:6px;font-size:12px;font-weight:700;margin-right:8px}
+.card .t{font-weight:700;font-size:15px}
+.card .m{display:inline-block;margin-left:8px;background:#fff7e6;color:var(--amber);border-radius:6px;padding:1px 9px;font-size:13px;font-weight:700;letter-spacing:1px}
+.card ul{margin:8px 0 0;padding-left:22px;color:#333}
+.card li{margin:2px 0}
+.card li b{color:var(--blue);font-weight:600}
+.tip{margin-top:8px;font-size:12.5px;color:var(--sub);border-left:3px solid #dbe3f5;padding-left:8px}
+.done{margin-top:8px;font-size:13px;color:var(--sub);cursor:pointer;user-select:none}
+.done input{vertical-align:-2px;margin-right:5px}
+body.blur ul,body.blur .tip{filter:blur(5px);cursor:pointer}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:640px){.grid2{grid-template-columns:1fr}}
+footer{margin-top:26px;color:var(--sub);font-size:12.5px;text-align:center}
+@media print{
+  body{background:#fff}
+  .bar,.done{display:none}
+  .card{break-inside:avoid;border-color:#ccc}
+  header{background:#1f5eff !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>经济基础知识（初级）· 背诵清单</h1>
+  <p>6 天 · 66 条 · 只背这些，不再翻教材 &nbsp;|&nbsp; 考试 11/7 上午 · 84 分过线</p>
+</header>
+
+<div class="bar">
+  <button class="chip on" data-day="all">全部</button>
+  <button class="chip" data-day="1">D1 财政</button>
+  <button class="chip" data-day="2">D2 会计</button>
+  <button class="chip" data-day="3">D3 货币+法律</button>
+  <button class="chip" data-day="4">D4 统计+经济</button>
+  <button class="chip" data-day="5">D5 错题结论</button>
+  <button class="chip ghost" id="blurBtn">遮住答案自测</button>
+</div>
+
+<div id="list"></div>
+
+<footer>勾选会随着浏览器记住。打印用 Ctrl+P，一页两栏也看得清。</footer>
+</div>
+
+<script>
+const DATA = [
+// ============ D1 财政 ============
+{d:1,p:"财政",t:"财政三大职能",m:"配、分、稳",x:["<b>配</b>置资源职能","<b>分</b>配收入职能","经济<b>稳</b>定与发展职能"],tip:"只考三选，不会问细节。看到“就业、物价、国际收支”→稳定。"},
+{d:1,p:"财政",t:"税收三性",m:"强、无、固",x:["<b>强</b>制性","无偿性（<b>无</b>）","<b>固</b>定性"],tip:"“无偿性”不是“免费”，是征税不给对价。"},
+{d:1,p:"财政",t:"政府预算五原则",m:"完、统、可、公、年",x:["<b>完</b>整性","<b>统</b>一性","<b>可</b>靠性","<b>公</b>开性","<b>年</b>度性"],tip:"多选题常把“统一性”漏掉——你上次就漏了它。"},
+{d:1,p:"财政",t:"财政政策构成",m:"收、支、平、债",x:["财政收入","财政支出","预算平衡","国家债务"],tip:"陷阱：利率、汇率属于货币政策，不在财政政策里。"},
+{d:1,p:"财政",t:"非税收入 8 项",m:"基、专、彩、费、罚、资、资、他",x:["政府性<b>基</b>金","<b>专</b>项收入","<b>彩</b>票资金","行政事业性收<b>费</b>","<b>罚</b>没收入","国有<b>资</b>本经营","国有<b>资</b>源（资产）有偿使用","其<b>他</b>"],tip:"罚没收入最容易被忘，考过。"},
+{d:1,p:"财政",t:"财政支出规模的因素",m:"经、政、体、社",x:["<b>经</b>济发展水平","<b>政</b>治因素","经济<b>体</b>制与制度","<b>社</b>会因素"],tip:"没有“文化”，没有“消费结构”——这是干扰项。"},
+{d:1,p:"财政",t:"财政收入分配职能的手段",m:"界、税、转、支",x:["明确分配范围与<b>界</b>限","<b>税</b>收调节","<b>转</b>移支付","公共<b>支</b>出"],tip:"四个，别只记三个。"},
+{d:1,p:"财政",t:"财产税的特点",m:"能力、稳定、弹性小、不转嫁",x:["符合纳税<b>能力</b>原则","税源充分<b>稳定</b>","收入<b>弹性小</b>","不易<b>转嫁</b>"],tip:"“资源配置职能”是干扰项——那是流转税的说法。"},
+{d:1,p:"财政",t:"税制改革目标",m:"结构、功能、税负、法治",x:["优化税制<b>结构</b>","完善调节<b>功能</b>","稳定宏观<b>税负</b>","推进依法<b>治</b>税"],tip:"四选，缺一个就是错。"},
+{d:1,p:"财政",t:"财政收入按取得依据分类",m:"权、产",x:["政府财政收入（凭<b>政治权力</b>）","国有资产收入（凭<B>财产所有权</B>）"],tip:"只看“依据”两个字！税收收入、转移性收入、农业收入都<b>不属于</b>这个分类——它们本身没错，但答的不是这个问题。"},
+{d:1,p:"财政",t:"国库单一账户制度的特点",m:"归集、直缴、直付",x:["所有财政性资金纳入国库单一账户体系","收入直接缴入国库或财政专户","支出通过单一账户体系支付给供应商或用款单位"],tip:"“是预算执行的重要环节”不是特点，是地位——你上次就栽在这。"},
+{d:1,p:"财政",t:"政府预算的分类（零基/增量）",m:"按编制依据的内容和方法",x:["零基预算、增量预算 → 按<b>预算编制依据的内容和方法</b>分类","经常性预算、资本性预算 → 按<b>收支性质</b>分类","平衡/赤字/结余预算 → 按<b>收支平衡状况</b>分类"],tip:"分类题必考“按什么分”，先圈题干那两个字。"},
+
+// ============ D2 会计 ============
+{d:2,p:"会计",t:"会计四大基本前提",m:"主、持、分、货",x:["会计<b>主</b>体","<b>持</b>续经营","会计<b>分</b>期","<b>货</b>币计量"],tip:"四件套，少一个都错。你上次只选了两个。"},
+{d:2,p:"会计",t:"会计六要素",m:"资负所、收费利",x:["<b>资</b>产","<b>负</b>债","所有者权益（<b>所</b>）","<b>收</b>入","<b>费</b>用","<b>利</b>润"],tip:"前三个是资产负债表，后三个是利润表。"},
+{d:2,p:"会计",t:"会计信息质量要求 8 项",m:"可、关、理、比、实、重、谨、及",x:["<b>可</b>靠性","<b>关</b>联性","<b>理</b>解性","<b>比</b>较性","<b>实</b>质重于形式","<b>重</b>要性","<b>谨</b>慎性","<b>及</b>时性"],tip:"八选，考多选时最容易漏“及时性”和“重要性”。"},
+{d:2,p:"会计",t:"四表一注",m:"资、利、现、权 + 附注",x:["资产负债表","利润表","现金流量表","所有者权益变动表","附注"],tip:"“四表一注”，问“财务报表包括”就答这五个。"},
+{d:2,p:"会计",t:"现金流量三类",m:"经、投、筹",x:["<b>经</b>营活动","<b>投</b>资活动","<b>筹</b>资活动"],tip:"三类，不会更多。"},
+{d:2,p:"会计",t:"会计等式",m:"资产 = 负债 + 所有者权益",x:["静态：资产 = 负债 + 所有者权益","动态：收入 − 费用 = 利润","扩展：资产 = 负债 + 所有者权益 +（收入 − 费用）"],tip:"问到就写第一个。"},
+{d:2,p:"会计",t:"会计确认计量基础",m:"权责发生制",x:["企业会计以<b>权责发生制</b>为基础","针对的是“什么时候记”，不是“什么时候收钱”"],tip:"和“收付实现制”对着记，后者是预算会计。"},
+{d:2,p:"会计",t:"会计要素计量属性",m:"历、重、净、现、公",x:["<b>历</b>史成本","<b>重</b>置成本","可变<b>现</b>净值","<b>现</b>值","<b>公</b>允价值"],tip:"五个，会考“下列属于计量属性的有”。"},
+{d:2,p:"会计",t:"资产负债表项目排列",m:"资产按流动性，负债按到期日",x:["资产：流动性从强到弱（货币资金→存货→固定资产）","负债：到期日从近到远（短期借款→长期借款）"],tip:"“流动性”这三个字是关键词。"},
+{d:2,p:"会计",t:"利润表结构",m:"收入 − 费用 = 利润",x:["营业利润 = 营业收入 − 营业成本 − 税金及附加 − 期间费用 ± 其他","利润总额 = 营业利润 + 营业外收入 − 营业外支出","净利润 = 利润总额 − 所得税费用"],tip:"三层，从营业利润到利润总额到净利润。"},
+
+// ============ D3 货币 + 法律 ============
+{d:3,p:"货币",t:"货币五大职能",m:"尺、流、贮、支、世",x:["价值<b>尺</b>度","<b>流</b>通手段","<b>贮</b>藏手段","<b>支</b>付手段","<b>世</b>界货币"],tip:"“基本职能”只答前两个：价值尺度 + 流通手段。"},
+{d:3,p:"货币",t:"货币制度四要素",m:"材、单、铸、准",x:["货币<b>材</b>料","货币<b>单</b>位","<b>铸</b>币的铸造与流通","发行<b>准</b>备制度"],tip:"四要素，缺一不可。"},
+{d:3,p:"货币",t:"商业银行四职能",m:"中、支、创、服",x:["信用<b>中</b>介","<b>支</b>付中介","信用<b>创</b>造","金融<b>服</b>务"],tip:"<b>发行货币是央行</b>，不是商业银行——你上次就选错了这个。"},
+{d:3,p:"货币",t:"中央银行三大职能",m:"发行的银行、银行的银行、政府的银行",x:["<b>发行的银行</b>：垄断货币发行","<b>银行的银行</b>：最后贷款人、集中准备金","<b>政府的银行</b>：代理国库、代表政府参加国际金融活动"],tip:"三个“的银行”，按顺序背。"},
+{d:3,p:"货币",t:"货币政策三大工具",m:"准、贴、公",x:["法定存款<b>准</b>备金率","再<b>贴</b>现率","<b>公</b>开市场业务"],tip:"一般性工具就这三个，其他算“选择性工具”。"},
+{d:3,p:"货币",t:"国际收支平衡表项目",m:"经、资、储、误",x:["<b>经</b>常项目","<b>资</b>本与金融项目","<b>储</b>备资产","<b>误</b>差与遗漏"],tip:"四项，题库高频。"},
+{d:3,p:"法律",t:"民事行为能力",m:"8 限 18 全，16 挣钱算完全",x:["不满 <b>8</b> 周岁：无民事行为能力","<b>8</b> 周岁以上不满 <b>18</b>：限制民事行为能力","<b>18</b> 周岁以上：完全民事行为能力","<b>16</b> 周岁以上不满 18，以自己劳动收入为主要生活来源：视为完全"],tip:"三档 + 一个例外，考判断。"},
+{d:3,p:"法律",t:"诉讼时效",m:"三常规、二十顶",x:["普通诉讼时效：<b>3</b> 年","最长保护期限：<b>20</b> 年（从权利受损害之日起算）"],tip:"国际货物买卖合同等技术进出口合同是 4 年，偶尔考。"},
+{d:3,p:"法律",t:"行政处罚种类",m:"警、罚、没、停、吊、拘",x:["<b>警</b>告","<b>罚</b>款","<b>没</b>收违法所得、没收非法财物","责令<b>停</b>产停业","暂扣或<b>吊</b>销许可证、执照","行政<b>拘</b>留"],tip:"<b>通报批评是行政处罚</b>，行政强制是另一码事。"},
+{d:3,p:"法律",t:"仲裁协议无效的情形",m:"口、超、能、胁、明",x:["<b>口</b>头形式订立","约定事项<b>超</b>出仲裁范围","无民事行为能力人或限制民事行为能力人订立","一方<b>胁</b>迫","约定<b>不</b>明（仲裁委员会约定不明）"],tip:"五条，考多选。"},
+{d:3,p:"法律",t:"行政许可的特点",m:"申请、授益、要式、解禁",x:["依<b>申请</b>的行政行为","<b>授益</b>性行政行为","<b>要式</b>行政行为","前提是法律的<b>一般禁止</b>（解禁）"],tip:"“依职权主动作出”“一般非要式”都是反的——你上次选了这两个。"},
+{d:3,p:"法律",t:"行政主体三特征",m:"有权、名义、担责",x:["享有行政权、从事行政管理活动","以<b>自己</b>的名义行使行政权","独立承担法律责任"],tip:"权力机关、法院、检察院都<b>不是</b>行政主体。"},
+{d:3,p:"法律",t:"法人成立条件",m:"依法、财产、名称、独立担责",x:["依法成立","有必要的财产或者经费","有自己的名称、组织机构和场所","能够独立承担民事责任"],tip:"法人的民事权利能力和行为能力，<b>成立时产生、终止时消灭</b>。"},
+{d:3,p:"法律",t:"可撤销的民事行为",m:"欺、胁、误、失",x:["<b>欺</b>诈（不损害国家利益）","<b>胁</b>迫","重大<b>误</b>解","显<b>失</b>公平"],tip:"损害国家利益的欺诈是<b>无效</b>，不是可撤销——这是分界线。"},
+{d:3,p:"法律",t:"监护人的职责",m:"护、代、教",x:["保护被监护人的人身权利、财产权利及其他合法权益","担任被监护人的<b>法定代理人</b>","对被监护人进行<b>教育</b>和照顾"],tip:"没有“处分被监护人财产”这一项。"},
+{d:3,p:"法律",t:"行政强制",m:"措施 + 执行",x:["行政<b>强制措施</b>：查封、扣押、冻结等","行政<b>强制</b>执行：加处罚款、划拨存款、拍卖等"],tip:"两块，别把“通报批评”算进来。"},
+
+// ============ D4 统计 + 经济 ============
+{d:4,p:"统计",t:"四种计量尺度",m:"类、序、距、比",x:["定<b>类</b>尺度（分类，不能比大小）","定<b>序</b>尺度（能排序，不能加减）","定<b>距</b>尺度（能加减，无绝对零点）","定<b>比</b>尺度（能乘除，有绝对零点）"],tip:"温度是定距，身高体重是定比。"},
+{d:4,p:"统计",t:"四种统计调查方式",m:"普、抽、重、典",x:["<b>普</b>查（全面调查）","<b>抽</b>样调查（推断总体）","<b>重</b>点调查（选重点单位）","<b>典</b>型调查（选典型单位）"],tip:"重点调查和典型调查都是<b>非全面</b>调查，但选单位的标准不同。"},
+{d:4,p:"统计",t:"集中趋势的三个测度",m:"均、中、众",x:["<b>均</b>值（受极端值影响大）","<b>中</b>位数（不受极端值影响）","<b>众</b>数（出现次数最多）"],tip:"问“不受极端值影响”就答中位数。"},
+{d:4,p:"统计",t:"离散程度的测度",m:"极、方、标、离",x:["<b>极</b>差","<b>方</b>差","<b>标</b>准差","<b>离</b>散系数"],tip:"离散系数 = 标准差 ÷ 均值，用来比较不同水平的数据。"},
+{d:4,p:"统计",t:"指数",m:"拉基帕报",x:["<b>拉</b>氏指数：用<b>基</b>期数量加权","<b>帕</b>氏指数：用<b>报</b>告期数量加权"],tip:"四个字连起来背：拉基、帕报。"},
+{d:4,p:"经济",t:"社会主义本质",m:"两力、两消、一共",x:["解放生产力、发展生产力（<b>两力</b>）","消灭剥削、消除两极分化（<b>两消</b>）","最终达到<b>共同</b>富裕（<b>一共</b>）"],tip:"顺序固定，别打乱。"},
+{d:4,p:"经济",t:"现代企业制度",m:"清、明、分、科",x:["产权<b>清</b>晰","权责<b>明</b>确","政企<b>分</b>开","管理<b>科</b>学"],tip:"四词八个字，考多选。"},
+{d:4,p:"经济",t:"新发展理念",m:"创、协、绿、开、共",x:["<b>创</b>新","<b>协</b>调","<b>绿</b>色","<b>开</b>放","<b>共</b>享"],tip:"五个，不是四个。"},
+{d:4,p:"经济",t:"宏观调控四大目标",m:"增、就、价、支",x:["经济<b>增</b>长","增加<b>就</b>业","稳定物<b>价</b>","保持国际收<b>支</b>平衡"],tip:"财政政策和货币政策都是为这四个服务。"},
+{d:4,p:"经济",t:"市场失灵的原因",m:"垄、外、公、信",x:["<b>垄</b>断","<b>外</b>部性","<b>公</b>共物品","信息不对称（<b>信</b>）"],tip:"四个，问“市场失灵的表现”就答这些。"},
+{d:4,p:"经济",t:"需求价格弹性",m:"大于1 富有，小于1 缺乏",x:["弹性 &gt; 1：富有弹性（降价能增收）","弹性 &lt; 1：缺乏弹性（涨价能增收）","弹性 = 1：单位弹性"],tip:"生活必需品缺乏弹性，奢侈品富有弹性。"},
+
+// ============ D5 错题结论 ============
+{d:5,p:"错题",t:"财政支出规模因素",m:"经、政、体、社",x:["经济发展、政治、经济体制制度、社会"],tip:"你的错题：没有“文化”、没有“消费结构”。"},
+{d:5,p:"错题",t:"财政收入分配职能 4 手段",m:"界、税、转、支",x:["明确范围界限、税收调节、转移支付、公共支出"],tip:"你的错题：别漏“公共支出”。"},
+{d:5,p:"错题",t:"非税收入 8 项",m:"含“罚没收入”",x:["政府性基金、专项、彩票资金、行政事业性收费、罚没、国有资本经营、国有资源有偿使用、其他"],tip:"你的错题：漏了“罚没收入”。"},
+{d:5,p:"错题",t:"财产税特点",m:"含“符合纳税能力原则”",x:["符合纳税能力原则、税源充分稳定、收入弹性小、不易转嫁"],tip:"你的错题：漏了第一项。"},
+{d:5,p:"错题",t:"行政主体三特征",m:"含“能独立参加复议和诉讼”",x:["享有行政权、以自己名义行使、独立承担法律责任"],tip:"你的错题：漏了这条。"},
+{d:5,p:"错题",t:"税制改革目标",m:"含“完善调节功能”",x:["优化税制结构、完善调节功能、稳定宏观税负、推进依法治税"],tip:"你的错题：漏了第二项。"},
+{d:5,p:"错题",t:"商业银行职能",m:"不是“发行货币”",x:["信用中介、支付中介、信用创造、金融服务"],tip:"你的错题：发行货币是央行。"},
+{d:5,p:"错题",t:"会计四前提",m:"四件套，别只选两个",x:["会计主体、持续经营、会计分期、货币计量"],tip:"你的错题：只选了主体和分期。"},
+{d:5,p:"错题",t:"预算五原则",m:"含“统一性”",x:["完整性、统一性、可靠性、公开性、年度性"],tip:"你的错题：漏了统一性。"},
+{d:5,p:"错题",t:"法人",m:"成立时产生、终止时消灭",x:["民事权利能力 + 民事行为能力","成立时产生、终止时消灭","独立承担民事责任"],tip:"你的错题。"},
+{d:5,p:"错题",t:"可撤销民事行为",m:"欺、胁、误、失",x:["欺诈（不损害国家利益）、胁迫、重大误解、显失公平"],tip:"你的错题。"},
+{d:5,p:"错题",t:"仲裁协议无效",m:"口、超、能、胁、明",x:["口头、超范围、无/限制行为能力、胁迫、约定不明"],tip:"你的错题。"},
+{d:5,p:"错题",t:"垄断利润来源",m:"内部剩余 + 外部转移",x:["本企业工人创造的剩余价值","通过垄断价格从其他部门转移来的价值"],tip:"你的错题：“垄断本身增大的商品价值”不算。"},
+{d:5,p:"错题",t:"监护人职责",m:"护、代、教",x:["保护权益、担任法定代理人、教育照顾"],tip:"你的错题：没有“处分财产”。"},
+{d:5,p:"错题",t:"行政强制",m:"措施 + 执行",x:["行政强制措施、行政强制执行"],tip:"你的错题：通报批评属行政处罚。"},
+{d:5,p:"错题",t:"社会公共需要",m:"四个“不一定对称”",x:["无差别共同享用","享用与付出不一定对称","需纳税付费","公民与政府共同责任"],tip:"你的错题。"},
+{d:5,p:"错题",t:"财政收入按依据分类",m:"只答 2 项",x:["政府财政收入、国有资产收入"],tip:"你的错题：税收收入看着对，但答的不是这个问题。"}
+];
+
+const list = document.getElementById('list');
+const doneKey = 'beisong_done_v1';
+let done = new Set(JSON.parse(localStorage.getItem(doneKey) || '[]'));
+let curDay = 'all';
+
+const DAY_NAMES = {1:'D1 · 11/1 财政（12 条）',2:'D2 · 11/2 会计（10 条）',3:'D3 · 11/3 货币 + 法律（16 条）',4:'D4 · 11/4 统计 + 经济（11 条）',5:'D5–D6 · 错题结论（17 条）'};
+
+function render(){
+  let html = '';
+  [1,2,3,4,5].forEach(d => {
+    if (curDay !== 'all' && String(d) !== curDay) return;
+    const items = DATA.filter(x => x.d === d);
+    html += `<div class="daytitle">${DAY_NAMES[d]}<span>先背，再做题</span></div>`;
+    html += `<div class="grid2">`;
+    items.forEach((it, i) => {
+      const id = d + '-' + it.t;
+      html += `<div class="card">
+        <span class="no">${String(i+1).padStart(2,'0')}</span><span class="t">${it.t}</span>
+        <span class="m">${it.m}</span>
+        <ul>${it.x.map(v => `<li>${v}</li>`).join('')}</ul>
+        <div class="tip">${it.tip}</div>
+        <label class="done"><input type="checkbox" data-id="${id}" ${done.has(id)?'checked':''}>已能默写</label>
+      </div>`;
+    });
+    html += `</div>`;
+  });
+  list.innerHTML = html;
+  list.querySelectorAll('input[type=checkbox]').forEach(cb => {
+    cb.onchange = () => {
+      if (cb.checked) done.add(cb.dataset.id); else done.delete(cb.dataset.id);
+      localStorage.setItem(doneKey, JSON.stringify([...done]));
+    };
+  });
+  const total = DATA.length, got = DATA.filter(x => done.has(x.d + '-' + x.t)).length;
+  document.querySelector('footer').textContent =
+    `已能默写 ${got} / ${total} 条 · 勾选会记住 · 打印用 Ctrl+P`;
+}
+
+document.querySelectorAll('.chip[data-day]').forEach(b => {
+  b.onclick = () => {
+    document.querySelectorAll('.chip[data-day]').forEach(x => x.classList.remove('on'));
+    b.classList.add('on');
+    curDay = b.dataset.day;
+    render();
+  };
+});
+document.getElementById('blurBtn').onclick = e => {
+  document.body.classList.toggle('blur');
+  e.target.textContent = document.body.classList.contains('blur') ? '显示答案' : '遮住答案自测';
+};
+document.body.addEventListener('click', e => {
+  if (document.body.classList.contains('blur') && !e.target.closest('.bar')) {
+    document.body.classList.remove('blur');
+    document.getElementById('blurBtn').textContent = '遮住答案自测';
+  }
+});
+render();
+</script>
+<style id="dsh-mobile-fit">
+@media (max-width: 640px) {
+  [class*="imgwrap"] { overflow-x: visible !important; max-width: 100% !important; }
+  [class*="imgwrap"] img { min-width: 0 !important; width: 100% !important; height: auto !important; }
+  img.qimg { max-width: 100% !important; height: auto !important; }
+}
+</style>
+</body>
+</html>
