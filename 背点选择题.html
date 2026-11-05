@@ -159,7 +159,8 @@ function render(){
 
   const prev = document.getElementById('btnPrev');
   prev.disabled = st.i === 0;
-  document.getElementById('card').scrollIntoView({block:'start', behavior:'instant'});
+  st.summary = false;
+  document.getElementById('card').scrollIntoView({block:'start', behavior:'auto'});
 }
 
 document.getElementById('btnMain').addEventListener('click', () => {
@@ -174,6 +175,7 @@ document.getElementById('btnMain').addEventListener('click', () => {
     render();
     return;
   }
+  if(st.summary){ rebuild(); render(); return; }
   if(st.i + 1 < queue.length){ st.i++; render(); return; }
   showSummary();
 });
