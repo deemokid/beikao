@@ -114,6 +114,7 @@ a{color:#1f5fbf}
     <div style="display:flex;gap:8px">
       <button class="mini" id="btnWrong">错题目 <span id="wrongN">0</span></button>
       <button class="mini" id="btnFull" title="全屏（F11）">全屏</button>
+      <button class="mini" id="btnShuffle">打乱</button>
       <button class="mini" id="btnReset">重来</button>
     </div>
   </div>
@@ -135,6 +136,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.fullscreenElement) { document.exitFullscreen(); }
     else { document.documentElement.requestFullscreen().catch(() => {}); }
   };
+  const sh = document.getElementById('btnShuffle');
+  if (sh) sh.onclick = () => {
+    shuffleOn = !shuffleOn;
+    sh.textContent = shuffleOn ? '顺序' : '打乱';
+    rebuild(); render();
+  };
 });
 
 let st = { i: 0, picks: {}, done: {}, wrongOnly: false, order: null };
@@ -147,12 +154,19 @@ function load(){
 }
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify({done: st.done})); }catch(e){} }
 
+let shuffleOn = false;
 let queue = [];
 function rebuild(){
   queue = ITEMS.map((it, i) => i);
   if(st.wrongOnly){
     queue = queue.filter(i => (st.done[i] || {}).score === 'x');
     if(!queue.length){ st.wrongOnly = false; queue = ITEMS.map((it,i)=>i); }
+  }
+  if(shuffleOn){
+    for(let k = queue.length - 1; k > 0; k--){
+      const j = Math.floor(Math.random() * (k + 1));
+      const t = queue[k]; queue[k] = queue[j]; queue[j] = t;
+    }
   }
   st.i = 0;
 }
