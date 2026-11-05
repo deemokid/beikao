@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>错题重做 · 经济基础六卷</title>
+<style>
+:root{--ink:#1a1a1a;--sub:#6b6b6b;--line:#e2e2e2;--bg:#faf9f7;--ok:#1f7a3d;--bad:#b3261e;--hl:#fff3cd}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);
+ font:16px/1.6 -apple-system,"Segoe UI","Microsoft YaHei",sans-serif;
+ padding:0 0 90px;max-width:760px;margin:0 auto}
+header{position:sticky;top:0;z-index:9;background:#fff;border-bottom:1px solid var(--line);
+ padding:10px 14px 8px}
+h1{font-size:17px;margin:0 0 6px}
+.meta{display:flex;gap:10px;align-items:center;font-size:13px;color:var(--sub);flex-wrap:wrap}
+.bar{flex:1;height:6px;background:#eee;border-radius:3px;overflow:hidden;min-width:90px}
+.bar>i{display:block;height:100%;background:#3a7d5c;width:0;transition:width .25s}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:8px 0 2px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;border:1px solid var(--line);background:#fff;border-radius:999px;
+ padding:4px 11px;font-size:13px;color:#444}
+.chip.on{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+main{padding:12px 14px}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:12px}
+.tag{font-size:12.5px;color:var(--sub);display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.tag b{color:#1a1a1a;font-weight:600}
+.imgs img{width:100%;display:block;border-radius:6px;background:#fff;margin:0 0 4px;cursor:zoom-in}
+.hint{font-size:13.5px;color:var(--sub);margin:10px 0 6px}
+input[type=text]{width:100%;font:inherit;letter-spacing:.18em;text-transform:uppercase;
+ padding:11px 12px;border:1.5px solid var(--line);border-radius:10px;background:#fff}
+input[type=text]:focus{outline:none;border-color:#1a1a1a}
+.picks{display:flex;gap:8px;margin:2px 0 0}
+.pick{flex:1;font:inherit;font-size:19px;font-weight:600;letter-spacing:0;padding:12px 0;cursor:pointer;
+ background:#fff;color:#22262c;border:1px solid var(--line);border-radius:9px;font-family:inherit}
+.pick.on{background:#22262c;color:#fff;border-color:#22262c}
+.pick.ok{background:#e8f6ed;border-color:#2f9e5c;color:#1c6b3d}
+.pick.miss{background:#fff7db;border-color:#d9a900;color:#8a6b00}
+.pick.bad{background:#fdecea;border-color:#d9534f;color:#a52a26}
+.pick:disabled{cursor:default;opacity:.85}
+.row{display:flex;gap:8px;margin-top:10px}
+button{font:inherit;border-radius:10px;border:1px solid var(--line);background:#fff;
+ padding:11px 14px;cursor:pointer;flex:1}
+button.primary{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+button.ghost{flex:0 0 auto;padding:11px 12px;color:var(--sub)}
+button:disabled{opacity:.45}
+.reveal{border-top:1px dashed var(--line);margin-top:12px;padding-top:10px;display:none}
+.reveal.show{display:block}
+.verdict{font-size:15px;font-weight:600;margin-bottom:6px}
+.verdict.ok{color:var(--ok)}.verdict.bad{color:var(--bad)}
+.ansline{font-size:14px;margin:4px 0}
+.ansline code{background:#f2f1ee;padding:1px 6px;border-radius:5px;letter-spacing:.1em}
+.exp{font-size:14px;color:#333;background:#faf8f3;border-left:3px solid var(--hl);
+ padding:8px 10px;border-radius:0 6px 6px 0;margin:8px 0 0}
+.foot{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);
+ padding:10px 14px;display:flex;gap:8px;max-width:760px;margin:0 auto}
+.foot button{flex:1}
+.done-box{text-align:center;padding:30px 10px;color:var(--sub)}
+.done-box h2{color:#1a1a1a;font-size:18px;margin:0 0 8px}
+.hrow{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.mini{font-size:12.5px;color:var(--sub);background:#fff;border:1px solid var(--line);
+ border-radius:999px;padding:4px 11px;cursor:pointer;font-family:inherit;flex:0 0 auto}
+
+
+/* ---- 电脑端（≥1000px）：题图在左、作答在右，一屏看完 ---- */
+@media (min-width:1000px){
+  body{max-width:1120px}
+  .card{display:grid;column-gap:20px;
+    grid-template-columns:minmax(0,1fr) 380px;
+    grid-template-areas:"tag tag" "imgs hint" "imgs input" "reveal reveal";
+    align-items:start}
+  .tag{grid-area:tag;margin-bottom:6px}
+  .imgs{grid-area:imgs;max-height:calc(100vh - 250px);overflow:auto;
+    border:1px solid var(--line);border-radius:8px;background:#fff}
+  .hint{grid-area:hint;margin:0 0 6px}
+  input[type=text],.picks{grid-area:input}
+  .reveal{grid-area:reveal}
+  .reveal .exp{max-height:26vh;overflow:auto}
+  .foot{max-width:1120px}
+  main{padding:10px 14px}
+}
+
+/* ---- 电脑端 v2：固定栏不遮内容 ---- */
+@media (min-width:1000px){
+  body{padding-bottom:96px}
+  .card{scroll-margin-top:110px}
+  header{padding:8px 14px 4px}
+  .chips{padding:6px 0 2px}
+  .imgs{max-height:calc(100vh - 300px)}
+}
+</style></head>
+<body>
+<header>
+  <div class="hrow">
+    <h1>错题重做 · <span id="scope">六卷</span></h1>
+    <button class="mini" id="btnFull" title="全屏（F11）">全屏</button>
+  </div>
+  <div class="meta">
+    <span id="pos">—</span>
+    <div class="bar"><i id="prog"></i></div>
+    <span id="cnt" style="font-variant-numeric:tabular-nums"></span>
+  </div>
+  <div class="chips" id="chips"></div>
+  <div class="chips" id="sorts"></div>
+</header>
+<main id="main"></main>
+<div class="foot">
+  <button class="ghost" id="btnReset">重置</button>
+  <button id="btnSkip">跳过</button>
+  <button class="primary" id="btnSubmit">提交（Enter）</button>
+</div>
+<script>
+const ITEMS = [{"set":"全真一","date":"11-02","n":1,"kind":"wrong","mine":"A","right":"D","got":0,"imgs":["q3/1_001.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":2,"kind":"wrong","mine":"C","right":"B","got":0,"imgs":["q3/1_002.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":3,"kind":"wrong","mine":"B","right":"C","got":0,"imgs":["q3/1_003.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":8,"kind":"wrong","mine":"A","right":"C","got":0,"imgs":["q3/1_008.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":13,"kind":"wrong","mine":"D","right":"C","got":0,"imgs":["q3/1_013.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":14,"kind":"wrong","mine":"B","right":"C","got":0,"imgs":["q3/1_014.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":15,"kind":"wrong","mine":"B","right":"D","got":0,"imgs":["q3/1_015.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":16,"kind":"wrong","mine":"D","right":"C","got":0,"imgs":["q3/1_016.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":18,"kind":"wrong","mine":"A","right":"D","got":0,"imgs":["q3/1_018.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":20,"kind":"wrong","mine":"B","right":"D","got":0,"imgs":["q3/1_020.jpg","q3/1_020_b.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":21,"kind":"wrong","mine":"B","right":"C","got":0,"imgs":["q3/1_021.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":22,"kind":"wrong","mine":"B","right":"D","got":0,"imgs":["q3/1_022.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":23,"kind":"wrong","mine":"D","right":"A","got":0,"imgs":["q3/1_023.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":26,"kind":"wrong","mine":"B","right":"C","got":0,"imgs":["q3/1_026.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":29,"kind":"wrong","mine":"B","right":"A","got":0,"imgs":["q3/1_029.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":34,"kind":"wrong","mine":"C","right":"B","got":0,"imgs":["q3/1_034.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":35,"kind":"wrong","mine":"C","right":"B","got":0,"imgs":["q3/1_035.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":42,"kind":"wrong","mine":"C","right":"B","got":0,"imgs":["q3/1_042.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":44,"kind":"wrong","mine":"B","right":"C","got":0,"imgs":["q3/1_044.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":48,"kind":"wrong","mine":"B","right":"D","got":0,"imgs":["q3/1_048.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":54,"kind":"wrong","mine":"A","right":"D","got":0,"imgs":["q3/1_054.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":58,"kind":"wrong","mine":"D","right":"B","got":0,"imgs":["q3/1_058.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":64,"kind":"wrong","mine":"C","right":"B","got":0,"imgs":["q3/1_064.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":66,"kind":"wrong","mine":"B","right":"C","got":0,"imgs":["q3/1_066.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":67,"kind":"wrong","mine":"B","right":"C","got":0,"imgs":["q3/1_067.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":71,"kind":"zero","mine":"ACD","right":"ABD","got":0,"imgs":["q3/1_071.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":74,"kind":"zero","mine":"ABC","right":"AC","got":0,"imgs":["q3/1_074.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":75,"kind":"less","mine":"ACD","right":"ABCD","got":1.5,"imgs":["q3/1_075.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":76,"kind":"less","mine":"ACD","right":"ACDE","got":1.5,"imgs":["q3/1_076.jpg","q3/1_076_b.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":77,"kind":"zero","mine":"AD","right":"ABCE","got":0,"imgs":["q3/1_077.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":78,"kind":"zero","mine":"ACE","right":"BCDE","got":0,"imgs":["q3/1_078.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":81,"kind":"less","mine":"BCD","right":"ABCD","got":1.5,"imgs":["q3/1_081.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":82,"kind":"less","mine":"AB","right":"ABCD","got":1,"imgs":["q3/1_082.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":84,"kind":"less","mine":"AB","right":"ABE","got":1,"imgs":["q3/1_084.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":87,"kind":"less","mine":"BE","right":"BDE","got":1,"imgs":["q3/1_087.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":88,"kind":"zero","mine":"ABCE","right":"ABE","got":0,"imgs":["q3/1_088.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":89,"kind":"zero","mine":"CD","right":"ABCE","got":0,"imgs":["q3/1_089.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":90,"kind":"zero","mine":"AD","right":"CE","got":0,"imgs":["q3/1_090.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":93,"kind":"less","mine":"CD","right":"ACDE","got":1,"imgs":["q3/1_093.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":94,"kind":"zero","mine":"ABC","right":"AB","got":0,"imgs":["q3/1_094.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":95,"kind":"zero","mine":"ACE","right":"AB","got":0,"imgs":["q3/1_095.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":96,"kind":"less","mine":"BD","right":"ABDE","got":1,"imgs":["q3/1_096.jpg","q3/1_096_b.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":98,"kind":"less","mine":"ABC","right":"ABCD","got":1.5,"imgs":["q3/1_098.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":99,"kind":"less","mine":"AC","right":"ACD","got":1,"imgs":["q3/1_099.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":100,"kind":"zero","mine":"CD","right":"AB","got":0,"imgs":["q3/1_100.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":101,"kind":"zero","mine":"ABC","right":"AD","got":0,"imgs":["q3/1_101.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":102,"kind":"zero","mine":"ACE","right":"ABE","got":0,"imgs":["q3/1_102.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":103,"kind":"zero","mine":"BCD","right":"ACD","got":0,"imgs":["q3/1_103.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":104,"kind":"zero","mine":"BCD","right":"ABCE","got":0,"imgs":["q3/1_104.jpg","q3/1_104_b.jpg"],"exp":""},{"set":"全真一","date":"11-02","n":105,"kind":"less","mine":"CD","right":"BCD","got":1,"imgs":["q3/1_105.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":3,"kind":"wrong","mine":"B","right":"A","got":0,"imgs":["q3/2_003.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":7,"kind":"wrong","mine":"B","right":"A","got":0,"imgs":["q3/2_007.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":8,"kind":"wrong","mine":"C","right":"D","got":0,"imgs":["q3/2_008.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":14,"kind":"wrong","mine":"C","right":"B","got":0,"imgs":["q3/2_014.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":17,"kind":"wrong","mine":"C","right":"A","got":0,"imgs":["q3/2_017.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":18,"kind":"wrong","mine":"A","right":"D","got":0,"imgs":["q3/2_018.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":22,"kind":"wrong","mine":"D","right":"A","got":0,"imgs":["q3/2_022.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":23,"kind":"wrong","mine":"B","right":"D","got":0,"imgs":["q3/2_023.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":24,"kind":"wrong","mine":"C","right":"B","got":0,"imgs":["q3/2_024.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":30,"kind":"wrong","mine":"C","right":"B","got":0,"imgs":["q3/2_030.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":33,"kind":"wrong","mine":"B","right":"D","got":0,"imgs":["q3/2_033.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":37,"kind":"wrong","mine":"A","right":"C","got":0,"imgs":["q3/2_037.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":38,"kind":"wrong","mine":"D","right":"C","got":0,"imgs":["q3/2_038.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":46,"kind":"wrong","mine":"A","right":"D","got":0,"imgs":["q3/2_046.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":53,"kind":"wrong","mine":"A","right":"C","got":0,"imgs":["q3/2_053.jpg","q3/2_053_b.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":54,"kind":"wrong","mine":"B","right":"D","got":0,"imgs":["q3/2_054.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":55,"kind":"wrong","mine":"A","right":"D","got":0,"imgs":["q3/2_055.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":62,"kind":"wrong","mine":"B","right":"D","got":0,"imgs":["q3/2_062.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":64,"kind":"wrong","mine":"D","right":"B","got":0,"imgs":["q3/2_064.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":66,"kind":"wrong","mine":"A","right":"B","got":0,"imgs":["q3/2_066.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":71,"kind":"less","mine":"BD","right":"ABDE","got":1,"imgs":["q3/2_071.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":72,"kind":"zero","mine":"ABC","right":"AC","got":0,"imgs":["q3/2_072.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":73,"kind":"zero","mine":"BDE","right":"BCD","got":0,"imgs":["q3/2_073.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":74,"kind":"zero","mine":"DE","right":"ABCE","got":0,"imgs":["q3/2_074.jpg","q3/2_074_b.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":75,"kind":"zero","mine":"ABD","right":"BCD","got":0,"imgs":["q3/2_075.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":76,"kind":"zero","mine":"BDE","right":"ACD","got":0,"imgs":["q3/2_076.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":79,"kind":"zero","mine":"BCE","right":"BDE","got":0,"imgs":["q3/2_079.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":80,"kind":"zero","mine":"BDE","right":"ABCD","got":0,"imgs":["q3/2_080.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":82,"kind":"zero","mine":"ACE","right":"CE","got":0,"imgs":["q3/2_082.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":83,"kind":"less","mine":"ACE","right":"ABCE","got":1.5,"imgs":["q3/2_083.jpg","q3/2_083_b.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":84,"kind":"zero","mine":"AC","right":"CE","got":0,"imgs":["q3/2_084.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":86,"kind":"zero","mine":"BCDE","right":"ABDE","got":0,"imgs":["q3/2_086.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":87,"kind":"zero","mine":"BCD","right":"DE","got":0,"imgs":["q3/2_087.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":89,"kind":"less","mine":"ABC","right":"ABCD","got":1.5,"imgs":["q3/2_089.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":93,"kind":"less","mine":"AE","right":"ABE","got":1,"imgs":["q3/2_093.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":94,"kind":"zero","mine":"ABCD","right":"ABC","got":0,"imgs":["q3/2_094.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":98,"kind":"zero","mine":"ABDE","right":"ABE","got":0,"imgs":["q3/2_098.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":99,"kind":"less","mine":"ABD","right":"ABDE","got":1.5,"imgs":["q3/2_099.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":100,"kind":"zero","mine":"AE","right":"ABCD","got":0,"imgs":["q3/2_100.jpg","q3/2_100_b.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":103,"kind":"less","mine":"ABD","right":"ABCD","got":1.5,"imgs":["q3/2_103.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":104,"kind":"zero","mine":"CD","right":"AB","got":0,"imgs":["q3/2_104.jpg"],"exp":""},{"set":"全真二","date":"11-03","n":105,"kind":"less","mine":"AB","right":"ABC","got":1,"imgs":["q3/2_105.jpg"],"exp":""},{"set":"全真三","date":"11-04","n":3,"kind":"wrong","mine":"D","right":"C","got":0,"imgs":["q3/3_003.jpg"],"exp":""},{"set":"全真三","date":"11-04","n":5,"kind":"wrong","mine":"A","right":"C","got":0,"imgs":["q3/3_005.jpg"],"exp":""},{"set":"全真三","date":"11-04","n":13,"kind":"wrong","mine":"A","right":"B","got":0,"imgs":["q3/3_013.jpg"],"exp":"级〗全真模拟测试"},{"set":"全真三","date":"11-04","n":14,"kind":"wrong","mine":"D","right":"A","got":0,"imgs":["q3/3_014.jpg"],"exp":""},{"set":"全真三","date":"11-04","n":17,"kind":"wrong","mine":"D","right":"A","got":0,"imgs":["q3/3_017.jpg"],"exp":"17、A常备借贷便利（SLF)是中央银行应对金融机构大额临时流动性缺口、防范短期流动性风险、稳定市场利率波动的工具。"},{"set":"全真三","date":"11-04","n":21,"kind":"wrong","mine":"C","right":"A","got":0,"imgs":["q3/3_021.jpg"],"exp":"21．A当出现负的外部效应时，生产者的成本外溢，但受损者得不到补偿，生产就会出现过度c"},{"set":"全真三","date":"11-04","n":22,"kind":"wrong","mine":"D","right":"A","got":0,"imgs":["q3/3_022.jpg","q3/3_022_b.jpg"],"exp":"22．A公共物品是指增加一个人对该物品的消费，并不同时减少其他人对该物品消费的那类物品c它与私人物品相对应。公共物品的这一定义是由美国经济学家保罗“萨缪尔森首次提出来的，选项A说法错误。公共物品有时还经由收费的集体行动而被自愿提供，特别是在公共物品的受益结构和成本分担都比较清晰的小规模集体中，或者当提供者同时也是该公共物品的主要受益者时，选项B说法正确。公共物品联合融资常见的手段是政府以财政补贴和税收优惠等方式，鼓励私人机构提供，选项c说法正确。介于政府生产和合同外包之间的公共物品供给方式包"},{"set":"全真三","date":"11-04","n":28,"kind":"wrong","mine":"C","right":"B","got":0,"imgs":["q3/3_028.jpg"],"exp":"2&B影响财政支出规模的主要因素包括经济发展因素、政治因素、经济体制、经济制度因素和社会因素等。生产关系因素不属于影响财政支出规模的主要因素6"},{"set":"全真三","date":"11-04","n":31,"kind":"wrong","mine":"A","right":"B","got":0,"imgs":["q3/3_031.jpg"],"exp":""},{"set":"全真三","date":"11-04","n":33,"kind":"wrong","mine":"B","right":"C","got":0,"imgs":["q3/3_033.jpg"],"exp":"33，c金银复本位制是16一18世纪资本主义发展初期典型的货币制度，又分为平行本位制和双本位制。"},{"set":"全真三","date":"11-04","n":36,"kind":"wrong","mine":"A","right":"B","got":0,"imgs":["q3/3_036.jpg"],"exp":"36．B间接标价法是以一定单位的本国货币作为标准，折算为外国货币来表示汇率，即汇率表示为一定单位本国货币折算成外国"},{"set":"全真三","date":"11-04","n":37,"kind":"wrong","mine":"D","right":"B","got":0,"imgs":["q3/3_037.jpg"],"exp":"37，B信用货币的基本特征有：0中央银行发行的信用货币是中央银行代表国家发行的纸币本位货币，本身不具有十足的内在价值。0信用货币是债务货币，现金是中央银行的负债，存款是商业银行的负债。信用货币具有强制性，通过法律手段确定其为法定货币。@国家可以通过银行来控制和管理信用货币流通，把货币政策作为实现国家宏观经济目标的重要手段。"},{"set":"全真三","date":"11-04","n":45,"kind":"wrong","mine":"B","right":"A","got":0,"imgs":["q3/3_045.jpg"],"exp":"45．A标准差的大小不仅与数据的测度单位有关，也与观测值的均值大小有关，不能直接用标准差比较不同变量的离散程度，而离散系数消除了测度单位和观测值水平不的影响，因而可以直接用来比较变量的离散程度。"},{"set":"全真三","date":"11-04","n":60,"kind":"wrong","mine":"B","right":"A","got":0,"imgs":["q3/3_060.jpg"],"exp":"A授权性规范是规定人们可以作出一定行为或者可以要求别人作出一定行为的法律规范，即规定人们“可为模式”的规范。"},{"set":"全真三","date":"11-04","n":61,"kind":"wrong","mine":"B","right":"D","got":0,"imgs":["q3/3_061.jpg"],"exp":""},{"set":"全真三","date":"11-04","n":62,"kind":"wrong","mine":"D","right":"B","got":0,"imgs":["q3/3_062.jpg"],"exp":"62．B资产负债表是反映企业在某一特定日期财务状况的报表，主要反映资产、负债和所有者权益三方面的内容，以“资产=负债+所有者权益\"这一会计等式为依据。通过资产负债表，可以帮助报表使用者全面了解企业的财务状况，分析企业的债务偿还能力，从而为未来的经济决策提供参考信息。资产负债表主要有报告式和账户"},{"set":"全真三","date":"11-04","n":65,"kind":"wrong","mine":"A","right":"C","got":0,"imgs":["q3/3_065.jpg"],"exp":"65．c马克思主义法的概念，从阶级性、国家意志性、物质制约性和社会规范性的角度，反映了法的本质包括法的阶级性、法的国家意志性和法的物质制约性。"},{"set":"全真三","date":"11-04","n":69,"kind":"wrong","mine":"D","right":"B","got":0,"imgs":["q3/3_069.jpg"],"exp":"69，B民事责任与刑事责任的功能不同．它主要不在于惩罚违法行为人、而在于弥补受害"},{"set":"全真三","date":"11-04","n":71,"kind":"zero","mine":"ABCD","right":"ABC","got":0,"imgs":["q3/3_071.jpg"],"exp":"少有1个错项。错选，本题不得分；少选，所选的每个选项得0．5分）71.ABC从资本主义国家和私人垄断资本相结合的方式来看，国家垄断资本主义有以下三种形式：O通过国家直接掌握的国有垄断资本直接参与生产过程。国家与私人垄断资本在企业内部的结合、即形成国家与私人共有的垄断资本。0国家与私人垄断资本在企业外部的结合，即国家采取对社会经济活动进行的各种干预和调策以及经济计划等"},{"set":"全真三","date":"11-04","n":74,"kind":"less","mine":"BDE","right":"ABDE","got":1.5,"imgs":["q3/3_074.jpg"],"exp":""},{"set":"全真三","date":"11-04","n":75,"kind":"less","mine":"AC","right":"ABC","got":1,"imgs":["q3/3_075.jpg"],"exp":"75．ABC社会主义宏观经济调控是借助于各种宏观调控手段来进行的，主要有计划调"},{"set":"全真三","date":"11-04","n":76,"kind":"zero","mine":"ABE","right":"BCE","got":0,"imgs":["q3/3_076.jpg"],"exp":"76．BCE高质量发展是全面建设社会主义现代化国家的首要任务，是体现新发展理念的发展。其内涵是：不再单纯追求经济增长速度和总量扩张，而是以创新为第一动力、协调为内生特点绿色为普遍形态开放为必由之路、共享为根本目的；聚焦提升发展质量和效益，推动经济发展从“有没有”转向“好不好”，实现产业体系高端"},{"set":"全真三","date":"11-04","n":77,"kind":"less","mine":"ABC","right":"ABCE","got":1.5,"imgs":["q3/3_077.jpg"],"exp":"全真模拟试卷"},{"set":"全真三","date":"11-04","n":78,"kind":"less","mine":"A","right":"ACE","got":0.5,"imgs":["q3/3_078.jpg"],"exp":"7&ACE转移性收人包括返还性收人、专项转移支付收人和财力性转移支付收人等8个"},{"set":"全真三","date":"11-04","n":79,"kind":"zero","mine":"AE","right":"BCD","got":0,"imgs":["q3/3_079.jpg"],"exp":"79，BCD根据国际货币基金组织制定的《2m4年政府财政统计手册》中的分类标准，政"},{"set":"全真三","date":"11-04","n":80,"kind":"zero","mine":"CDE","right":"ABD","got":0,"imgs":["q3/3_080.jpg","q3/3_080_b.jpg"],"exp":"80．ABD2025年以来．我国政策利率体系以短期政策利率为核心．以利率走鹰稳定波动区间，以定向政策利率精准支持重点领域，形成分工清晰、协同发力的价格调控"},{"set":"全真三","date":"11-04","n":81,"kind":"zero","mine":"BCE","right":"ABC","got":0,"imgs":["q3/3_081.jpg"],"exp":"SI.ABC根据货币政策在调节货币供应量、利率方向上的不同，可以把货币政策分为稳健货币政策、宽松货币政策和紧缩货币政策三种类型。ABCE公共财政实现收人分配职能的机制和手段包括：根据市场和政府的职责分工、明确市场和政府对社会收人分配的范围和界限；加强税收调节；发挥财政发挥公共支出的"},{"set":"全真三","date":"11-04","n":82,"kind":"zero","mine":"ACDE","right":"ABCE","got":0,"imgs":["q3/3_082.jpg"],"exp":"&D商品价格的涨落是在市场已经形成了商品供求失衡的状况下发生的，因而价值规律通过价格涨落来调节资源配置和经济活动，只能是一种事后调节，往往会伴随着资源的浪费。"},{"set":"全真三","date":"11-04","n":85,"kind":"zero","mine":"E","right":"BCD","got":0,"imgs":["q3/3_085.jpg"],"exp":"85．BCD弗里德曼认为，除货币之外的其他金融资产的收益率越高，持有货币的机会成本越大，持有货币的数量就会减少。故存款的利率、股票的收益率、债券的收益率"},{"set":"全真三","date":"11-04","n":86,"kind":"less","mine":"CE","right":"CDE","got":1,"imgs":["q3/3_086.jpg"],"exp":"86．CDE金融中介又称金融机构，是在信用关系中，介于借者（债务人）和贷者（债权人）之间的第三方。主要的金融机构有中央银行、商业银行、政策性银行、商业保险公"},{"set":"全真三","date":"11-04","n":87,"kind":"less","mine":"ABD","right":"ABCD","got":1.5,"imgs":["q3/3_087.jpg"],"exp":"87．ABCD本题考查货币供给机制。商业银行的扩张信用、创造派生存款机制受到缴存中央银行存款准备金、提取现金数量和企事业单位及社会公众缴付税款的限制、故"},{"set":"全真三","date":"11-04","n":88,"kind":"less","mine":"AD","right":"ACDE","got":1,"imgs":["q3/3_088.jpg","q3/3_088_b.jpg"],"exp":"88，ACDE常见的金融风险有四类：一是由于市场因素（如利率、汇率、股价以及商品价格等）的波动而导致的金融参与者的资产价值变化的市场风险；二是由于借款人或市场交易对手的违约（无法偿付或者无法按期偿付）而导致损失的信用风险；。是金融参与者由于资产流动性降低而导致的流动性风险；四是由于金融机构的交"},{"set":"全真三","date":"11-04","n":89,"kind":"zero","mine":"ACE","right":"ADE","got":0,"imgs":["q3/3_089.jpg"],"exp":"89．ADE最低资本要求、监管当局的监督检查及市场约束被称为新巴塞尔资本协议的"},{"set":"全真三","date":"11-04","n":92,"kind":"less","mine":"BCD","right":"ABCD","got":1.5,"imgs":["q3/3_092.jpg"],"exp":"92．ABCD统计表主要由四个部分组成，即表头、行标题、列标题和数字资料．必要时可以"},{"set":"全真三","date":"11-04","n":95,"kind":"less","mine":"ABC","right":"ABCE","got":1.5,"imgs":["q3/3_095.jpg"],"exp":"95．ABCE根据〈中华人民共和国会计法》，应当办理会计手续，进行会计核算的经济业务事项主要有：．资产的增减和使用；负债的增减；净资产（所有者权益）的增减；@收人、支出、费用、成本的增减；财务成果的计算和处理；@需要办理会计"},{"set":"全真三","date":"11-04","n":96,"kind":"zero","mine":"ACD","right":"AD","got":0,"imgs":["q3/3_096.jpg","q3/3_096_b.jpg"],"exp":"96，AD谨慎性会计信息要求企业不应高估资产或者收益，且不允许企业设置秘密准备，项A、D正"},{"set":"全真三","date":"11-04","n":98,"kind":"zero","mine":"ABE","right":"CDE","got":0,"imgs":["q3/3_098.jpg"],"exp":"9&CDE反映企业偿债能力的财务比率指标主要有流动比率、速动比率、现金比率、资产"},{"set":"全真三","date":"11-04","n":99,"kind":"less","mine":"BD","right":"ABCD","got":1,"imgs":["q3/3_099.jpg"],"exp":"99．ABCD依据《中华人民共和国行政处罚法》，行政处罚有以下六类：(D警告、通报批评。0罚款、没收违法所得、没收非法财物。囹暂扣许可证件、降低资质等级、吊销许可证件。@限制开展生产经营活动、责令停产停业、责令关闭、限制从业。0行"},{"set":"全真三","date":"11-04","n":100,"kind":"less","mine":"ABC","right":"ABCE","got":1.5,"imgs":["q3/3_100.jpg"],"exp":"100.ABCE依据《中华人民共和国民法典》，居住权合同一般包括下列条款：(D当事人的姓名或者名称和住所；@住宅的位置；居住的条件和要求；@居住权期限；解"},{"set":"全真三","date":"11-04","n":101,"kind":"less","mine":"AC","right":"ACE","got":1,"imgs":["q3/3_101.jpg"],"exp":"10LACE我国法律规定，年满18周岁的自然人是完全民事行为能力人，选项A正确。8周岁以上未成年人和不能完全辨认自己行为的成年人是限制民事行为能力人，选项B错误不满8周岁和不能辨认自己行为的成年人则属于无民事行为能力人，只能由其法定代理人代理民事法律行为，选项C正确。合同的成立和生效是两个不同的概念，当事人达成合意，意味着合同成立；合同只有符合法律规定的生．效要件，才能获得法律的保护，才意味着合同的生效，选项D错误。合同生效的法律要件主要包括：主体合格、内容合法、意思表示真实合同的形式合法，选项E"},{"set":"全真三","date":"11-04","n":102,"kind":"less","mine":"ABE","right":"ABCE","got":1.5,"imgs":["q3/3_102.jpg"],"exp":"102．ABCE行政复议机关履行政复议职责，应当遵循的原则包括：合法原则、公正原"},{"set":"全真三","date":"11-04","n":103,"kind":"less","mine":"AD","right":"ABCD","got":1,"imgs":["q3/3_103.jpg"],"exp":"全真模拟试卷鋈@答案及解析"},{"set":"全真三","date":"11-04","n":104,"kind":"zero","mine":"AE","right":"ABCD","got":0,"imgs":["q3/3_104.jpg"],"exp":"．ABCD因债的发生原因的不同．债可分为合同之债、侵权之债、不当得利之债和无因"},{"set":"全真三","date":"11-04","n":105,"kind":"less","mine":"AB","right":"ABC","got":1,"imgs":["q3/3_105.jpg"],"exp":"0ABC特殊侵权责任主要包括三类情形：(D因特定主体致人损害，如国家机关及其工作人员执行职务致人损害、无民事行为能力人及限制民事行为能力人致人损害。0因特定活动致人损害，如高度危险作业致人损害、地面施工致人损害。因特定物件或物质因素致人损害，如产品致人损害、环境污染致人损害、建筑物致人损害、饲养动物致人损害等。"},{"set":"全真四","date":"11-05","n":7,"kind":"wrong","mine":"D","right":"C","got":0,"imgs":["q3/4_007.jpg"],"exp":"7，C本题考查信用货币。信用货币是以信用作为保证，通过一定的信用程序发行，充当流通手段和支付手段的货币形态，是货币发展的现代形态。现代信用货币包括现金和银行存款两种主要存在形式，其基本特征有：0中央银行发行的信用货币是中央银行代表国家发行的纸币本位货币，本身不具有十足的内在价值；0信用货币是债务货币，现金是中央银行的负债，存款是商业银行的负债；囹信用货币具有强制性，通过法律手段确定其为法定货币；@国家可以通过银行来控制和管理信用货币流通，把实现国家宏观经济目标的重要手段。"},{"set":"全真四","date":"11-05","n":9,"kind":"wrong","mine":"D","right":"B","got":0,"imgs":["q3/4_009.jpg"],"exp":"9．B“第三次分配\"的基本原则是，在自愿基础上的社会共济，绝不能搞成道德绑架式"},{"set":"全真四","date":"11-05","n":10,"kind":"wrong","mine":"D","right":"B","got":0,"imgs":["q3/4_010.jpg","q3/4_010_b.jpg"],"exp":"甩B操作目标是中央银行能直接调控的变量，用于及时传导政策意图。操作目标是中央银行通过货币政策工具能够直接控制或影响的短期金融变量，它与中央银行的政策工具相似度高，可控性最强。"},{"set":"全真四","date":"11-05","n":17,"kind":"wrong","mine":"D","right":"C","got":0,"imgs":["q3/4_017.jpg"],"exp":"17.C影响财政支出规模的政治因素主要包括社会政治局面的稳定状况、政治体制结构及政府工作效率、政府活动范围等。当一个国家发生战争或出现重大自然灾害等情况时，财政支出规模将超常扩大。从政体结构看，一般情况下权力集中的单一制国家，其财政支出占国内生产总值比重高一些，相反会低一些。从政府工作效率看，如果工作效率高，则用于政府运转的经费开支会相对低一些，反之就要相对高一些。从政府活动范围看，随着社会发展和人民生活水平的提高，社会对公共物品和服务的需求会越来越多、质量要求也会越来越高，使政府提供公共物品和服务的范围不断扩大，…"},{"set":"全真四","date":"11-05","n":19,"kind":"wrong","mine":"B","right":"D","got":0,"imgs":["q3/4_019.jpg"],"exp":"]9．D市场失灵是指市场在资源配置的某些方面是无效率或缺乏效率的。市场失灵是市"},{"set":"全真四","date":"11-05","n":21,"kind":"wrong","mine":"A","right":"D","got":0,"imgs":["q3/4_021.jpg"],"exp":"21.D资本预算主要以国债为收人来源，以经济建设项目为支出对象，如政府贷款及偿还国债等支出。"},{"set":"全真四","date":"11-05","n":24,"kind":"wrong","mine":"D","right":"C","got":0,"imgs":["q3/4_024.jpg"],"exp":"24，C中央与地方财政事权和支出责任划分原则有：．体现基本公共服务受益范围。兼顾政府职能和行政效率J实现权责、利相统一@激励地方政府主动作为。做到支出责任与财敢事权相适应按照“谁的财政事权谁承担支出责任\""},{"set":"全真四","date":"11-05","n":25,"kind":"wrong","mine":"B","right":"C","got":0,"imgs":["q3/4_025.jpg"],"exp":"经济扁初级）全真模拟测试"},{"set":"全真四","date":"11-05","n":30,"kind":"wrong","mine":"D","right":"A","got":0,"imgs":["q3/4_030.jpg"],"exp":"30．A在超額累进税率制度下、平均税率随边际税率的提高而上升，但平均税率低于边际税率，故选项A说法错误。在存在通货膨胀的情况下，名义税率虽然没有提高，但实际税率却提高了，选项B说法正确。零税率是以零表示的税率，它是免税的一种形式，选项C说法正确。零税率一般适用于两种情况：一是在所得税中，对所得额中的免税金额部分规定税率为零；二是在商品劳务税中，对出口商品规定税率为零，选项D说法正确。"},{"set":"全真四","date":"11-05","n":33,"kind":"wrong","mine":"D","right":"A","got":0,"imgs":["q3/4_033.jpg"],"exp":"33．A货币互换是指利率计算方法相同的不同币种之间的互换，最常见的是固定利率的"},{"set":"全真四","date":"11-05","n":36,"kind":"wrong","mine":"D","right":"A","got":0,"imgs":["q3/4_036.jpg"],"exp":"36．A人民币制度始建于1948年12月，经过70多年的发展，基本上已形成一种较为完"},{"set":"全真四","date":"11-05","n":39,"kind":"wrong","mine":"D","right":"A","got":0,"imgs":["q3/4_039.jpg"],"exp":"39、A代用货币是指代表金属实物货币流通并可随时兑换成金属实物货币的货币形态、包括银行券和辅币。"},{"set":"全真四","date":"11-05","n":42,"kind":"wrong","mine":"A","right":"B","got":0,"imgs":["q3/4_042.jpg"],"exp":"以B国际收支出现逆差时，货币当局通常采取减少外汇储备或临时向外借款、在外汇市场上抛售外汇、弥补外汇供给缺囗等措施。国际收支出现顺差时，货币当局通常采取在外汇市场上购进外汇，增加外汇储备．消除超额外汇供给等措施。"},{"set":"全真四","date":"11-05","n":45,"kind":"wrong","mine":"D","right":"B","got":0,"imgs":["q3/4_045.jpg"],"exp":"45．B金融市场的配置功能体现在三个方面：资源配置、财富再分配、风险再分配，不包括汇集资金。"},{"set":"全真四","date":"11-05","n":46,"kind":"wrong","mine":"B","right":"D","got":0,"imgs":["q3/4_046.jpg"],"exp":"蚯D离散系数通常是就标准差来计算的，因此也称标准差系数，它是一组数据的标准差与其相应的算术平均数之比，是测度数据离散程度的相对指标。"},{"set":"全真四","date":"11-05","n":51,"kind":"wrong","mine":"A","right":"D","got":0,"imgs":["q3/4_051.jpg"],"exp":"51.D经常账户记录实际资源的流动，包括货物和服务、收益、经常转移三项，其中收益包括职工收益和投资收益两类，选项A说法正确。经常转移主要包括侨汇、无偿捐赠和赔偿等项目，包括实物和资金形式，选项B说法正确。资本与金融账户记录资本在国际上的流动，包括资本账户和金融账户。资本账户包括资本转移和非生产、非金融资产交易，选项C说法正确。在货物所有权发生变化时被记录下来、进出口均"},{"set":"全真四","date":"11-05","n":57,"kind":"wrong","mine":"D","right":"B","got":0,"imgs":["q3/4_057.jpg","q3/4_057_b.jpg"],"exp":"经济基础知;全真模拟测试年末余额，在摘要栏内注明“本年合计”字样．并在合计数下通栏划双红线，选项D"},{"set":"全真四","date":"11-05","n":59,"kind":"wrong","mine":"A","right":"C","got":0,"imgs":["q3/4_059.jpg"],"exp":"59．c我国于20]0年对PPI调查制度进行了改革，自20H年起开始计算以2010年为基数，并且每五年调整一次权数。"},{"set":"全真四","date":"11-05","n":60,"kind":"wrong","mine":"A","right":"B","got":0,"imgs":["q3/4_060.jpg"],"exp":"60．B车船税纳税义务发生时间、为取得车船所有权或者管理权的当月，以购买车船的发他证明文件所载日期的当月为准。"},{"set":"全真四","date":"11-05","n":61,"kind":"wrong","mine":"C","right":"A","got":0,"imgs":["q3/4_061.jpg"],"exp":"61.A资产类账户的借方表示增加，贷方表示减少，期初、期末余额一般在借方。权益类账户的贷方表示增加，借方表示减少，期初、期末余额一般在贷方。收人类账户结构与权益类账户结构相同。"},{"set":"全真四","date":"11-05","n":63,"kind":"wrong","mine":"D","right":"C","got":0,"imgs":["q3/4_063.jpg"],"exp":"63，C价格变动影响额是用后一期的销量乘两期之间的价格变动计算得出的。题中的价为166×（2080一1920）+210×（200一180）=30760（元）"},{"set":"全真四","date":"11-05","n":65,"kind":"wrong","mine":"D","right":"B","got":0,"imgs":["q3/4_065.jpg"],"exp":"65．B健全地方政府债务限额确定机制，一般债务限额与一般公共预算收人相匹配，专项债务限额"},{"set":"全真四","date":"11-05","n":66,"kind":"wrong","mine":"A","right":"B","got":0,"imgs":["q3/4_066.jpg"],"exp":"66．B任意性规范是指在法定范围内允许当事人自行选择或协商确定其权利义务的具体内容的法律规"},{"set":"全真四","date":"11-05","n":68,"kind":"wrong","mine":"C","right":"A","got":0,"imgs":["q3/4_068.jpg","q3/4_068_b.jpg"],"exp":"68，A非法人组织是指虽不具有法人资格但可以自己的名义从事民事活动的组织体。非法人组织种类很多，其中最典型的就是合伙企业。国有独资公司、国有企业、上市公司以及公益"},{"set":"全真四","date":"11-05","n":69,"kind":"wrong","mine":"A","right":"B","got":0,"imgs":["q3/4_069.jpg"],"exp":"69．B监护是指对无民事行为能力人限制民事行为能力人的人身、财产及其他合法权益进行保护的法律制度未成年人法定的第顺序监护人是其父母；精神病人法定"},{"set":"全真四","date":"11-05","n":72,"kind":"less","mine":"CD","right":"ABCD","got":1,"imgs":["q3/4_072.jpg"],"exp":"2ABCD按生产要素贡献分配的具体形式主要有利息和利润是资本的收人，租金是土"},{"set":"全真四","date":"11-05","n":73,"kind":"less","mine":"AB","right":"ABC","got":1,"imgs":["q3/4_073.jpg"],"exp":"73．ABC自然经济是为了满足生产者或经济单位自身需要而进行生产的经济形式。自给自足是自然经济的最基本特征。在自然经济中，由于生产的目的是满足生产者自身的需要，因而生产是在本经济单位内部进行的。每个生产者利用自身的经济条件生产出满足自身需要的几乎一切产品，交换极为有限，并且在整个经济中不起决定作用。在自然经济条件下，人们各自闭关自守，相互之间很少有经济联系，生产规模狭小，劳动生产率低下，生产发展缓慢，整个社会生产长期处于简单再生产"},{"set":"全真四","date":"11-05","n":74,"kind":"less","mine":"AB","right":"ABDE","got":1,"imgs":["q3/4_074.jpg"],"exp":"74．ABDE公开市场业务是中央银行吞吐基础货币，调节市场流动性的主要货币政策工具，通过中央银行与市场交易对手进行有价证券和外汇交易，实现货币政策调控目标。主要方式包括回购交易（正回购和逆回购）、公开市场国债买卖、发行中央银"},{"set":"全真四","date":"11-05","n":77,"kind":"zero","mine":"ABC","right":"BCE","got":0,"imgs":["q3/4_077.jpg","q3/4_077_b.jpg"],"exp":"77．BCE操作目标是中央银行能直接调控的变量，用于及时传导政策意图。其主要指标有银行体系存款准备金、基础货币（包括流通中的现金和商业银行的存款准备"},{"set":"全真四","date":"11-05","n":80,"kind":"less","mine":"AE","right":"ABE","got":1,"imgs":["q3/4_080.jpg"],"exp":"80，ABE货币政策工具是指中央银彳．J为实现货币政策目标所采用的政策手段。我国中央银行货币政策工具可以分为一般性货币政策工具、结构性货币政策工具和利率"},{"set":"全真四","date":"11-05","n":83,"kind":"zero","mine":"ACD","right":"ABDE","got":0,"imgs":["q3/4_083.jpg"],"exp":"83．ABDE有下列情形之一的，委托代理终止：代理期限届满或者代理事务完成：被代理人取消委托或者代理人辞去委托：代理人丧失民事行为能力：代理人或者被代理"},{"set":"全真四","date":"11-05","n":84,"kind":"zero","mine":"DE","right":"ABD","got":0,"imgs":["q3/4_084.jpg"],"exp":"84．ABD我国由中国人民银行按季度向社会公布货币供应量统计监测指标。参照国际通行原则并根据我国实际情况、中国人民银行将我国货币供应量指标划分为三个层次，并依据货币资产流动性的不同来划分不同的货币层次。流通中货币M0是指企事业单位、个人、机关团体、非存款类金融机构所持有的硬币和现钞总和（即通常所指的现金）；流通中的货币和单位活期存款、个人活期存款、非银行支付机构客户备．付金构成MI，即通常所说的狭义货币供应量，因其流动性较强，是中央银行重点调控对象；单位定期存款、个人定期存款、其他存款的流动性较弱，属于准货币，与M…"},{"set":"全真四","date":"11-05","n":85,"kind":"zero","mine":"CE","right":"AB","got":0,"imgs":["q3/4_085.jpg"],"exp":"85．AB现代信用形式按信用创造的主体来划分，大致有商业信用、银行信用、国家信用"},{"set":"全真四","date":"11-05","n":86,"kind":"zero","mine":"ACD","right":"ABC","got":0,"imgs":["q3/4_086.jpg","q3/4_086_b.jpg"],"exp":"86．ABC购买性支出与转移性支出的区别主要有：(D对生产与就业影响的方式不同。"},{"set":"全真四","date":"11-05","n":87,"kind":"zero","mine":"BD","right":"ABC","got":0,"imgs":["q3/4_087.jpg"],"exp":""},{"set":"全真四","date":"11-05","n":90,"kind":"less","mine":"BCD","right":"BCDE","got":1.5,"imgs":["q3/4_090.jpg"],"exp":"90．BCDE根据《中华人民共和国外汇管理条例》，外汇包括：0外币现钞，包括纸币、铸币；外币支付凭证或者支付工具，包括票据、银行存款凭证、银行卡等；外币有"},{"set":"全真四","date":"11-05","n":92,"kind":"zero","mine":"AD","right":"BC","got":0,"imgs":["q3/4_092.jpg"],"exp":"92．BC房产税以房产的计税价值或房产租金收人为计税依据。按房产计税价值征税的，称为从价计征；按房产租金收人征税的，称为从租计征，从价计征的房产税，以房"},{"set":"全真四","date":"11-05","n":93,"kind":"zero","mine":"AC","right":"AB","got":0,"imgs":["q3/4_093.jpg"],"exp":"93．AB抽样调查可以频繁进行，具有经济性而不具有周期性、一般也不需要规定统一的标准调查时间，故选项C、D的说法谙误。抽样调查适用于对各个领域、各种问题"},{"set":"全真四","date":"11-05","n":95,"kind":"less","mine":"ABC","right":"ABCE","got":1.5,"imgs":["q3/4_095.jpg","q3/4_095_b.jpg"],"exp":"巧，ABCE会计确认计量的基本原则包括：权责发生制原则、配比原则、历史成本原则，划"},{"set":"全真四","date":"11-05","n":96,"kind":"less","mine":"BD","right":"BDE","got":1,"imgs":["q3/4_096.jpg"],"exp":"BDE收人、费用及利润是反映企业经营成果的会计要素，也称为动态会计要素、这些"},{"set":"全真四","date":"11-05","n":97,"kind":"zero","mine":"BCD","right":"ADE","got":0,"imgs":["q3/4_097.jpg"],"exp":"07ADE会计核算的一般要求有：(D各单位应当按照国家统一的会计制度的要求、设置会计科目和账户，复式记账，填制会计凭证，登记会计账簿，进行成本计算，进行财产清查和编制财务会计报告。各单位应当根据实际发生的经济业务事项按照规定的会计处理方法进行会计核算，保证会计指标口径一致，相互可比和会计处理方法前后各期相一致。各单位发生的各项经济业务事项应当在依法设置的会计账簿上统一登记、核算，不得违反《中华人民共和国会计法》和国家统一会计制度的规定私设会计账簿登记、核算。@各单位对会计凭证、会计账簿、会计报表和其他会计资料应当建…"},{"set":"全真四","date":"11-05","n":98,"kind":"zero","mine":"ACD","right":"AD","got":0,"imgs":["q3/4_098.jpg"],"exp":"AD行政法的特征主要表现在以下三个方面：0)行政法部门尚无统一、完整的实体行政法典。0行政法涉及的领域十分广泛，内容十分丰富。囹行政法易于变动，稳定"},{"set":"全真四","date":"11-05","n":100,"kind":"less","mine":"BC","right":"ABC","got":1,"imgs":["q3/4_100.jpg"],"exp":"]ABC通常用于衡量国际收支状况的局部差额有：(D贸易差额。贸易差额即货物进出口差额。2经常差额。经常差额代表经常账户的收支状况，反映了实际资源的跨国转移状况。综合差额。综合差额考查的是除储备资产以外所有项目的"},{"set":"全真四","date":"11-05","n":101,"kind":"less","mine":"BCE","right":"ABCE","got":1.5,"imgs":["q3/4_101.jpg"],"exp":"IOI.ABCE一般侵权责任的构成要件包括四个方面；0违法行为。0损害事实。因果"},{"set":"全真四","date":"11-05","n":102,"kind":"less","mine":"BDE","right":"BCDE","got":1.5,"imgs":["q3/4_102.jpg"],"exp":"102．BCDE民怯基本原则包括平等原则洎愿原则、公平原则、诚信原则、守法和公序良"},{"set":"全真四","date":"11-05","n":103,"kind":"less","mine":"ABD","right":"ABDE","got":1.5,"imgs":["q3/4_103.jpg"],"exp":"103．ABDE《中华人民共和国民法典》将法人分为营利法人、非营利法人和特别法人。营利法人是指以取得利润并分配给股东等出资人为目的而成立的法人：营利法人包括有限责任公司．股份有限公司称其他企业法人等。非营利法人是指为公益目的或者其他非营利目的而成立的，不向出资人、设立人或者会员分配所取得利润的法人在我国、非营利法人主要包括事业单位法人、社会团体法人和捐助法人。《中华人民共和国民沈典》第九十六条规定：“本节规定的机关法人、农村集体经济组"},{"set":"全真四","date":"11-05","n":105,"kind":"less","mine":"DE","right":"ABDE","got":1,"imgs":["q3/4_105.jpg"],"exp":"105．ABDE间歇性精神病人在精神正常时有违法行为的，应当给予行政处罚，所以选项c的说法错误："},{"set":"冲刺二","date":"11-05 01:55","n":3,"kind":"wrong","mine":"A","right":"C","got":0,"imgs":["q/2_003.jpg"],"exp":"市场管理中，对市场经营活动和竞争方式的管理，包括市场交易中不准缺斤短两、以次充好、降低服务标准，并依法限制不正当竞争等。"},{"set":"冲刺二","date":"11-05 01:55","n":6,"kind":"wrong","mine":"B","right":"C","got":0,"imgs":["q/2_006.jpg"],"exp":"赤字财政政策又称扩张性财政政策，它是通过减税来减少国家的财政收人，增加企业和个人的可支配收人，刺激社会总需求，或通过扩大政府财政支出的规模，来扩大社会需求。"},{"set":"冲刺二","date":"11-05 01:55","n":7,"kind":"wrong","mine":"D","right":"B","got":0,"imgs":["q/2_007.jpg"],"exp":"财政支出规模是指财政支出总额占国内生产总值（GDP）的比重。"},{"set":"冲刺二","date":"11-05 01:55","n":10,"kind":"wrong","mine":"B","right":"A","got":0,"imgs":["q/2_010.jpg"],"exp":"如果国债发行过多地被银行承购，会增加流通中货币量，并通过货币乘数进一步扩大货币流通量，有可能引发通货膨胀。"},{"set":"冲刺二","date":"11-05 01:55","n":11,"kind":"wrong","mine":"A","right":"D","got":0,"imgs":["q/2_011.jpg"],"exp":"个人综合所得，适用3%、45%的超额累进税率。"},{"set":"冲刺二","date":"11-05 01:55","n":12,"kind":"wrong","mine":"A","right":"C","got":0,"imgs":["q/2_012.jpg"],"exp":"我国征收消费税的消费品有烟、酒、高档化妆品、贵重首饰及珠宝玉石、鞭炮焰火、成品油、摩托车、小汽车、高尔夫球及球具、高档手表、游艇、木制一次性筷子、实木地板、电池和涂料共15类消费品。"},{"set":"冲刺二","date":"11-05 01:55","n":14,"kind":"wrong","mine":"C","right":"B","got":0,"imgs":["q/2_014.jpg"],"exp":"政府预算按预算编制依据的内容和方法分类，分为增量预算和零基预算。"},{"set":"冲刺二","date":"11-05 01:55","n":15,"kind":"wrong","mine":"B","right":"D","got":0,"imgs":["q/2_015.jpg","q/2_015_b.jpg"],"exp":"全国人大财经委员会在全国人民代表大会举行前一个月，会同全国人大其他各专门委员会，听取财政部、国家税务总局和海关总署关于上年度中央和地方预算执行情况与本年度中央和地方预算草案的汇报，并对中央预算草案进行初步审查，提出初步审查意见。"},{"set":"冲刺二","date":"11-05 01:55","n":16,"kind":"wrong","mine":"C","right":"D","got":0,"imgs":["q/2_016.jpg"],"exp":"流通中的货币和单位活期存款、个人活期存款、非银行支付机构客户备付金构成MI，即通常所说的狭义货币供应量。"},{"set":"冲刺二","date":"11-05 01:55","n":22,"kind":"wrong","mine":"B","right":"D","got":0,"imgs":["q/2_022.jpg"],"exp":"在各国税收体系中，财产税一直是地方政府财政收人的主要来源。"},{"set":"冲刺二","date":"11-05 01:55","n":23,"kind":"wrong","mine":"D","right":"A","got":0,"imgs":["q/2_023.jpg"],"exp":"在统计分组中，一组的上限与下限的差值被称为组距。"},{"set":"冲刺二","date":"11-05 01:55","n":25,"kind":"wrong","mine":"B","right":"A","got":0,"imgs":["q/2_025.jpg"],"exp":"重置成本又称现行成本，是指按照当前市场条件，重新取得同样一项资产所需支付的现金或现金等价物金额。"},{"set":"冲刺二","date":"11-05 01:55","n":27,"kind":"wrong","mine":"A","right":"D","got":0,"imgs":["q/2_027.jpg"],"exp":"所有者权益变动表全面反映了企业的股东权益在年度内的变化情况，便于会计信息者深人分析企业股东权益的增减变化情况，并进而对企业的资本保值增值情况作出正确判断，从而提供对决策有用的信息。"},{"set":"冲刺二","date":"11-05 01:55","n":35,"kind":"wrong","mine":"D","right":"C","got":0,"imgs":["q/2_035.jpg"],"exp":"法律关系以权利义务为内容表现。"},{"set":"冲刺二","date":"11-05 01:55","n":36,"kind":"wrong","mine":"D","right":"A","got":0,"imgs":["q/2_036.jpg"],"exp":"法的实施是指宪法法律等通过执法、司法、守法、法律监督等方式在社会生活中得以运用和实现的活动。"},{"set":"冲刺二","date":"11-05 01:55","n":38,"kind":"wrong","mine":"A","right":"B","got":0,"imgs":["q/2_038.jpg"],"exp":"贸易全球化使发展中国家进口替代战略所需要的保护政策（关税或非关税政策）日益受到国际规则的制约，选项A错误。新技术的开发和推广应用使产品的生命周期缩短、进一步加大了发展中国家实现技术追赶的难度，选项c错误。发展中国家普遍采用的“以市场换技术\"的目标不仅越来越难以实现，还在一定程度上削弱了发展中国家在国际贸易体系中的地位，选项D错误。"},{"set":"冲刺二","date":"11-05 01:55","n":44,"kind":"wrong","mine":"C","right":"D","got":0,"imgs":["q/2_044.jpg"],"exp":"政府投资性支出的特点是：非营利性、长期性、外部性。"},{"set":"冲刺二","date":"11-05 01:55","n":46,"kind":"wrong","mine":"B","right":"C","got":0,"imgs":["q/2_046.jpg"],"exp":"应当制定地方性法规但条件尚不成熟的，因行政管理迫切需要，可以先制定20地方政府规章。规章实施满两年需要继续实施规章所规定的行政措施的、应当提请本级人民代表大会或者其常务委员会制定地方性法规。"},{"set":"冲刺二","date":"11-05 01:55","n":49,"kind":"wrong","mine":"B","right":"D","got":0,"imgs":["q/2_049.jpg"],"exp":"行政复议不是内部行政行为，也不能对法律规范的合法性进行审查，更不是单方法律行为。行政复议只能由行政相对人启动，没有行政相对人的申请，行政机关不能主动进行复议活动。"},{"set":"冲刺二","date":"11-05 01:55","n":50,"kind":"wrong","mine":"D","right":"C","got":0,"imgs":["q/2_050.jpg"],"exp":"我国行政复议的基本制度主要有一级复议制度、复议不停止执行制度、被申请人承担举证责任的制度以及行政复议中的调解制度。"},{"set":"冲刺二","date":"11-05 01:55","n":53,"kind":"wrong","mine":"C","right":"B","got":0,"imgs":["q/2_053.jpg"],"exp":"税收的经济职能也称调节职能，是指为实现社会总需求与总供给的平衡，通过税收分配，对资源配置、国民经济的地区分配格局、产业结构、社会财富分配和居民消费结构等进行调节的功能。"},{"set":"冲刺二","date":"11-05 01:55","n":56,"kind":"wrong","mine":"C","right":"D","got":0,"imgs":["q/2_056.jpg"],"exp":"房产税在房产所在地缴纳。"},{"set":"冲刺二","date":"11-05 01:55","n":57,"kind":"wrong","mine":"A","right":"C","got":0,"imgs":["q/2_057.jpg","q/2_057_b.jpg"],"exp":"机动船舶计税单位为净吨位每吨，选项A错误；游艇计税单位为艇身长度每米，选项B错误；排气量以车船登记证书或者行驶证所载数据为准，并非由税务机关实地检测，选项D错误。"},{"set":"冲刺二","date":"11-05 01:55","n":58,"kind":"wrong","mine":"D","right":"C","got":0,"imgs":["q/2_058.jpg"],"exp":"自然人是具有自然生物属性的人，包括本国公民、外国公民和无国籍人。"},{"set":"冲刺二","date":"11-05 01:55","n":59,"kind":"wrong","mine":"B","right":"D","got":0,"imgs":["q/2_059.jpg"],"exp":"特别法人包括以下几类：一是机关法人。二是农村集体经济组织法人。农村集体经济组织是指以土地集体所有为基础，依法代表成员集体行使所有权，实行家庭承包经营为基础、统分结合双层经营体制的区域性经济组织，包括乡镇级农村集体经济组织、村级农村集体经济组织、组级农村集体经济组织。农村集体经济组织依照《中华人民共和国农村集体经济组织法》进行登记，取得特别法人资格，依法从事与其履行职能相适应的民事活动。三是合作经济组织法人。这类组织的特点是对内具有共益性或者互益性，对外又可以从事经营活动。四是基层群众性自治组织法人。村民委员会、居民…"},{"set":"冲刺二","date":"11-05 01:55","n":60,"kind":"wrong","mine":"C","right":"D","got":0,"imgs":["q/2_060.jpg"],"exp":"从本质上看，政府预算是国家和政府意志的体现，政府预算需要经过国家权力机关审查和批准才能生效，是一个重要的法律性文件（属于年度立法），政府预算从编制、审查批准、执行、调整和决算，都要依照法律规定进行。"},{"set":"冲刺二","date":"11-05 01:55","n":61,"kind":"wrong","mine":"B","right":"C","got":0,"imgs":["q/2_061.jpg"],"exp":"数字货币是信用货币的新形式。符合信用货币的定义。"},{"set":"冲刺二","date":"11-05 01:55","n":62,"kind":"wrong","mine":"C","right":"A","got":0,"imgs":["q/2_062.jpg"],"exp":"货币制度的构成要素包括货币材料、货币名称、货币单位和价格标准，本位币、辅币及其偿付能力，发行保证制度。"},{"set":"冲刺二","date":"11-05 01:55","n":72,"kind":"less","mine":"CE","right":"ACDE","got":1,"imgs":["q/2_072.jpg"],"exp":"因债的发生原因的不同，债可分为合同之债、侵权之债、不当得利之债和无因管理之债。人情债是道德范畴。"},{"set":"冲刺二","date":"11-05 01:55","n":78,"kind":"zero","mine":"AE","right":"ABCD","got":0,"imgs":["q/2_078.jpg"],"exp":"集中趋势的测度，主要包括位置平均数和数值平均数；位置平均数主要有众数、中位数，数值平均数主要有算术平均数、几何平均数。"},{"set":"冲刺二","date":"11-05 01:55","n":79,"kind":"less","mine":"BD","right":"ABCD","got":1,"imgs":["q/2_079.jpg"],"exp":"影响汇率变动的主要因素有国际收支、相对通货膨胀率、相对利率、总需求与总供给以及市场预期。"},{"set":"冲刺二","date":"11-05 01:55","n":80,"kind":"zero","mine":"ACE","right":"ABC","got":0,"imgs":["q/2_080.jpg"],"exp":"总标题应简明确切地概括出统计表的内容，一般需要标明统计数据的时间(When)、地点(Where)以及何种数据（What），即标题内容应满足“3W”要求。"},{"set":"冲刺二","date":"11-05 01:55","n":81,"kind":"less","mine":"BD","right":"ABCD","got":1,"imgs":["q/2_081.jpg"],"exp":"资产类账户的借方表示增加，贷方表示减少，期初、期末余额一般在借方；权益类账户的贷方表示增加，借方表示减少，期初、期末余额一般在贷方。成本类账户结构、费用类账户结构与资产类账户结构相同，收人类账户结构与权益类账户结构相同。损益类会计账户期末无余额。"},{"set":"冲刺二","date":"11-05 01:55","n":83,"kind":"zero","mine":"AC","right":"AD","got":0,"imgs":["q/2_083.jpg"],"exp":"单位撤销、合并或者改变其隶属关系时，中外合资、国内合资前，企业股份制改造前以及单位主要领导调离工作前等情况下要进行一次全面清查，以明确经济责任。不定期清查是指事先没有安排计划，而是根据需要对财产物资所进行的临时性清查，当单位撤销、合并或改变隶属关系时，应对相关单位的各项财产物资、货币资金、债权、债务进行及时清查，以摸清家底。24"},{"set":"冲刺二","date":"11-05 01:55","n":86,"kind":"less","mine":"ABC","right":"ABCE","got":1.5,"imgs":["q/2_086.jpg"],"exp":"市场并不是万能的，有盲目性、自发性和滞后性的弱点，由此而生的短期行为、盲目生产将导致生产的波动、供需的失衡、资源的破坏与浪费；市场对许多基础设施和公共设施的建设以及公共消费也难以进行有效的调节；市场不能自发地实现收人分配的社会公平和经济总量的平衡。为了有效地发挥市场对资源配置的决定性作用，必须加强和改善国家对经济的宏观调控。"},{"set":"冲刺二","date":"11-05 01:55","n":88,"kind":"less","mine":"CE","right":"ABCE","got":1,"imgs":["q/2_088.jpg"],"exp":"一般来说，财政具有四个基本特征，即弥补市场失效、提供公平服务、非市场营利性和法治性。"},{"set":"冲刺二","date":"11-05 01:55","n":89,"kind":"less","mine":"BCD","right":"BCDE","got":1.5,"imgs":["q/2_089.jpg","q/2_089_b.jpg"],"exp":"财政补贴是指国家为了实现特定的政治、经济和社会目标，将一部分财政资金无偿补助给企业和居民的一种再分配形式。在这种分配形式中，财政补贴的主体是国家；补贴的对象是企业和居民；补贴的目的是贯彻一定的政策，满足某种特定的需要，实现特定的政治、经济和社会目标；补贴的性质是通过财政资金的无偿补助而进行的一种社会财富的再分配。对困难职工的补助属于社会保障的内容。"},{"set":"冲刺二","date":"11-05 01:55","n":90,"kind":"less","mine":"ACD","right":"ABCD","got":1.5,"imgs":["q/2_090.jpg"],"exp":"行政拘留是行政处罚的一种，不是刑事处罚。"},{"set":"冲刺二","date":"11-05 01:55","n":91,"kind":"zero","mine":"BE","right":"ABC","got":0,"imgs":["q/2_091.jpg"],"exp":"划拨存款、汇款：加处罚款或者滞纳金属于行政强制执行的范畴。"},{"set":"冲刺二","date":"11-05 01:55","n":92,"kind":"zero","mine":"BDE","right":"ABE","got":0,"imgs":["q/2_092.jpg"],"exp":"定距尺度是对现象类别或次序之间间距的测度。定距尺度可以用数字表示现象各类别的不同和顺序大小的差异，反映现象规模水平的数据必须以定距尺度计量。25"},{"set":"冲刺二","date":"11-05 01:55","n":93,"kind":"less","mine":"ABC","right":"ABCD","got":1.5,"imgs":["q/2_093.jpg"],"exp":"行政复议机关履行行政复议职责，应当遵循的原则有合法原则、公正原则、公开原则、高效原则、便民原则、为民原则和禁止不利变更原则。"},{"set":"冲刺二","date":"11-05 01:55","n":95,"kind":"less","mine":"BD","right":"BDE","got":1,"imgs":["q/2_095.jpg"],"exp":"影响财政收人规模的主要因素有经济发展水平、生产技术水平、经济结构、分配制度和分配政策以及价格。"},{"set":"冲刺二","date":"11-05 01:55","n":96,"kind":"less","mine":"ACD","right":"ACDE","got":1.5,"imgs":["q/2_096.jpg"],"exp":"按照课税对象的不同，我国将课税对象分为：商品劳务额，即商品或劳务的销售额。，所得额，即法人或非法人组织获得的纯利润和个人的收人。0财产额，即纳税人占用财产的数量或价值。，其他，即以上未包括的课税对象，如产量、数量、特定行为等。"},{"set":"冲刺二","date":"11-05 01:55","n":97,"kind":"zero","mine":"CE","right":"ACD","got":0,"imgs":["q/2_097.jpg"],"exp":"法院不受理对下列事项提起的行政诉讼：行政机关对行政机关工作人员的奖惩、任免等决定，选项B不正确；行政法规、规章或者行政机关制定、发布的具有普遍约束力的决定、命令，选项E不正确。"},{"set":"冲刺二","date":"11-05 01:55","n":98,"kind":"zero","mine":"CE","right":"BCD","got":0,"imgs":["q/2_098.jpg"],"exp":"为避免重复征税，个人独资企业、合伙企业不适用企业所得税法；在中华人民共和国境内的一切企业和其他取得收人的组织为企业所得税的纳税人，外国企业在国内不取得收人，所以不是企业所得税的纳税人。"},{"set":"冲刺二","date":"11-05 01:55","n":99,"kind":"zero","mine":"ABD","right":"AB","got":0,"imgs":["q/2_099.jpg"],"exp":"民法是调整平等主体的自然人、法人和非法人组织之间的人身关系和财产关系的法律规范的总称。"},{"set":"冲刺二","date":"11-05 01:55","n":100,"kind":"less","mine":"ABC","right":"ABCE","got":1.5,"imgs":["q/2_100.jpg"],"exp":"我国民法的基本原则包括平等原则、自愿原则、公平原则、诚信原则、守法与公序良俗原则、绿色原则。"},{"set":"冲刺二","date":"11-05 01:55","n":101,"kind":"zero","mine":"ABD","right":"ACE","got":0,"imgs":["q/2_101.jpg"],"exp":"中央一般公共支出预算包括中央本级支出预算、中央对地方税收返还和转移支付预算、预备费。"},{"set":"冲刺二","date":"11-05 01:55","n":102,"kind":"zero","mine":"ABC","right":"BCDE","got":0,"imgs":["q/2_102.jpg","q/2_102_b.jpg"],"exp":"规范预算支出管理，推进财政支出标准化的内容是：加强重大决策部署财力保障，合理安排支出预算规模，大力优化财政支出结构，完善财政资金直达机制，推进支出标准体系建设。"},{"set":"冲刺二","date":"11-05 01:55","n":104,"kind":"zero","mine":"ADE","right":"ABC","got":0,"imgs":["q/2_104.jpg"],"exp":"担保物权包括抵押权、质权和留置权，处分权和使用权是所有权的内容。"},{"set":"冲刺二","date":"11-05 01:55","n":105,"kind":"less","mine":"BC","right":"ABCE","got":1,"imgs":["q/2_105.jpg"],"exp":"义务人履行后反悔的，法院不支持其令权利人返还所受履行的主张。27"},{"set":"冲刺三","date":"11-06 01:40","n":3,"kind":"wrong","mine":"C","right":"D","got":0,"imgs":["q/3_003.jpg"],"exp":"金融寡头在经济上的统治，主要通过“参与制\"来实现。融寡头通过掌握股票控制额的办法来层层控制企业的制度。“参与制\"是指金"},{"set":"冲刺三","date":"11-06 01:40","n":8,"kind":"wrong","mine":"C","right":"B","got":0,"imgs":["q/3_008.jpg"],"exp":"财政支出增长的弹性系数是指财政支出增长率与国内生产总值增长率之比。具体到本体，财政支出增长的弹性系数：098%÷399%2456%。"},{"set":"冲刺三","date":"11-06 01:40","n":10,"kind":"wrong","mine":"B","right":"C","got":0,"imgs":["q/3_010.jpg"],"exp":"地方政府举借债务的规模，由国务院报全国人民代表大会或其常务委员会批准。"},{"set":"冲刺三","date":"11-06 01:40","n":12,"kind":"wrong","mine":"D","right":"B","got":0,"imgs":["q/3_012.jpg"],"exp":"货物和劳务税类，包括增值税、消费税和关税，主要在生产、流通或者服务业中发挥调节作用。"},{"set":"冲刺三","date":"11-06 01:40","n":14,"kind":"wrong","mine":"B","right":"D","got":0,"imgs":["q/3_014.jpg"],"exp":"在现代经济社会条件下，政府预算一般具有三大职能：反映政府部门活动或工作状况的职能。，监督政府部门收支运作情况的职能。控制政府部门支出的职能。"},{"set":"冲刺三","date":"11-06 01:40","n":16,"kind":"wrong","mine":"A","right":"B","got":0,"imgs":["q/3_016.jpg"],"exp":"商业银行又称存款货币银行。它是经营完全信用业务（如存款、贷款和汇兑业务），并为客户提供多种金融服务的机构。它是金融机构体系中最为核心的部分。"},{"set":"冲刺三","date":"11-06 01:40","n":22,"kind":"wrong","mine":"C","right":"D","got":0,"imgs":["q/3_022.jpg"],"exp":"一般认为，会计核算的基本前提包括：会计主体、持续经营、会计分期和货币计量。"},{"set":"冲刺三","date":"11-06 01:40","n":25,"kind":"wrong","mine":"C","right":"D","got":0,"imgs":["q/3_025.jpg"],"exp":"职工公出借款凭据，必须附在记账凭证之后；收回借款时，应当另开收据或者退还借款副本，不得退还原借款收据。"},{"set":"冲刺三","date":"11-06 01:40","n":26,"kind":"wrong","mine":"C","right":"B","got":0,"imgs":["q/3_026.jpg"],"exp":"待处理财产损溢\"账户属于资产类账户，选为错误；财产清查审批之后：根据发生差异的原因、性质以及审批意见，进行差异处理，调整账项，而不是再依据清查结果报告表编制记账凭证，选项c错误。财产清查结果的处理建议需报股东会、董事会或经理（厂长）会议等类似机构批准，不能未经批准直接调整，选项D错误。"},{"set":"冲刺三","date":"11-06 01:40","n":28,"kind":"wrong","mine":"B","right":"A","got":0,"imgs":["q/3_028.jpg"],"exp":"生产资料所有制形式决定了人们在社会生产中的地位和相互关系，决定着产品的分配、交换和消费形式，从而决定着生产关系。"},{"set":"冲刺三","date":"11-06 01:40","n":34,"kind":"wrong","mine":"C","right":"B","got":0,"imgs":["q/3_034.jpg"],"exp":"法的确立阶段，包括以下步骤：提出法律案，这是立法程序的第一步，标志着立法活动的正式开始。，审议法律案，一般包括全国人民代表大会有关专门委员会审议和立法机关全体会议审议两个阶段。0表决和通过法律案。，公布法律，即由国家主席签署主席令公布法律。"},{"set":"冲刺三","date":"11-06 01:40","n":39,"kind":"wrong","mine":"C","right":"A","got":0,"imgs":["q/3_039.jpg"],"exp":"2020年11月，中央全面依法治国工作会议召开，明确习近平法治思想为全面依法治国的指导思想。"},{"set":"冲刺三","date":"11-06 01:40","n":46,"kind":"wrong","mine":"B","right":"D","got":0,"imgs":["q/3_046.jpg"],"exp":"统计分组时习惯上规定“上组限不在内”"},{"set":"冲刺三","date":"11-06 01:40","n":48,"kind":"wrong","mine":"D","right":"C","got":0,"imgs":["q/3_048.jpg"],"exp":"行政复议的基本制度有一级复议制度、复议不停止执行制度、被申请人承担举证责任的制度和行政复议中的调解制度。"},{"set":"冲刺三","date":"11-06 01:40","n":50,"kind":"wrong","mine":"A","right":"C","got":0,"imgs":["q/3_050.jpg","q/3_050_b.jpg"],"exp":"按取得收人的依据分类，可将财政收人分为政府财政收人和国有资产"},{"set":"冲刺三","date":"11-06 01:40","n":52,"kind":"wrong","mine":"A","right":"B","got":0,"imgs":["q/3_052.jpg"],"exp":"税收的固定性是指课税对象及每一单位课税对象的征收比例或征收数额是相对固定的，是以法律形式事先规定的。征收机关只能按预定标准征收而不能随意征收；纳税人取得了应税收人或发生了应税行为后，必须按预定标准如数缴纳，不能拖延时间或者改变缴税标准。"},{"set":"冲刺三","date":"11-06 01:40","n":54,"kind":"wrong","mine":"C","right":"B","got":0,"imgs":["q/3_054.jpg"],"exp":"原告申请停止执行，停止与否，最终决定权在法院，不在于被告。"},{"set":"冲刺三","date":"11-06 01:40","n":56,"kind":"wrong","mine":"C","right":"D","got":0,"imgs":["q/3_056.jpg"],"exp":"财产税的优点包括：符合税收的纳税能力原则；税源比较充分且相对稳定；具有收人分配功能；财产税属于直接税，不易转嫁。"},{"set":"冲刺三","date":"11-06 01:40","n":57,"kind":"wrong","mine":"A","right":"D","got":0,"imgs":["q/3_057.jpg"],"exp":"商场与顾客之间才是平等主体之间的财产关系，是民法的调整对象。"},{"set":"冲刺三","date":"11-06 01:40","n":59,"kind":"wrong","mine":"D","right":"C","got":0,"imgs":["q/3_059.jpg"],"exp":"自然人的民事权利能力是民事法律赋予自然人享有民事权利、承担民事义务的资格。"},{"set":"冲刺三","date":"11-06 01:40","n":62,"kind":"wrong","mine":"B","right":"C","got":0,"imgs":["q/3_062.jpg"],"exp":"汇票不是货币，是信用工具。"},{"set":"冲刺三","date":"11-06 01:40","n":65,"kind":"wrong","mine":"B","right":"A","got":0,"imgs":["q/3_065.jpg"],"exp":"没有代理权实施的代理是无权代理行为，不是滥用代理权的行为。"},{"set":"冲刺三","date":"11-06 01:40","n":67,"kind":"wrong","mine":"A","right":"C","got":0,"imgs":["q/3_067.jpg"],"exp":"不可抗力是时效中止的情形。"},{"set":"冲刺三","date":"11-06 01:40","n":71,"kind":"zero","mine":"AD","right":"AB","got":0,"imgs":["q/3_071.jpg"],"exp":"在发达的商品经济中，货币具有价值尺度、流通手段、贮藏手段、支付手段和世界货币五种职能。其中，价值尺度和流通手段是货币的基本职能。"},{"set":"冲刺三","date":"11-06 01:40","n":72,"kind":"less","mine":"AB","right":"ABC","got":1,"imgs":["q/3_072.jpg"],"exp":"资本、土地、知识、技术、管理、数据等生产要素由市场评价贡献、按贡献决定报酬，而不是由政府评价决定，选项D错误；初次分配由市场主导，核心是效率优先，而不是公平优先，选项E错误。"},{"set":"冲刺三","date":"11-06 01:40","n":73,"kind":"less","mine":"BD","right":"ABDE","got":1,"imgs":["q/3_073.jpg","q/3_073_b.jpg"],"exp":"社会主义宏观经济调控中所运用的经济杠杆有很多，主要有价格、税收、信贷、利率、汇率、工资、奖金等，它们共同构成经济杠杆体系。"},{"set":"冲刺三","date":"11-06 01:40","n":74,"kind":"less","mine":"ABC","right":"ABCE","got":1.5,"imgs":["q/3_074.jpg"],"exp":"一般来说，财政具有四个基本特征，即弥补市场失效、提供公平服务、非市场营利性和法治性。"},{"set":"冲刺三","date":"11-06 01:40","n":75,"kind":"less","mine":"BC","right":"ABC","got":1,"imgs":["q/3_075.jpg"],"exp":"按世界贸易组织的分类方法，根据可能对国际贸易造成的危害程度，财政补贴分为禁止性补贴、可诉补贴和不可诉补贴三类。"},{"set":"冲刺三","date":"11-06 01:40","n":76,"kind":"less","mine":"BCD","right":"ABCD","got":1.5,"imgs":["q/3_076.jpg"],"exp":"我国从2009年1月1日起，在全国全面实施“消费型\"增值税。所以E选项错误。"},{"set":"冲刺三","date":"11-06 01:40","n":77,"kind":"less","mine":"BD","right":"ABD","got":1,"imgs":["q/3_077.jpg"],"exp":"储备资产是指中央银行等货币当局拥有的对外资产，包括货币黄金、外汇、特别提款权和在国际货币基金组织的储备头寸。"},{"set":"冲刺三","date":"11-06 01:40","n":78,"kind":"zero","mine":"ACE","right":"ACD","got":0,"imgs":["q/3_078.jpg"],"exp":"衍生金融工具的种类主要有：(1)期货和期权。（2）互换。"},{"set":"冲刺三","date":"11-06 01:40","n":79,"kind":"less","mine":"AC","right":"ABC","got":1,"imgs":["q/3_079.jpg"],"exp":"计算几何平均数要求各观察值之间存在连乘积关系，它的主要用途是：对比率、指数等进行平均。，计算平均发展速度。"},{"set":"冲刺三","date":"11-06 01:40","n":80,"kind":"zero","mine":"ACE","right":"ABCD","got":0,"imgs":["q/3_080.jpg","q/3_080_b.jpg"],"exp":"企业会计准则》对企业提供的会计信息的质量提出了以下要求：可靠性、相关性、清晰性、可比性、实质重于形式、重要性、谨慎性、及时性。"},{"set":"冲刺三","date":"11-06 01:40","n":81,"kind":"less","mine":"D","right":"ABCD","got":0.5,"imgs":["q/3_081.jpg"],"exp":"自制原始凭证按其填制手续不同，又可分为一次凭证、累计凭证、汇总原始凭证和记账编制凭证四种。"},{"set":"冲刺三","date":"11-06 01:40","n":82,"kind":"less","mine":"AD","right":"ACDE","got":1,"imgs":["q/3_082.jpg"],"exp":"境内单位和个人租人外国籍船舶的，不征收车船税，选项B错误。"},{"set":"冲刺三","date":"11-06 01:40","n":84,"kind":"less","mine":"AE","right":"ACDE","got":1,"imgs":["q/3_084.jpg"],"exp":"资本主义经济、政治、文化和社会生活等各个方面都发生了深刻的变化，主要有以下几方面：社会生产力获得了巨大发展，进人了一个新阶段。，资本主义生产关系在私有制范围内不断进行调整，出现了资本占有社会化的趋势。0资产阶级政治统治形式趋于完善。，当代资本主义国家在不损害资产阶级根本利益的情况下，推行了一系列社会改良的措施，使工人阶级和资产阶级的矛盾相对缓和。"},{"set":"冲刺三","date":"11-06 01:40","n":86,"kind":"less","mine":"CD","right":"ACDE","got":1,"imgs":["q/3_086.jpg","q/3_086_b.jpg"],"exp":"财政配置社会资源的机制和手段主要有：根据政府职能的动态变化确定社会公共需要的基本范围，确定财政收支占国内生产总值的合理比例，从总量上实现高效的社会资源配置原则。，优化财政支出结构。0为公共工程提供必要的资金保障。，通过政府直接投资、财政贴息、税收优惠等方式，引导和调节社会投资方向，提高社会整体投资效率。0通过实行部门预算制度、建立国库集中收付制度和绩效评价制度等体制、机制改革，提高财政自身管理和运营效率。"},{"set":"冲刺三","date":"11-06 01:40","n":87,"kind":"less","mine":"AC","right":"ABCE","got":1,"imgs":["q/3_087.jpg"],"exp":"87〖答案IABCE析〗财政行使经济发展职能的意义，不仅仅是要促进经济增长，还要在促进经济增长的同时带来经济结构的改善、经济增长质量的提高和社会事业的进步。"},{"set":"冲刺三","date":"11-06 01:40","n":88,"kind":"zero","mine":"AB","right":"BCDE","got":0,"imgs":["q/3_088.jpg"],"exp":"购买性支出是按交易的经济性质进行的分类，不属于《2025年政府收支分类科目》中一般公共预算支出功能分类科目，选项A错误。"},{"set":"冲刺三","date":"11-06 01:40","n":90,"kind":"less","mine":"BC","right":"ABC","got":1,"imgs":["q/3_090.jpg"],"exp":"虽然地方政府规章可以就属于本行政区域的具体行政管理事项作出规定，但设区的市、自治州的人民政府制定规章的范围是受限制的，仅限于城乡建设与管理、生态文明建设、历史文化保护、基层治理等方面，并非不受范围限制，选项D错误。地方政府规章的制定主体不仅包括省、自治区、直辖市人民政府，还包括设区的市、自治州的人民政府，选项E错误。"},{"set":"冲刺三","date":"11-06 01:40","n":91,"kind":"zero","mine":"BDE","right":"ABCD","got":0,"imgs":["q/3_091.jpg"],"exp":"目前由法律和行政法规新创设的行政处罚主要有强制履行兵役、责令恢复植被、责令退还、限期拆除、限期治理、责令退回土地、撤销注册商标、注销城市户口等。"},{"set":"冲刺三","date":"11-06 01:40","n":92,"kind":"zero","mine":"BC","right":"ACDE","got":0,"imgs":["q/3_092.jpg","q/3_092_b.jpg"],"exp":"行政强制执行的方式主要有：加处罚款或者滞纳金。，划拨存款、汇款。0拍卖或者依法处理查封、扣押的场所、设施或者财物。，排除妨碍、恢复原状。0代履行。，其他强制执行方式。"},{"set":"冲刺三","date":"11-06 01:40","n":93,"kind":"less","mine":"BCD","right":"ABCD","got":1.5,"imgs":["q/3_093.jpg"],"exp":"复议不停止执行制度是有例外的：被申请人认为需要停止执行的。，行政复议机关认为需要停止执行的。申请人、第三人申请停止执行，行政复议机关认为其要求合理，决定停止执行的。，法律法规、规章规定停止执行的其他情形。申请人死亡行政行为不当然停止执行。"},{"set":"冲刺三","date":"11-06 01:40","n":94,"kind":"less","mine":"ABD","right":"ABCD","got":1.5,"imgs":["q/3_094.jpg"],"exp":"衡量一个国家财政收人的规模是否适度，除了要考虑既定的社会环境和历史条件外，还要看是否兼顾了效率和公平两个标准。"},{"set":"冲刺三","date":"11-06 01:40","n":95,"kind":"less","mine":"BCE","right":"BCDE","got":1.5,"imgs":["q/3_095.jpg"],"exp":"税收的内涵有以下几点：税收的征收主体是国家，征收客体是单位和个人。，税收的征收目的是满足国家实现其职能的需要，或者说是满足社会公共需要。0税收征收的依据是法律，凭借的是政治权力，而不是财产权力。，征税的过程是物质财富从私人部门单向地、无偿地转移给国家的过程。0从税收征收的直接结果看，国家通过税收方式取得了财政收人。"},{"set":"冲刺三","date":"11-06 01:40","n":96,"kind":"zero","mine":"AE","right":"CE","got":0,"imgs":["q/3_096.jpg"],"exp":"增值税是中央和地方共享税、商品劳务税，不是从量税，是从价税。"},{"set":"冲刺三","date":"11-06 01:40","n":97,"kind":"less","mine":"CE","right":"ACE","got":1,"imgs":["q/3_097.jpg"],"exp":"一级复议制度是指公民、法人或者其他组织对行政机关作出的行政行为不服，可以向该行政机关的上一级行政机关或者法定的行政机关申请复议。对复议决定不服，只能依法向人民法院提起行政诉讼，不得再向复议机关的上一级行政机关申请复议。法律、行政法规另有规定的除外。"},{"set":"冲刺三","date":"11-06 01:40","n":98,"kind":"less","mine":"BCD","right":"ABCD","got":1.5,"imgs":["q/3_098.jpg","q/3_098_b.jpg"],"exp":"在行政诉讼中，原告须对下列事项承担举证责任：证明起诉符合法定条件，但被告认为原告起诉超过起诉期限的除外。，在起诉被告不履行法定职责的案件中，应当提供其向被告提出申请的证据，但有下列情形之一的除外：一是被告应当依职权主动履行法定职责的；二是原告因正当理由不能提供证据的。在行政赔偿、补偿的案件中，原告应当对行政行为造成的损害提供证据。因被告的原因导致原告无法举证的，由被告承担举证责任。0在一并提起的行政赔偿诉讼中，证明因受被诉行为侵害而造成损失的事实。，其他应当由原告承担举证责任的事项。"},{"set":"冲刺三","date":"11-06 01:40","n":100,"kind":"zero","mine":"BCD","right":"BC","got":0,"imgs":["q/3_100.jpg"],"exp":"8周岁以上的未成年人是限制民事行为能力人，可以进行与他的年龄、智力相适应的民事活动；其他民事活动由其法定代理人代理，或者征得其法定代理人的同意。不能完全辨认自己行为的精神病人，是限制民事行为能力人，可以进行与其精神健康状况相适应的民事活动；其他民事活动由其法定代理人代理，或者征得其法定代理人的同意。"},{"set":"冲刺三","date":"11-06 01:40","n":101,"kind":"less","mine":"ABE","right":"ABCE","got":1.5,"imgs":["q/3_101.jpg"],"exp":"国有土地使用权出让属于政府性基金预算，选项D错误。"},{"set":"冲刺三","date":"11-06 01:40","n":102,"kind":"less","mine":"CDE","right":"ACDE","got":1.5,"imgs":["q/3_102.jpg"],"exp":"增强财政透明度，提高预算管理信息化水平内容包括改进预决算公开，发挥多种监督方式的协同效应，实现中央和地方财政系统信息贯通，推进部门间预算信息互联共享共四个方面的内容。要增加财政透明度，地方债务应该全面公开化，选项B错误。"},{"set":"冲刺三","date":"11-06 01:40","n":103,"kind":"zero","mine":"ACDE","right":"BCDE","got":0,"imgs":["q/3_103.jpg"],"exp":"选项A属于无效的法律行为。"},{"set":"冲刺三","date":"11-06 01:40","n":104,"kind":"zero","mine":"BCD","right":"CD","got":0,"imgs":["q/3_104.jpg","q/3_104_b.jpg"],"exp":"社会主义公有制经济的主体地位，主要体现在两个方面：一是公有资产在社会总资产中占优势；二是国有经济控制国民经济命脉，对经济发展起主导作用。"},{"set":"冲刺三","date":"11-06 01:40","n":105,"kind":"less","mine":"ACD","right":"ABCD","got":1.5,"imgs":["q/3_105.jpg"],"exp":"提起诉讼或申请仲裁是诉讼时效中断的情形，选项E错误。"}];
+const KEY = 'redo_v1';
+const norm = s => String(s||'').toUpperCase().replace(/[^A-E]/g,'').split('').sort().join('');
+const KIND = {wrong:'单选错', zero:'多选含错项归零', less:'多选少选部分给分', unknown:'记录未导出'};
+
+let done = {};          // key -> 'ok' | 'again'
+let picks = {};         // key -> 'AB' 当前勾选的选项
+let queue = [];         // 当前要做的
+let pos = 0;
+let filter = '全部';
+let sortMode = 'origin';
+const SORTS = [['origin', '按卷顺序'], ['zero', '归零优先'], ['random', '打乱']];
+let revealed = false;
+const LET = ['A', 'B', 'C', 'D', 'E'];
+
+try {
+  const o = JSON.parse(localStorage.getItem(KEY) || '{}');
+  done = o.done || o || {};
+  picks = o.picks || {};
+} catch(e){ done = {}; picks = {}; }
+const save = () => localStorage.setItem(KEY, JSON.stringify({ done: done, picks: picks }));
+const idOf = it => it.set + '#' + it.n;
+
+const sets = ['全部', ...Array.from(new Set(ITEMS.map(i => i.set)))];
+const $ = id => document.getElementById(id);
+
+const RANK = { zero: 0, less: 1, wrong: 2, unknown: 3 };
+function shuffled(a){
+  const b = a.slice();
+  for (let i = b.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [b[i], b[j]] = [b[j], b[i]];
+  }
+  return b;
+}
+function buildQueue(reset){
+  let src = filter === '全部' ? ITEMS.slice() : ITEMS.filter(i => i.set === filter);
+  if (sortMode === 'zero') {
+    src = src.slice().sort((a, b) =>
+      (RANK[a.kind] - RANK[b.kind]) || a.set.localeCompare(b.set) || (a.n - b.n));
+  } else if (sortMode === 'random') {
+    src = shuffled(src);
+  }
+  if (reset) {
+    queue = src;
+    pos = 0;
+  }
+  return queue;
+}
+
+function renderChips(){
+  $('chips').innerHTML = '';
+  sets.forEach(s => {
+    const b = document.createElement('button');
+    b.className = 'chip' + (s === filter ? ' on' : '');
+    b.textContent = s;
+    b.onclick = () => {
+      filter = s; pos = 0; buildQueue(true); revealed = false;
+      $('scope').textContent = s === '全部' ? '六卷' : s;
+      renderChips(); render();
+    };
+    $('chips').appendChild(b);
+  });
+}
+
+function renderSorts(){
+  $('sorts').innerHTML = '';
+  SORTS.forEach(([k, label]) => {
+    const b = document.createElement('button');
+    b.className = 'chip' + (k === sortMode ? ' on' : '');
+    b.textContent = label;
+    b.onclick = () => {
+      sortMode = k; buildQueue(true); revealed = false; renderSorts(); render();
+    };
+    $('sorts').appendChild(b);
+  });
+}
+
+function progress(){
+  const src = filter === '全部' ? ITEMS : ITEMS.filter(i => i.set === filter);
+  const ok = src.filter(i => done[idOf(i)] === 'ok').length;
+  const again = src.filter(i => done[idOf(i)] === 'again').length;
+  const answered = src.filter(i => done[idOf(i)]).length;
+  $('cnt').textContent = '已答 ' + answered + ' / ' + src.length + '（对 ' + ok + '）';
+  $('prog').style.width = (src.length ? answered / src.length * 100 : 0) + '%';
+  $('pos').textContent = again ? ('错 ' + again + ' 道待重做') : '全部做对就收工';
+}
+
+function render(){
+  progress();
+  const main = $('main');
+  main.innerHTML = '';
+  if (!queue.length) return;
+  if (pos >= queue.length) { pos = 0; }
+  const it = queue[pos];
+  const card = document.createElement('div');
+  card.className = 'card';
+
+  const tag = document.createElement('div');
+  tag.className = 'tag';
+  tag.innerHTML = '<b>' + it.set + '</b><span>' + (it.date||'') + '</span><span>第 ' + it.n +
+    ' 题</span><span>' + (KIND[it.kind]||'') + '</span>';
+  card.appendChild(tag);
+
+  const imgs = document.createElement('div');
+  imgs.className = 'imgs';
+  if (it.imgs.length) {
+    it.imgs.forEach(p => {
+      const a = document.createElement('a');
+      a.href = p; a.target = '_blank';
+      const img = document.createElement('img');
+      img.src = p; img.alt = it.set + ' 第' + it.n + '题'; img.loading = 'lazy';
+      a.appendChild(img); imgs.appendChild(a);
+    });
+  } else {
+    imgs.innerHTML = '<div class="hint">（这题没找到题图，按下面的答案回忆考点）</div>';
+  }
+  card.appendChild(imgs);
+
+  const hint = document.createElement('div');
+  hint.className = 'hint';
+  hint.textContent = '点选你觉得对的字母。多选只点最有把握的 2 个，第 3 个必须有印象才加。';
+  card.appendChild(hint);
+
+  const pbox = document.createElement('div');
+  pbox.className = 'picks';
+  pbox.id = 'picks';
+  LET.forEach(c => {
+    const b = document.createElement('button');
+    b.className = 'pick' + (norm(picks[idOf(it)] || '').indexOf(c) >= 0 ? ' on' : '');
+    b.textContent = c;
+    b.onclick = () => {
+      if (revealed) return;
+      let p = norm(picks[idOf(it)] || '');
+      p = p.indexOf(c) >= 0 ? p.replace(c, '') : p + c;
+      p = norm(p);
+      picks[idOf(it)] = p;
+      save();
+      Array.prototype.forEach.call(pbox.children, x => {
+        x.classList.toggle('on', p.indexOf(x.textContent) >= 0);
+      });
+    };
+    pbox.appendChild(b);
+  });
+  card.appendChild(pbox);
+
+  const rv = document.createElement('div');
+  rv.className = 'reveal';
+  rv.id = 'reveal';
+  card.appendChild(rv);
+
+  main.appendChild(card);
+  revealed = false;
+  $('btnSubmit').textContent = '提交（Enter）';
+  $('btnSubmit').disabled = false;
+
+  $('btnSubmit').onclick = () => {
+    if (revealed) { next(); return; }
+    const mine = norm(picks[idOf(it)] || '');
+    const right = norm(it.right);
+    const ok = mine && right && mine === right;
+    done[idOf(it)] = ok ? 'ok' : 'again';
+    save();
+    revealed = true;
+    Array.prototype.forEach.call(pbox.children, x => {
+      const c = x.textContent;
+      const inR = right.indexOf(c) >= 0;
+      const inM = mine.indexOf(c) >= 0;
+      x.classList.toggle('ok', inR && inM);
+      x.classList.toggle('miss', inR && !inM);
+      x.classList.toggle('bad', !inR && inM);
+      x.classList.remove('on');
+      x.disabled = true;
+    });
+    rv.className = 'reveal show';
+    let html = '<div class="verdict ' + (ok ? 'ok' : 'bad') + '">' +
+      (ok ? '对了' : (mine ? '不对' : '没选')) + '</div>';
+    html += '<div class="ansline">正确答案 <code>' + (it.right || '?') + '</code>';
+    if (it.mine) html += '　你那次的答案 <code>' + it.mine + '</code>';
+    if (it.got !== undefined && it.kind !== 'wrong' && it.kind !== 'unknown')
+      html += '　当时得分 ' + it.got;
+    html += '</div>';
+    if (it.exp) html += '<div class="exp">' + it.exp.replace(/[<>]/g,'') + '</div>';
+    rv.innerHTML = html;
+    $('btnSubmit').textContent = '下一题（Enter）';
+    progress();
+  };
+
+  $('btnSkip').onclick = () => { next(); };
+}
+
+function next(){
+  pos++;
+  if (pos >= queue.length) {
+    // 把"还不会"的再放一轮
+    const again = queue.filter(i => done[idOf(i)] === 'again');
+    if (again.length) {
+      queue = again.slice(); pos = 0;
+      // 提示
+      $('main').innerHTML = '<div class="done-box"><h2>这一轮做完了</h2>' +
+        '<div>还有 ' + again.length + ' 道标记为"还不会"，再滚一遍。</div></div>';
+      setTimeout(render, 700);
+      return;
+    }
+    $('main').innerHTML = '<div class="done-box"><h2>全部做完了</h2>' +
+      '<div>这个筛选下没有"还不会"的题了。换一套继续，或者明天再来一遍。</div></div>';
+    progress();
+    return;
+  }
+  render();
+}
+
+$('btnReset').onclick = () => {
+  if (!confirm('清空进度，重新开始？')) return;
+  done = {}; picks = {}; save(); buildQueue(true); pos = 0; renderChips(); renderSorts(); render();
+};
+
+$('btnFull').onclick = () => {
+  if (document.fullscreenElement) { document.exitFullscreen(); }
+  else { document.documentElement.requestFullscreen().catch(() => {}); }
+};
+
+// Enter 提交 / 下一题
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); $('btnSubmit').click(); return; }
+  const ch = String(e.key || '').toUpperCase();
+  if (LET.indexOf(ch) >= 0 && !revealed) {
+    const box = $('picks');
+    if (box) {
+      const btn = Array.prototype.find.call(box.children, x => x.textContent === ch);
+      if (btn) { btn.click(); e.preventDefault(); }
+    }
+    return;
+  }
+});
+
+buildQueue(true);
+renderChips();
+renderSorts();
+render();
+</script>
+<style id="dsh-mobile-fit">
+@media (max-width: 640px) {
+  [class*="imgwrap"] { overflow-x: visible !important; max-width: 100% !important; }
+  [class*="imgwrap"] img { min-width: 0 !important; width: 100% !important; height: auto !important; }
+  img.qimg { max-width: 100% !important; height: auto !important; }
+}
+</style>
+</body></html>

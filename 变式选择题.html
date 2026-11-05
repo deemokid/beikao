@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7f5ef">
+<title>变式题 · 同一考点换个问法</title>
+<style>
+:root{--bg:#0f1115;--card:#1a1d24;--line:#2a2e38;--fg:#e8eaed;--dim:#9aa0a8;--ok:#3ddc84;--bad:#ff6b6b;--hl:#ffd166;--btn:#2d6cdf}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;padding:0 0 96px}
+header{position:sticky;top:0;background:rgba(15,17,21,.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:10px 14px;z-index:9}
+.hrow{display:flex;align-items:center;justify-content:space-between;gap:10px}
+h1{font-size:15px;margin:0;font-weight:600;letter-spacing:.02em}
+.stat{font-size:12.5px;color:var(--dim);margin-top:4px}
+.bar{height:3px;background:var(--line);border-radius:2px;margin-top:8px;overflow:hidden}
+.bar>i{display:block;height:100%;width:0;background:var(--btn);transition:width .25s}
+main{padding:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.tag{display:inline-block;font-size:11.5px;color:var(--dim);border:1px solid var(--line);border-radius:999px;padding:1px 8px;margin-bottom:10px}
+.q{font-size:17px;line-height:1.65;font-weight:600;margin:0 0 4px}
+.qnote{font-size:12.5px;color:var(--dim);margin:0 0 14px}
+.opt{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;background:#20242c;color:var(--fg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:9px 0;font-size:16px;line-height:1.55;cursor:pointer;font-family:inherit}
+.opt .k{flex:0 0 22px;height:22px;line-height:22px;text-align:center;border-radius:50%;background:#2c313b;font-size:12.5px;font-weight:700;color:var(--dim);margin-top:1px}
+.opt.sel{border-color:var(--btn);background:#1b2740}
+.opt.sel .k{background:var(--btn);color:#fff}
+.opt.right{border-color:var(--ok);background:#14281d}
+.opt.right .k{background:var(--ok);color:#08210f}
+.opt.wrong{border-color:var(--bad);background:#2a1618}
+.opt.wrong .k{background:var(--bad);color:#2a0b0b}
+.opt.miss{border-color:var(--hl);background:#2a2410}
+.opt.miss .k{background:var(--hl);color:#322200}
+.opt:disabled{cursor:default;opacity:.96}
+.verdict{margin-top:14px;padding:12px 14px;border-radius:12px;font-size:14.5px;line-height:1.7;background:#20242c;border:1px solid var(--line);white-space:pre-wrap}
+.verdict b{color:var(--hl)}
+.verdict.ok{border-color:#2f6b47}
+.verdict.bad{border-color:#6b3030}
+footer{position:fixed;left:0;right:0;bottom:0;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(15,17,21,.2),rgba(15,17,21,.98) 40%);display:flex;gap:10px}
+button{flex:1;border:0;border-radius:12px;padding:14px;font-size:16px;font-weight:600;font-family:inherit;background:var(--btn);color:#fff;cursor:pointer}
+button.ghost{background:#20242c;color:var(--fg);border:1px solid var(--line)}
+button:disabled{opacity:.45}
+.mini{font-size:12px;color:var(--dim);background:none;border:1px solid var(--line);border-radius:999px;padding:5px 10px;cursor:pointer;font-family:inherit}
+.summary{font-size:15px;line-height:1.9}
+.summary .big{font-size:30px;font-weight:700;color:var(--hl)}
+a{color:#7fb0ff}
+
+/* ---- 日间主题（护眼）：覆盖上面的深色配色 ---- */
+:root{--bg:#f7f5ef;--card:#ffffff;--line:#e4e0d6;--fg:#22262c;--dim:#6f747c;
+ --ok:#1f7a3d;--bad:#b3261e;--hl:#8a6d1f;--btn:#1f5fbf}
+body{background:var(--bg);color:var(--fg);font-size:17px;line-height:1.72}
+header{background:rgba(247,245,239,.97);border-bottom:1px solid var(--line)}
+h1{color:#1b1f24}
+.card{background:var(--card)}
+.tag{color:var(--dim);border-color:var(--line);background:#fbfaf7}
+.q{font-size:18px;line-height:1.7}
+.qnote{color:var(--dim)}
+.opt{background:#fff;color:var(--fg);border:1px solid var(--line)}
+.opt .k{background:#edebe4;color:#5c6169}
+.opt.sel{border-color:var(--btn);background:#e9f0fd}
+.opt.sel .k{background:var(--btn);color:#fff}
+.opt.right{border-color:#2f8f57;background:#e8f6ed}
+.opt.right .k{background:#2f8f57;color:#fff}
+.opt.wrong{border-color:#c0392b;background:#fdecea}
+.opt.wrong .k{background:#c0392b;color:#fff}
+.opt.miss{border-color:#c99a00;background:#fff7db}
+.opt.miss .k{background:#efc21f;color:#3a2c00}
+.verdict{background:#f4f1ea;border-color:var(--line);color:#22262c}
+.verdict.ok{border-color:#9ccfae}
+.verdict.bad{border-color:#e3b0aa}
+button.ghost{background:#fff;color:var(--fg)}
+button{background:var(--btn)}
+.mini{background:#fff;color:var(--fg);border-color:var(--line)}
+.bar{background:#e6e2d8}
+.summary .big{color:#8a6d1f}
+footer{background:linear-gradient(180deg,rgba(247,245,239,.15),rgba(247,245,239,.99) 40%)}
+a{color:#1f5fbf}
+.mini{white-space:nowrap;flex:0 0 auto;font-size:13px}
+.qnote{white-space:normal;overflow-wrap:anywhere;line-height:1.6}
+
+/* ---- 电脑端（≥900px）：居中、收紧、一屏装下 ---- */
+@media (min-width:900px){
+  body{max-width:980px;margin:0 auto}
+  header{padding:8px 18px 6px}
+  .stat{margin-top:2px}
+  main{padding:10px 18px}
+  .card{padding:14px 18px}
+  .q{font-size:19.5px;line-height:1.55;margin:0 0 2px}
+  .qnote{margin:0 0 10px}
+  .opt{padding:10px 14px;margin:6px 0;font-size:17px}
+  .opt .k{margin-top:0}
+  .verdict{max-height:34vh;overflow:auto}
+  footer{max-width:980px;margin:0 auto;padding:8px 18px}
+}
+
+/* ---- 电脑端 v2：紧凑化 + 防止固定栏遮住题干 ---- */
+@media (min-width:900px){
+  body{padding-bottom:104px}
+  header{padding:6px 18px 4px}
+  main{padding:8px 18px}
+  .card{padding:12px 16px;scroll-margin-top:92px}
+  .q{font-size:19px;line-height:1.5;margin:0 0 2px}
+  .qnote{margin:0 0 8px;font-size:12.5px}
+  .tag{margin-bottom:6px}
+  .opt{padding:8px 13px;margin:5px 0;font-size:17px}
+  .verdict{margin-top:10px;padding:10px 12px;font-size:14px;line-height:1.6;max-height:30vh;overflow:auto}
+  footer{padding:7px 18px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="hrow">
+    <h1>变式题 · 同一考点换个问法</h1>
+    <div style="display:flex;gap:8px">
+      <button class="mini" id="btnWrong">错题目 <span id="wrongN">0</span></button>
+      <button class="mini" id="btnFull" title="全屏（F11）">全屏</button>
+      <button class="mini" id="btnReset">重来</button>
+    </div>
+  </div>
+  <div class="stat" id="stat">—</div>
+  <div class="bar"><i id="bar"></i></div>
+</header>
+<main><div class="card" id="card"></div></main>
+<footer>
+  <button class="ghost" id="btnPrev">上一题</button>
+  <button id="btnMain">提交</button>
+</footer>
+<script>
+const ITEMS = [{"b":"货币","q":"下列各项中，属于货币政策中介目标的有","o":["货币供应量","利率","汇率","基础货币","存款准备金"],"a":"ABC","e":"判别句：能直接拧的旋钮是操作目标，拧不动的表盘是中介目标。操作目标＝基础货币、银行体系存款准备金、政策利率（央行直接控制）；中介目标＝货币供应量、利率、汇率（央行只能间接影响，靠操作目标去带）。注意本题与全真四第 10 题的问法相反，答案也正好相反。"},{"b":"货币","q":"下列属于一般性货币政策工具的有","o":["法定存款准备金率","再贴现政策","公开市场业务","支农支小再贷款","贷款市场报价利率（LPR）"],"a":"ABC","e":"判别句：一般性工具只有三样——存准率、再贴现、公开市场业务，作用于总量；再贷款属于结构性工具（定向），LPR 是报价利率不是工具。"},{"b":"货币","q":"下列属于结构性货币政策工具的有","o":["支农支小再贷款","抵押补充贷款（PSL）","普惠小微贷款支持工具","碳减排支持工具","法定存款准备金率"],"a":"ABCD","e":"判别句：带「定向/专项/支持」字样的多半是结构性工具——支农支小再贷款、PSL、普惠小微、碳减排；存准率是总量工具，不分行业。"},{"b":"货币","q":"下列各项中，属于准货币的有","o":["单位定期存款","个人定期存款","其他存款","单位活期存款","流通中货币"],"a":"ABC","e":"判别句：准货币＝定期＋其他存款（不能马上花）；活期存款在 M1，流通中货币就是 M0。M2＝M1＋准货币。"},{"b":"货币","q":"关于常备借贷便利（SLF）的说法，正确的有","o":["由金融机构主动发起申请","主要用于解决大额、临时性流动性缺口","以抵押方式发放","由中央银行强制向金融机构摊派","直接面向企业和个人办理"],"a":"ABC","e":"判别句：SLF 是金融机构主动找央行借钱（「常备」＝随时可用），期限短、要抵押、解决大额临时缺口；央行不办对公对私业务，只跟金融机构打交道。"},{"b":"货币","q":"关于直接标价法的说法，正确的有","o":["以一定单位的外国货币为标准","折算成若干单位的本国货币","本国货币数额增多表示本币贬值","我国人民币汇率采用直接标价法","本国货币数额增多表示本币升值"],"a":"ABCD","e":"判别句：直接标价法＝「外币不动、本币动」，1 美元＝7 元；数字变大（7→7.2）是外币更值钱、本币贬值。间接标价法反过来：本币不动、外币动。"},{"b":"货币","q":"关于金本位制的说法，正确的有","o":["19 世纪典型的货币制度是金本位制","金币本位制具有自由铸造、自由兑换、自由输出入三大特点","金块本位制和金汇兑本位制是残缺不全的金本位制","金本位制下两国货币的汇率由铸币平价决定","目前世界各国仍实行金本位制"],"a":"ABCD","e":"判别句：16—18 世纪金银复本位 → 19 世纪金本位 → 20 世纪 30 年代金本位崩溃 → 现在信用货币。金本位下汇率由「铸币平价」（含金量之比）决定，围绕黄金输送点波动。"},{"b":"货币","q":"关于信用货币的说法，正确的有","o":["由国家法律强制流通","主要通过信贷程序发行","不能兑换成黄金","本身没有十足的内在价值","可以随时兑换成黄金"],"a":"ABCD","e":"判别句：信用货币的三张皮——强制性（法定偿付能力）、信贷程序发行、不能兑现（与代用货币的分水岭）。银行券能兑现、是代用货币；现代纸币不能兑现、是信用货币。"},{"b":"货币","q":"按照弗里德曼的货币需求理论，下列因素中与货币需求成反比的有","o":["存款利率","债券收益率","股票收益率","预期物价变动率","恒久性收入"],"a":"ABCD","e":"判别句：凡是「持有货币的机会成本」都与货币需求成反比——存款利率、债券收益率、股票收益率、预期物价上涨率；只有恒久性收入是正比（收入越多，要持有的货币越多）。"},{"b":"财政","q":"影响财政支出规模的因素包括","o":["经济发展水平","生产技术水平","经济结构","分配政策","生产关系因素"],"a":"ABCD","e":"判别句：五因素＝经济水平、技术、结构、分配政策、价格。「生产关系」是经济制度范畴，不在其中——这个假项在全真三第 28 题刚出现过。"},{"b":"财政","q":"关于资本预算的说法，正确的有","o":["以国债为收入来源","用于投资性支出","与经常预算共同构成复式预算","以税收为主要收入来源","主要用于公共消费性支出"],"a":"ABC","e":"判别句：经常预算「吃饭」——税收进、行政国防教育出；资本预算「建设」——国债进、基建公共工程出。"},{"b":"财政","q":"下列财政支出中，属于转移性支出的有","o":["社会保障支出","财政补贴","债务利息支出","国防支出","行政管理支出"],"a":"ABC","e":"判别句：转移性支出＝政府掏钱但**不换回**商品和劳务（社保、补贴、债务利息）；购买性支出＝换回东西（国防、行政、教育、投资）。"},{"b":"财政","q":"按照国际货币基金组织《2014 年政府财政统计手册》，财政收入的来源包括","o":["税收","社会缴款","赠与","其他收入","债务收入"],"a":"ABCD","e":"判别句：IMF 口径四类——税收、社会缴款、赠与、其他收入；**债务收入不算财政收入**（那是融资，不是收入）。"},{"b":"税收","q":"关于房产税的说法，正确的有","o":["从价计征的税率为 1.2%，计税依据为房产余值","从租计征的税率为 12%，计税依据为租金收入","个人出租住房的税率减按 4%","房产税按年计算、分期缴纳","房产税按月申报缴纳"],"a":"ABCD","e":"判别句：从价 1.2%（余值）、从租 12%（租金）、个人出租住房 4%；按年计算分期缴纳。余值＝原值×(1－10%~30%)，不是原值本身。"},{"b":"统计","q":"关于离散系数的说法，正确的有","o":["等于标准差除以算术平均数","可以消除变量值水平高低的影响","可以消除计量单位不同的影响","值越大说明离散程度越大","它的计量单位与原变量相同"],"a":"ABCD","e":"判别句：离散系数是「没有单位的相对数」，专门用来比较**水平不同或单位不同**的两组数据的离散程度；标准差才有单位。"},{"b":"统计","q":"统计表的表头包括","o":["表号","总标题","计量单位","行标题","表外附加"],"a":"ABC","e":"判别句：表头＝表号＋总标题＋计量单位（在表的上方）；行标题、列标题、数字资料是表身；表外附加（资料来源、注释）在表的下方。"},{"b":"统计","q":"关于普查的说法，正确的有","o":["必须规定统一的标准调查时间","一般按一定周期进行","我国人口普查每 10 年进行一次","数据全面、系统、准确","适合用来推断总体并计算抽样误差"],"a":"ABCD","e":"判别句：普查＝全面、统一时点、周期长、花费大；抽样调查才谈抽样误差和推断总体。E 是抽样调查的特点，套到普查上就是错项。"},{"b":"会计","q":"下列做法中，体现谨慎性要求的有","o":["对应收款项计提坏账准备","对存货计提跌价准备","对售出商品可能发生的保修义务确认预计负债","不高估资产和收益、不低估负债和费用","为了防患于未然设置秘密准备"],"a":"ABCD","e":"判别句：谨慎性＝「宁可少说好，不可多说好」；但**不能设秘密准备**（那是滥用谨慎性、调节利润），也不能充分估计收益。"},{"b":"会计","q":"下列属于偿债能力指标的有","o":["流动比率","资产负债率","产权比率","已获利息倍数","总资产周转率"],"a":"ABCD","e":"判别句：偿债能力看「还不还得起」——流动、速动、现金比率（短期），资产负债率、产权比率、已获利息倍数（长期）；总资产周转率是营运能力。"},{"b":"会计","q":"关于利润的计算，正确的有","o":["利润总额＝营业利润＋营业外收入－营业外支出","净利润＝利润总额－所得税费用","营业利润不包括营业外收入和营业外支出","利润总额＝营业收入－营业成本","净利润＝利润总额＋所得税费用"],"a":"ABC","e":"判别句：营业利润＝收入－成本－税金及附加－期间费用－资产减值损失＋公允价值变动收益＋投资收益；再加营业外收支得利润总额；再减所得税得净利润。三步楼别跨。"},{"b":"法律","q":"关于民事行为能力的说法，正确的有","o":["8 周岁以上的未成年人是限制民事行为能力人","不满 8 周岁的未成年人是无民事行为能力人","16 周岁以上、以自己的劳动收入为主要生活来源的，视为完全民事行为能力人","不能辨认自己行为的成年人是无民事行为能力人","12 周岁以上的未成年人是限制民事行为能力人"],"a":"ABCD","e":"判别句：民法典的口径是 **8 周岁**（12 是旧民法通则的说法，现在考 12 一律算错）。16 周岁以上靠劳动养活自己＝视为完全行为能力人。"},{"b":"法律","q":"下列情形中，人民法院应当受理的行政诉讼有","o":["对罚款决定不服","对吊销许可证决定不服","对行政拘留决定不服","对没收违法所得决定不服","对行政机关工作人员的任免决定不服"],"a":"ABCD","e":"判别句：可诉的是「对外、具体、影响权利」的行为；内部任免奖惩、行政法规规章、国家行为、法律规定终局裁决的，一律不受理。"},{"b":"法律","q":"下列属于按劳分配具体实现形式的有","o":["工资","奖金","津贴","股息红利","特许权使用费收入"],"a":"ABC","e":"判别句：按劳分配只看「劳动」——工资、奖金、津贴；股息红利是按资本要素、特许权使用费是按技术/知识产权要素，都属按要素分配。"},{"b":"经济学基础","q":"关于高质量发展内涵的说法，正确的有","o":["创新是引领发展的第一动力","协调是持续健康发展的内在要求","绿色是永续发展的必要条件","开放是国家繁荣发展的必由之路","以增长速度的高低作为衡量发展的唯一标准"],"a":"ABCD","e":"判别句：创新、协调、绿色、开放、共享五句话＋「有没有」转向「好不好」。以速度论英雄恰恰是它要否定的东西。"}];
+const KEY = 'bkd_var_v1';
+const LET = ['A','B','C','D','E'];
+document.addEventListener('DOMContentLoaded', () => {
+  const b = document.getElementById('btnFull');
+  if (b) b.onclick = () => {
+    if (document.fullscreenElement) { document.exitFullscreen(); }
+    else { document.documentElement.requestFullscreen().catch(() => {}); }
+  };
+});
+
+let st = { i: 0, picks: {}, done: {}, wrongOnly: false, order: null };
+
+function load(){
+  try{
+    const raw = localStorage.getItem(KEY);
+    if(raw){ const o = JSON.parse(raw); if(o && o.done){ st.done = o.done || {}; } }
+  }catch(e){}
+}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify({done: st.done})); }catch(e){} }
+
+let queue = [];
+function rebuild(){
+  queue = ITEMS.map((it, i) => i);
+  if(st.wrongOnly){
+    queue = queue.filter(i => (st.done[i] || {}).score === 'x');
+    if(!queue.length){ st.wrongOnly = false; queue = ITEMS.map((it,i)=>i); }
+  }
+  st.i = 0;
+}
+
+function scoreOf(pick, ans){
+  const p = pick.split('').sort().join('');
+  const a = ans.split('').sort().join('');
+  if(p === a) return 2;
+  for(const c of p){ if(a.indexOf(c) < 0) return 0; }
+  return Math.round(p.length * 10) / 20;   // 少选：每个 0.5
+}
+
+function render(){
+  const idx = queue[st.i];
+  const it = ITEMS[idx];
+  const rec = st.done[idx];
+  const answered = !!rec;
+  const pick = (st.picks[idx] || (rec ? rec.pick : '')) || '';
+  const card = document.getElementById('card');
+  let h = '';
+  h += '<span class="tag">' + it.b + '</span>';
+  h += '<p class="q">' + it.q + '</p>';
+  h += '<p class="qnote">多选 · 全对 2 分，少选按项给分，含错项归零</p>';
+  for(let j = 0; j < 5; j++){
+    const c = LET[j];
+    let cls = 'opt';
+    if(answered){
+      const inAns = it.a.indexOf(c) >= 0;
+      const inPick = pick.indexOf(c) >= 0;
+      if(inAns && inPick) cls += ' right';
+      else if(inAns && !inPick) cls += ' miss';
+      else if(!inAns && inPick) cls += ' wrong';
+    } else if(pick.indexOf(c) >= 0) cls += ' sel';
+    h += '<button class="' + cls + '" data-c="' + c + '"' + (answered ? ' disabled' : '') + '>'
+       + '<span class="k">' + c + '</span><span>' + it.o[j] + '</span></button>';
+  }
+  if(answered){
+    const good = rec.score === 2;
+    h += '<div class="verdict ' + (good ? 'ok' : 'bad') + '">';
+    h += '你的选择：' + (pick || '（空）') + '　正确答案：<b>' + it.a + '</b>\n';
+    h += '得分：' + (rec.score === 'x' ? '0' : rec.score) + ' / 2　';
+    h += (rec.score === 2 ? '✅ 全对' : (rec.score === 0 || rec.score === 'x' ? '❌ 归零' : '△ 少选'));
+    h += '\n' + it.e;
+    h += '</div>';
+  }
+  card.innerHTML = h;
+
+  card.querySelectorAll('.opt').forEach(b => {
+    b.addEventListener('click', () => {
+      if(st.done[idx]) return;
+      const c = b.dataset.c;
+      let p = st.picks[idx] || '';
+      p = p.indexOf(c) >= 0 ? p.replace(c, '') : (p + c).split('').sort().join('');
+      st.picks[idx] = p;
+      render();
+    });
+  });
+
+  const total = ITEMS.length;
+  const answeredN = Object.keys(st.done).length;
+  const fulls = Object.values(st.done).filter(r => r.score === 2).length;
+  const zeros = Object.values(st.done).filter(r => r.score === 'x').length;
+  const lost = Object.values(st.done).reduce((s, r) => s + (r.score === 'x' ? 2 : 2 - r.score), 0);
+  document.getElementById('stat').textContent =
+    '已答 ' + answeredN + ' / ' + total +
+    '　全对 ' + fulls + '　归零 ' + zeros +
+    '　累计失分 ' + (Math.round(lost * 10) / 10);
+  document.getElementById('bar').style.width = (100 * answeredN / total).toFixed(1) + '%';
+  document.getElementById('wrongN').textContent = zeros;
+
+  const main = document.getElementById('btnMain');
+  if(answered) main.textContent = (st.i + 1 < queue.length) ? '下一题' : '看结果';
+  else main.textContent = '提交';
+
+  const prev = document.getElementById('btnPrev');
+  prev.disabled = st.i === 0;
+  st.summary = false;
+  document.getElementById('card').scrollIntoView({block:'start', behavior:'auto'});
+}
+
+document.getElementById('btnMain').addEventListener('click', () => {
+  const idx = queue[st.i];
+  const it = ITEMS[idx];
+  if(!st.done[idx]){
+    const pick = st.picks[idx] || '';
+    if(!pick) return;
+    const sc = scoreOf(pick, it.a);
+    st.done[idx] = { pick: pick, score: sc === 0 ? 'x' : sc };
+    save();
+    render();
+    return;
+  }
+  if(st.summary){ restart(); return; }
+  if(st.i + 1 < queue.length){ st.i++; render(); return; }
+  showSummary();
+});
+
+document.getElementById('btnPrev').addEventListener('click', () => { if(st.i > 0){ st.i--; render(); } });
+
+document.getElementById('btnWrong').addEventListener('click', () => {
+  st.wrongOnly = !st.wrongOnly;
+  rebuild();
+  if(!queue.length) return;
+  render();
+});
+
+document.getElementById('btnReset').addEventListener('click', () => {
+  if(!confirm('清空所有答题记录？')) return;
+  st.done = {}; st.picks = {}; st.wrongOnly = false;
+  save(); rebuild(); render();
+});
+
+function restart(){
+  st.done = {}; st.picks = {}; st.wrongOnly = false; st.summary = false;
+  save(); rebuild(); render();
+}
+
+function showSummary(){
+  st.summary = true;
+  const total = ITEMS.length;
+  const answeredN = Object.keys(st.done).length;
+  const got = Object.values(st.done).reduce((s, r) => s + (r.score === 'x' ? 0 : r.score), 0);
+  const fulls = Object.values(st.done).filter(r => r.score === 2).length;
+  const zeros = Object.values(st.done).filter(r => r.score === 'x').length;
+  const half = answeredN - fulls - zeros;
+  const pct = answeredN ? Math.round(100 * got / (answeredN * 2)) : 0;
+  document.getElementById('card').innerHTML =
+    '<div class="summary">' +
+    '<div class="big">' + (Math.round(got * 10) / 10) + ' / ' + (answeredN * 2) + ' 分</div>' +
+    '正确率 ' + pct + '%（按满分折算）<br><br>' +
+    '全对 ' + fulls + ' 题　少选 ' + half + ' 题　归零 ' + zeros + ' 题<br><br>' +
+    '归零题＝多选了不能确定的项。回到「错题目」重做一遍，<b>只选你能说出理由的</b>。<br><br>' +
+    '<button class="mini" id="btnRestart">重新开始（清空这轮记录）</button>' +
+    '</div>';
+  const rb = document.getElementById('btnRestart');
+  if(rb) rb.addEventListener('click', restart);
+  document.getElementById('btnMain').textContent = '再刷一遍';
+}
+
+load();
+rebuild();
+render();
+</script>
+<style id="dsh-mobile-fit">
+@media (max-width: 640px) {
+  [class*="imgwrap"] { overflow-x: visible !important; max-width: 100% !important; }
+  [class*="imgwrap"] img { min-width: 0 !important; width: 100% !important; height: auto !important; }
+  img.qimg { max-width: 100% !important; height: auto !important; }
+}
+</style>
+</body>
+</html>
