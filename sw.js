@@ -1,5 +1,5 @@
 /* 备考 · 离线缓存 */
-const CACHE = 'beikao-v8';
+const CACHE = 'beikao-v9';
 const ASSETS = [
   "./",
   "./index.html",
@@ -9,12 +9,13 @@ const ASSETS = [
   "./冲刺2_复盘与48小时.html",
   "./变式选择题.html",
   "./工商管理全真模拟6套.html",
+  "./押题一张纸.html",
+  "./明早30分钟.html",
+  "./最后一张.html",
   "./机考模拟器.html",
   "./第一套卷复盘.html",
   "./经济基础_错题记忆卡.html",
   "./考前一张纸.html",
-  "./最后一张.html",
-  "./押题一张纸.html",
   "./背点选择题.html",
   "./背诵清单.html",
   "./错位点_全真一二三四套.html",
