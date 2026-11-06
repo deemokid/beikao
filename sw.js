@@ -1,5 +1,5 @@
 /* 备考 · 离线缓存 */
-const CACHE = 'beikao-v3';
+const CACHE = 'beikao-v4';
 const ASSETS = [
   "./",
   "./index.html",

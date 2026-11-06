@@ -105,6 +105,12 @@ a{color:#1f5fbf}
   .verdict{margin-top:10px;padding:10px 12px;font-size:14px;line-height:1.6;max-height:30vh;overflow:auto}
   footer{padding:7px 18px}
 }
+@media (max-width:560px){
+  header .hrow{flex-wrap:wrap;gap:6px}
+  header .hrow > div{flex-wrap:wrap;gap:6px;justify-content:flex-end}
+  header .hrow h1{flex:1 1 100%;min-width:0}
+  .mini{font-size:12.5px;padding:4px 9px}
+}
 </style>
 </head>
 <body>
@@ -115,6 +121,7 @@ a{color:#1f5fbf}
       <button class="mini" id="btnWrong">错题目 <span id="wrongN">0</span></button>
       <button class="mini" id="btnFull" title="全屏（F11）">全屏</button>
       <button class="mini" id="btnShuffle">打乱</button>
+      <button class="mini" id="btnOpt">选项</button>
       <button class="mini" id="btnReset">重来</button>
     </div>
   </div>
@@ -136,6 +143,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.fullscreenElement) { document.exitFullscreen(); }
     else { document.documentElement.requestFullscreen().catch(() => {}); }
   };
+  const op = document.getElementById('btnOpt');
+  if (op) op.onclick = () => {
+    optShuffle = !optShuffle;
+    op.textContent = optShuffle ? '选项乱' : '选项';
+    for (const k in st.perm) {
+      if (!st.done[k]) { delete st.perm[k]; delete st.picks[k]; }
+    }
+    save(); render();
+  };
   const sh = document.getElementById('btnShuffle');
   if (sh) sh.onclick = () => {
     shuffleOn = !shuffleOn;
@@ -144,17 +160,18 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 });
 
-let st = { i: 0, picks: {}, done: {}, wrongOnly: false, order: null };
+let st = { i: 0, picks: {}, done: {}, perm: {}, wrongOnly: false, order: null };
 
 function load(){
   try{
     const raw = localStorage.getItem(KEY);
-    if(raw){ const o = JSON.parse(raw); if(o && o.done){ st.done = o.done || {}; } }
+    if(raw){ const o = JSON.parse(raw); if(o && o.done){ st.done = o.done || {}; } if(o && o.perm){ st.perm = o.perm || {}; } }
   }catch(e){}
 }
-function save(){ try{ localStorage.setItem(KEY, JSON.stringify({done: st.done})); }catch(e){} }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify({done: st.done, perm: st.perm})); }catch(e){} }
 
 let shuffleOn = false;
+let optShuffle = false;
 let queue = [];
 function rebuild(){
   queue = ITEMS.map((it, i) => i);
@@ -171,6 +188,27 @@ function rebuild(){
   st.i = 0;
 }
 
+function permOf(idx){
+  if(st.perm[idx] && st.perm[idx].length === 5) return st.perm[idx];
+  if(st.done[idx]){ st.perm[idx] = [0,1,2,3,4]; return st.perm[idx]; }
+  let p = [0,1,2,3,4];
+  if(optShuffle){
+    for(let k = 4; k > 0; k--){ const j = Math.floor(Math.random() * (k + 1)); const t = p[k]; p[k] = p[j]; p[j] = t; }
+  }
+  st.perm[idx] = p;
+  save();
+  return p;
+}
+function isShuffled(p){ for(let k = 0; k < 5; k++){ if(p[k] !== k) return true; } return false; }
+function dispAns(it, p){
+  const out = [];
+  for(const c of it.a){
+    const oi = c.charCodeAt(0) - 65;
+    const j = p.indexOf(oi);
+    if(j >= 0) out.push(LET[j]);
+  }
+  return out.sort().join('');
+}
 function scoreOf(pick, ans){
   const p = pick.split('').sort().join('');
   const a = ans.split('').sort().join('');
@@ -185,28 +223,31 @@ function render(){
   const rec = st.done[idx];
   const answered = !!rec;
   const pick = (st.picks[idx] || (rec ? rec.pick : '')) || '';
+  const perm = permOf(idx);
+  const ansD = dispAns(it, perm);
   const card = document.getElementById('card');
   let h = '';
   h += '<span class="tag">' + it.b + '</span>';
   h += '<p class="q">' + it.q + '</p>';
-  h += '<p class="qnote">多选 · 选全对得 2 分，少选按项给分，含错项 0 分</p>';
+  h += '<p class="qnote">多选 · 选全对得 2 分，少选按项给分，含错项 0 分'
+     + (isShuffled(perm) ? ' · 本题选项已打乱（解析里的字母按原题顺序）' : '') + '</p>';
   for(let j = 0; j < 5; j++){
     const c = LET[j];
     let cls = 'opt';
     if(answered){
-      const inAns = it.a.indexOf(c) >= 0;
+      const inAns = ansD.indexOf(c) >= 0;
       const inPick = pick.indexOf(c) >= 0;
       if(inAns && inPick) cls += ' right';
       else if(inAns && !inPick) cls += ' miss';
       else if(!inAns && inPick) cls += ' wrong';
     } else if(pick.indexOf(c) >= 0) cls += ' sel';
     h += '<button class="' + cls + '" data-c="' + c + '"' + (answered ? ' disabled' : '') + '>'
-       + '<span class="k">' + c + '</span><span>' + it.o[j] + '</span></button>';
+       + '<span class="k">' + c + '</span><span>' + it.o[perm[j]] + '</span></button>';
   }
   if(answered){
     const good = rec.score === 2;
     h += '<div class="verdict ' + (good ? 'ok' : 'bad') + '">';
-    h += '你的选择：' + (pick || '（空）') + '　正确答案：<b>' + it.a + '</b>\n';
+    h += '你的选择：' + (pick || '（空）') + '　正确答案：<b>' + ansD + '</b>\n';
     h += '得分：' + (rec.score === 'x' ? '0' : rec.score) + ' / 2　';
     h += (rec.score === 2 ? '✅ 全对' : (rec.score === 0 || rec.score === 'x' ? '❌ 归零' : '△ 少选'));
     h += '\n' + it.e;
@@ -253,7 +294,7 @@ document.getElementById('btnMain').addEventListener('click', () => {
   if(!st.done[idx]){
     const pick = st.picks[idx] || '';
     if(!pick) return;
-    const sc = scoreOf(pick, it.a);
+    const sc = scoreOf(pick, dispAns(it, permOf(idx)));
     st.done[idx] = { pick: pick, score: sc === 0 ? 'x' : sc };
     save();
     render();
@@ -275,12 +316,12 @@ document.getElementById('btnWrong').addEventListener('click', () => {
 
 document.getElementById('btnReset').addEventListener('click', () => {
   if(!confirm('清空所有答题记录？')) return;
-  st.done = {}; st.picks = {}; st.wrongOnly = false;
+  st.done = {}; st.picks = {}; st.perm = {}; st.wrongOnly = false;
   save(); rebuild(); render();
 });
 
 function restart(){
-  st.done = {}; st.picks = {}; st.wrongOnly = false; st.summary = false;
+  st.done = {}; st.picks = {}; st.perm = {}; st.wrongOnly = false; st.summary = false;
   save(); rebuild(); render();
 }
 
