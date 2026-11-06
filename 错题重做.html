@@ -90,7 +90,7 @@ button:disabled{opacity:.45}
 <body>
 <header>
   <div class="hrow">
-    <h1>错题重做 · <span id="scope">六卷</span></h1>
+    <h1>错题重做 · <span id="scope">六卷</span> <span style="font-size:11px;color:#8a8f96;font-weight:400">v3</span></h1>
     <button class="mini" id="btnFull" title="全屏（F11）">全屏</button>
   </div>
   <div class="meta">
@@ -100,6 +100,7 @@ button:disabled{opacity:.45}
   </div>
   <div class="chips" id="chips"></div>
   <div class="chips" id="sorts"></div>
+  <div class="chips" id="scopes"></div>
 </header>
 <main id="main"></main>
 <div class="foot">
@@ -120,6 +121,8 @@ let pos = 0;
 let filter = '全部';
 let sortMode = 'origin';
 const SORTS = [['origin', '按卷顺序'], ['zero', '归零优先'], ['random', '打乱']];
+let scopeMode = 'all';
+const SCOPES = [['all', '全部'], ['wrong', '只做错的'], ['new', '只做没做的']];
 let revealed = false;
 const LET = ['A', 'B', 'C', 'D', 'E'];
 
@@ -145,6 +148,8 @@ function shuffled(a){
 }
 function buildQueue(reset){
   let src = filter === '全部' ? ITEMS.slice() : ITEMS.filter(i => i.set === filter);
+  if (scopeMode === 'wrong') src = src.filter(i => done[idOf(i)] === 'again');
+  else if (scopeMode === 'new') src = src.filter(i => !done[idOf(i)]);
   if (sortMode === 'zero') {
     src = src.slice().sort((a, b) =>
       (RANK[a.kind] - RANK[b.kind]) || a.set.localeCompare(b.set) || (a.n - b.n));
@@ -186,6 +191,20 @@ function renderSorts(){
   });
 }
 
+function renderScopes(){
+  $('scopes').innerHTML = '';
+  SCOPES.forEach(([k, label]) => {
+    const b = document.createElement('button');
+    b.className = 'chip' + (k === scopeMode ? ' on' : '');
+    b.textContent = label;
+    b.onclick = () => {
+      scopeMode = k; buildQueue(true); pos = 0; revealed = false;
+      renderScopes(); render();
+    };
+    $('scopes').appendChild(b);
+  });
+}
+
 function progress(){
   const src = filter === '全部' ? ITEMS : ITEMS.filter(i => i.set === filter);
   const ok = src.filter(i => done[idOf(i)] === 'ok').length;
@@ -193,14 +212,24 @@ function progress(){
   const answered = src.filter(i => done[idOf(i)]).length;
   $('cnt').textContent = '已答 ' + answered + ' / ' + src.length + '（对 ' + ok + '）';
   $('prog').style.width = (src.length ? answered / src.length * 100 : 0) + '%';
-  $('pos').textContent = again ? ('错 ' + again + ' 道待重做') : '全部做对就收工';
+  let posTxt = again ? ('错 ' + again + ' 道待重做') : '全部做对就收工';
+  if (scopeMode !== 'all') posTxt = '当前队列 ' + queue.length + ' 题 · ' + posTxt;
+  $('pos').textContent = posTxt;
 }
 
 function render(){
   progress();
   const main = $('main');
   main.innerHTML = '';
-  if (!queue.length) return;
+  if (!queue.length) {
+    const tip = scopeMode === 'wrong' ? '这个筛选下没有做错的题了'
+              : (scopeMode === 'new' ? '这个筛选下没有没做过的题了' : '这里没有题');
+    const box = document.createElement('div');
+    box.className = 'done-box';
+    box.innerHTML = '<h2>' + tip + '</h2><div>点上面的「全部」换个范围。</div>';
+    main.appendChild(box);
+    return;
+  }
   if (pos >= queue.length) { pos = 0; }
   const it = queue[pos];
   const card = document.createElement('div');
@@ -299,6 +328,36 @@ function render(){
   $('btnSkip').onclick = () => { next(); };
 }
 
+function showRoundEnd(){
+  const again = queue.filter(i => done[idOf(i)] === 'again');
+  if (again.length) {
+    $('main').innerHTML = '<div class="done-box"><h2>这一轮做完了</h2>' +
+      '<div>做对 ' + (queue.length - again.length) + ' 道，还有 ' + again.length + ' 道没做对。</div>' +
+      '<div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">' +
+      '<button class="primary" id="btnOnlyAgain">只做这 ' + again.length + ' 道</button>' +
+      '<button class="ghost" id="btnAllAgain">这一套整轮重来</button></div></div>';
+    $('btnOnlyAgain').onclick = () => {
+      scopeMode = 'wrong'; buildQueue(true); pos = 0; revealed = false;
+      renderScopes(); render();
+    };
+    $('btnAllAgain').onclick = () => {
+      queue = filter === '全部' ? ITEMS.slice() : ITEMS.filter(i => i.set === filter);
+      pos = 0; revealed = false; render();
+    };
+    return;
+  }
+  $('main').innerHTML = '<div class="done-box"><h2>全部做完了</h2>' +
+    '<div>这个筛选下没有"还不会"的题了。换一套继续，或者明天再来一遍。</div></div>';
+  progress();
+}
+
+function firstUnanswered(){
+  for (let k = 0; k < queue.length; k++) {
+    if (!done[idOf(queue[k])]) return k;
+  }
+  return -1;
+}
+
 function next(){
   pos++;
   if (pos >= queue.length) {
@@ -308,8 +367,18 @@ function next(){
       queue = again.slice(); pos = 0;
       // 提示
       $('main').innerHTML = '<div class="done-box"><h2>这一轮做完了</h2>' +
-        '<div>还有 ' + again.length + ' 道标记为"还不会"，再滚一遍。</div></div>';
-      setTimeout(render, 700);
+        '<div>做对 ' + (queue.length - again.length) + ' 道，还有 ' + again.length + ' 道没做对。</div>' +
+        '<div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">' +
+        '<button class="primary" id="btnOnlyAgain">只做这 ' + again.length + ' 道</button>' +
+        '<button class="ghost" id="btnAllAgain">这一套整轮重来</button></div></div>';
+      $('btnOnlyAgain').onclick = () => {
+        scopeMode = 'wrong'; buildQueue(true); pos = 0; revealed = false;
+        renderScopes(); render();
+      };
+      $('btnAllAgain').onclick = () => {
+        queue = filter === '全部' ? ITEMS.slice() : ITEMS.filter(i => i.set === filter);
+        pos = 0; revealed = false; render();
+      };
       return;
     }
     $('main').innerHTML = '<div class="done-box"><h2>全部做完了</h2>' +
@@ -322,7 +391,7 @@ function next(){
 
 $('btnReset').onclick = () => {
   if (!confirm('清空进度，重新开始？')) return;
-  done = {}; picks = {}; save(); buildQueue(true); pos = 0; renderChips(); renderSorts(); render();
+  done = {}; picks = {}; scopeMode = 'all'; save(); buildQueue(true); pos = 0; renderChips(); renderSorts(); renderScopes(); render();
 };
 
 $('btnFull').onclick = () => {
@@ -347,7 +416,14 @@ document.addEventListener('keydown', e => {
 buildQueue(true);
 renderChips();
 renderSorts();
-render();
+renderScopes();
+if (!queue.length) {
+  render();
+} else {
+  const fu = firstUnanswered();
+  if (fu >= 0) { pos = fu; render(); }
+  else { pos = 0; showRoundEnd(); }
+}
 </script>
 <style id="dsh-mobile-fit">
 @media (max-width: 640px) {
