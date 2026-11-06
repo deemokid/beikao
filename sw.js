@@ -17,6 +17,7 @@ const ASSETS = [
   "./错题一眼卡.html",
   "./全真五_复盘.html",
   "./今晚10题.html",
+  "./考前一张纸.html",
   "./错题重做.html",
   "./manifest.json",
   "./icon-180.png"
