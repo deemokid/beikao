@@ -26,6 +26,18 @@
   .tip{margin-top:26px;color:var(--dim);font-size:12.5px;line-height:1.75;
        border-top:1px solid var(--line);padding-top:14px}
   .tip b{color:#c3cbe0;font-weight:600}
+
+  .hero{margin:2px 0 26px}
+  .hero a{display:block;text-decoration:none;background:#fffdf8;color:#2b2925;border:1px solid #e6d9be;
+          border-radius:16px;padding:20px 18px}
+  .hero .hn{font:700 20px/1.4 -apple-system,"Microsoft YaHei",sans-serif;color:#a8412a}
+  .hero .hm{font-size:14px;color:#6b6459;margin-top:6px;line-height:1.7}
+  .hero .hb{margin-top:12px;font-size:14px;color:#a8412a;font-weight:600}
+  details.all{margin-top:6px}
+  details.all > summary{cursor:pointer;color:var(--dim);font-size:13.5px;padding:10px 0;list-style:none}
+  details.all > summary::-webkit-details-marker{display:none}
+  details.all > summary:before{content:"＋ ";}
+  details.all[open] > summary:before{content:"－ ";}
 </style>
 <link rel="manifest" href="manifest.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -38,6 +50,14 @@
   <h1>备考 · 手机版</h1>
   <div class="sub">有网时打开一次，之后飞行模式也能用</div>
 </header>
+<div class="hero">
+  <a href="最后一张.html">
+    <div class="hn">明天只看这一张</div>
+    <div class="hm">6 行：多选一条铁律 + 三个反义对 + 四目标 + 时间分配</div>
+    <div class="hb">打开 →</div>
+  </a>
+</div>
+<details class="all"><summary>全部材料（考前不用点）</summary>
 
 <h2>明早进场前</h2>
 <a class="item" href="考前一张纸.html">
@@ -112,6 +132,8 @@
   <div class="t"><span class="name">薄弱知识点卡</span><span class="badge">6.7M</span></div>
   <div class="meta">打开稍慢，内容最全</div>
 </a>
+
+</details>
 
 <div class="tip">
   <b>用法</b><br>
