@@ -1,5 +1,5 @@
 /* 备考 · 离线缓存 */
-const CACHE = 'beikao-v5';
+const CACHE = 'beikao-v6';
 const ASSETS = [
   "./",
   "./index.html",
@@ -15,6 +15,7 @@ const ASSETS = [
   "./错位点_全真一二三四套.html",
   "./错位点_全真一二套.html",
   "./错题一眼卡.html",
+  "./全真五_复盘.html",
   "./错题重做.html",
   "./manifest.json",
   "./icon-180.png"
